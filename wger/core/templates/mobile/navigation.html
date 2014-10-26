@@ -1,11 +1,11 @@
 {% load i18n %}{% load cache %}{% load wger_extras %}
-<nav id="nav">
+<nav id="mainNavigation" class="navmenu navmenu-default navmenu-fixed-left offcanvas" role="navigation">
     <div>
         <div class="navbar navbar-default" style="background-color: transparent; border-width: 0px;">
             <div class="container">
 
-                <div class="navbar-collapse " id="main-navbar-navigation">
-                    <ul class="nav navbar-nav">
+                <div id="main-navmenu-navigation">
+                    <ul class="nav navmenu-nav">
                         {#          #}
                         {# User tab #}
                         {#          #}
@@ -16,7 +16,6 @@
                                 {% if active_tab == 'user' %}</strong>{% endif %}
                             </a>
                         </li>
-
 
                         {#             #}
                         {# Workout tab #}
@@ -30,7 +29,7 @@
                                 {% trans "Workouts" %} <b class="caret"></b>
                                 {% if active_tab == 'workout' %}</strong>{% endif %}
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu navmenu-nav">
                                 <li><a href="{% url 'workout-overview' %}" rel="nofollow">{% trans "Workouts" %}</a></li>
                                 <li><a href="{% url 'workout-calendar' %}" rel="nofollow">{% trans "Calendar" %}</a></li>
                                 <li><a href="{% url 'schedule-overview' %}" rel="nofollow">{% trans "Workouts schedules" %}</a></li>
@@ -49,7 +48,7 @@
                                 {% trans "Exercises" %} <b class="caret"></b>
                                 {% if active_tab == 'exercises' %}</strong>{% endif %}
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu navmenu-nav">
                                 <li><a href="{% url 'exercise-overview' %}">{% trans "Exercises" %}</a></li>
                                 <li><a href="{% url 'muscle-overview' %}">{% trans "Muscle overview" %}</a></li>
                                 <li><a href="{% url 'equipment-overview' %}">{% trans "Equipment overview" %}</a></li>
@@ -82,7 +81,7 @@
                                 {% trans "Weight" %} <b class="caret"></b>
                                 {% if active_tab == 'weight' %}</strong>{% endif %}
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu navmenu-nav">
                                 <li><a href="{% url 'weight-overview' %}" rel="nofollow">{% trans "Weight overview" %}</a></li>
                                 <li><a href="{% url 'weight-add' %}" rel="nofollow">{% trans "Add weight entry" %}</a></li>
                             </ul>
@@ -101,7 +100,7 @@
                                 {% trans "Nutrition" %} <b class="caret"></b>
                                 {% if active_tab == 'nutrition' %}</strong>{% endif %}
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu navmenu-nav">
                             <li><a href="{% url 'nutrition-overview' %}" rel="nofollow">{% trans "Nutrition plans" %}</a></li>
                             <li><a href="{% url 'ingredient-list' %}">{% trans "Ingredient overview" %}</a></li>
                             <li><a href="{% url 'bmi-view' %}" rel="nofollow">{% trans "BMI calculator" %}</a></li>
@@ -129,7 +128,7 @@
                                 {% trans "About this software" %} <b class="caret"></b>
                                 {% if active_tab == 'software' %}</strong>{% endif %}
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu navmenu-nav">
                                 <li><a href="{% url 'software:features' %}">{% trans "Features" %}</a></li>
                                 <li><a href="{% url 'software:contribute' %}">{% trans "Contribute!" %} </a></li>
                                 <li><a href="{% url 'software:issues' %}">{% trans "Problems and wishes" %} </a></li>
@@ -158,7 +157,7 @@
                             <a href=""
                                class="dropdown-toggle"
                                data-toggle="dropdown">{% trans "Options" %} <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu navmenu-nav">
 
                                 {# Contact #}
                                 <li><a href="{% url 'core:contact' %}">{% trans "Get in touch" %}</a></li>
@@ -170,7 +169,6 @@
                         </li>
 
 
-
                         {#             #}
                         {# Options tab #}
                         {#             #}
@@ -180,7 +178,7 @@
                                 {% trans "Login" %} / {% trans "Register" %}
                             <b class="caret"></b>
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu navmenu-nav">
                                 <li><a href="{% url 'core:login' %}">{% trans "Login" %}</a></li>
                                 <li><a href="{% url 'core:registration' %}">{% trans "Register" %}</a></li>
                                 <li><a href="{% url 'core:password_reset' %}">{% trans "Reset password" %}</a></li>
@@ -196,7 +194,7 @@
                             {% endif %}
                             <b class="caret"></b>
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu navmenu-nav">
                                 <li>
                                     <a href="{% url 'core:preferences' %}">{% trans "My preferences" %}</a>
                                 </li>
