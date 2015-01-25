@@ -21,7 +21,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import link
 
-from wger.manager.api.serializers import WorkoutSerializer
+from wger.manager.api.serializers import WorkoutSerializer, DayCanonicalFormSerializer
 from wger.manager.api.serializers import WorkoutCanonicalFormSerializer
 from wger.manager.api.serializers import DaySerializer
 from wger.manager.api.serializers import SettingSerializer
@@ -181,6 +181,17 @@ class DayViewSet(WgerOwnerObjectModelViewSet):
         Only allow access to appropriate objects
         '''
         return Day.objects.filter(training__user=self.request.user)
+
+    @link()
+    def canonical_representation(self, request, pk):
+        '''
+        Output the canonical representation of a workout
+
+        This is basically the same form as used in the application
+        '''
+
+        out = DayCanonicalFormSerializer(self.get_object().canonical_representation).data
+        return Response(out)
 
     def get_owner_objects(self):
         '''
