@@ -16,6 +16,7 @@
 # along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 from rest_framework import serializers
+from wger.exercises.api.serializers import ExerciseSerializer
 
 from wger.manager.models import Workout
 from wger.manager.models import Day
@@ -100,6 +101,7 @@ class WorkoutCanonicalFormExerciseListSerializer(serializers.Serializer):
     setting_list = serializers.Field()
     setting_text = serializers.Field()
     comment_list = serializers.Field()
+    obj = ExerciseSerializer()
 
 
 class WorkoutCanonicalFormExerciseSerializer(serializers.Serializer):
