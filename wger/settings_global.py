@@ -188,6 +188,7 @@ LANGUAGES = (
             ('ru', 'Russian'),
             ('nl', 'Dutch'),
             ('pt', 'Portuguese'),
+            ('el', 'Greek'),
 )
 
 # Default language code for this installation.
@@ -266,7 +267,7 @@ THUMBNAIL_ALIASES = {
 
         'large': {'size': (800, 800), 'quality': 90},
         'large_cropped': {'size': (800, 800), 'crop': 'smart', 'quality': 90},
-        },
+    },
 }
 
 
@@ -315,5 +316,6 @@ IGNORABLE_404_URLS = (
 # Application specific configuration options
 #
 WGER_SETTINGS = {
-    'USE_RECAPTCHA': False
+    'USE_RECAPTCHA': False,
+    'REMOVE_WHITESPACE': False
 }
