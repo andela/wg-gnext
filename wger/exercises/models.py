@@ -16,6 +16,7 @@
 # along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 import six
+import uuid
 import logging
 import bleach
 
@@ -198,6 +199,14 @@ class Exercise(AbstractSubmissionModel, AbstractLicenseModel, models.Model):
                                  verbose_name=_('Language'))
     '''The exercise's language'''
 
+    uuid = models.CharField(verbose_name='UUID',
+                            max_length=36,
+                            editable=False,
+                            default=uuid.uuid4)
+    '''
+    Globally unique ID, to identify the exercise across installations
+    '''
+
     #
     # Django methods
     #
@@ -321,8 +330,7 @@ class Exercise(AbstractSubmissionModel, AbstractLicenseModel, models.Model):
         if request.user.has_perm('exercises.add_exercise'):
             self.status = self.STATUS_ACCEPTED
             if not self.license_author:
-                self.license_author = 'wger.de'
-
+                self.license_author = request.get_host().split(':')[0]
         else:
             if not self.license_author:
                 self.license_author = request.user.username

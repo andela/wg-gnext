@@ -30,10 +30,10 @@ from wger.utils.constants import EMAIL_FROM
 
 class Command(BaseCommand):
     '''
-    Helper admin command to send out email remainders
+    Helper admin command to send out email reminders
     '''
 
-    help = 'Send out automatic emails to reminder the user to input the weight'
+    help = 'Send out automatic emails to remind the user to enter the weight'
 
     def handle(self, *args, **options):
 
@@ -41,7 +41,7 @@ class Command(BaseCommand):
 
         for profile in profile_list:
 
-            # Onl continue if the user has provided an email address.
+            # Only continue if the user has provided an email address.
             # Checking it here so we check for NULL values and emtpy strings
             if not profile.user.email:
                 continue
@@ -49,16 +49,16 @@ class Command(BaseCommand):
             today = datetime.datetime.now().date()
 
             try:
-                last_entry = WeightEntry.objects.filter(user=profile.user).latest().creation_date
+                last_entry = WeightEntry.objects.filter(user=profile.user).latest().date
                 datediff = (today - last_entry).days
 
                 if datediff >= profile.num_days_weight_reminder:
-                    self.send_email(profile.user, last_entry)
+                    self.send_email(profile.user, last_entry, datediff)
             except WeightEntry.DoesNotExist:
                 pass
 
     @staticmethod
-    def send_email(user, last_entry):
+    def send_email(user, last_entry, datediff):
         '''
         Notify a user to input the weight entry
 
@@ -71,10 +71,12 @@ class Command(BaseCommand):
 
         context = {}
         context['site'] = Site.objects.get_current()
-        context['day'] = last_entry
+        context['date'] = last_entry
+        context['days'] = datediff
+        context['user'] = user
 
         subject = _('You have to enter your weight')
-        message = loader.render_to_string('workout/email_weight_reminder.html', context)
+        message = loader.render_to_string('workout/email_weight_reminder.tpl', context)
         mail.send_mail(subject,
                        message,
                        EMAIL_FROM,

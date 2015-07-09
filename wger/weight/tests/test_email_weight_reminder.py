@@ -12,7 +12,7 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 
-from datetime import date, timedelta, datetime
+from datetime import timedelta, datetime
 
 from django.core.management import call_command
 from django.core import mail
@@ -59,7 +59,7 @@ class EmailWeightReminderTestCase(WorkoutManagerTestCase):
         user.save()
 
         weightEntry = WeightEntry.objects.filter(user=user).get(pk=3)
-        weightEntry.creation_date = datetime.now().date() - timedelta(days=2)
+        weightEntry.date = datetime.now().date() - timedelta(days=2)
         weightEntry.save()
 
         user.userprofile.num_days_weight_reminder = 1
@@ -74,7 +74,7 @@ class EmailWeightReminderTestCase(WorkoutManagerTestCase):
         user.save()
 
         weightEntry = WeightEntry.objects.filter(user=user).get(pk=3)
-        weightEntry.creation_date = datetime.now().date() - timedelta(days=1)
+        weightEntry.date = datetime.now().date() - timedelta(days=1)
         weightEntry.save()
 
         user.userprofile.num_days_weight_reminder = 1
@@ -89,7 +89,7 @@ class EmailWeightReminderTestCase(WorkoutManagerTestCase):
         user.save()
 
         weightEntry = WeightEntry.objects.filter(user=user).latest()
-        weightEntry.creation_date = datetime.now().date()
+        weightEntry.date = datetime.now().date()
         weightEntry.save()
 
         user.userprofile.num_days_weight_reminder = 3

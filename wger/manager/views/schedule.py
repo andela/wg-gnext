@@ -64,16 +64,20 @@ def overview(request):
     return render(request, 'schedule/overview.html', template_data)
 
 
-@login_required
 def view(request, pk):
     '''
     Show the workout schedule
     '''
     template_data = {}
-    user = request.user
+    schedule = get_object_or_404(Schedule, pk=pk)
+    user = schedule.user
+    is_owner = request.user == user
+
+    if not is_owner and not user.userprofile.ro_access:
+        return HttpResponseForbidden()
+
     uid, token = make_token(user)
 
-    schedule = get_object_or_404(Schedule, pk=pk, user=user)
     template_data['schedule'] = schedule
     if schedule.is_active:
         template_data['active_workout'] = schedule.get_current_scheduled_workout()
@@ -84,6 +88,9 @@ def view(request, pk):
 
     template_data['uid'] = uid
     template_data['token'] = token
+    template_data['is_owner'] = is_owner
+    template_data['owner_user'] = user
+    template_data['show_shariff'] = is_owner
 
     return render(request, 'schedule/view.html', template_data)
 
@@ -171,6 +178,7 @@ class ScheduleCreateView(WgerFormMixin, CreateView, WgerPermissionMixin):
     '''
 
     model = Schedule
+    fields = '__all__'
     success_url = reverse_lazy('manager:schedule:overview')
     title = ugettext_lazy('Create schedule')
     form_action = reverse_lazy('manager:schedule:add')
@@ -211,6 +219,7 @@ class ScheduleEditView(WgerFormMixin, UpdateView, WgerPermissionMixin):
     '''
 
     model = Schedule
+    fields = '__all__'
     form_action_urlname = 'manager:schedule:edit'
     login_required = True
 
