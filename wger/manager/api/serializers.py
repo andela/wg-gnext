@@ -16,8 +16,6 @@
 # along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 from rest_framework import serializers
-from wger.exercises.api.serializers import ExerciseSerializer
-
 from wger.core.api.serializers import DaysOfWeekSerializer
 from wger.exercises.api.serializers import ExerciseSerializer
 
