@@ -310,7 +310,6 @@ by the US Department of Agriculture. It is extremely complete, with around
                                                                'deactivate)'),
                                                    validators=[MinValueValidator(0),
                                                                MaxValueValidator(30)],
-                                                   max_length=30,
                                                    default=0)
     '''Number of Days for email weight reminder'''
 
@@ -325,6 +324,24 @@ by the US Department of Agriculture. It is extremely complete, with around
         except WeightEntry.DoesNotExist:
             weight = 0
         return weight
+
+    @property
+    def address(self):
+        '''
+        Return the address as saved in the current contract (user's gym)
+        '''
+        out = {'zip_code': '',
+               'city': '',
+               'street': '',
+               'phone': ''}
+        if self.user.contract_member.exists():
+            last_contract = self.user.contract_member.last()
+            out['zip_code'] = last_contract.zip_code
+            out['city'] = last_contract.city
+            out['street'] = last_contract.street
+            out['phone'] = last_contract.phone
+
+        return out
 
     def clean(self):
         '''
@@ -454,6 +471,32 @@ by the US Department of Agriculture. It is extremely complete, with around
         Returns the object that has owner information
         '''
         return self
+
+
+@python_2_unicode_compatible
+class UserCache(models.Model):
+    '''
+    A table used to cache expensive queries or similar
+    '''
+
+    user = models.OneToOneField(User, editable=False)
+    '''
+    The user
+    '''
+
+    last_activity = models.DateField(null=True)
+    '''
+    The user's last activity.
+
+    Values for this entry are saved by signals as calculated by the
+    get_user_last_activity helper function.
+    '''
+
+    def __str__(self):
+        '''
+        Return a more human-readable representation
+        '''
+        return u"Cache for user {0}".format(self.user)
 
 
 @python_2_unicode_compatible

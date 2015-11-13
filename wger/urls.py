@@ -129,7 +129,7 @@ sitemaps = {'exercises': ExercisesSitemap,
 #
 # The actual URLs
 #
-urlpatterns = i18n_patterns('',
+urlpatterns = i18n_patterns(
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include('wger.core.urls', namespace='core', app_name='core')),
     url(r'workout/', include('wger.manager.urls', namespace='manager')),
@@ -139,6 +139,7 @@ urlpatterns = i18n_patterns('',
     url(r'software/', include('wger.software.urls', namespace='software', app_name='software')),
     url(r'config/', include('wger.config.urls', namespace='config', app_name='config')),
     url(r'gym/', include('wger.gym.urls', namespace='gym', app_name='gym')),
+    url(r'email/', include('wger.email.urls', namespace='email')),
     url(r'^browserid/', include('django_browserid.urls')),
     url(r'^sitemap\.xml$',
         'django.contrib.sitemaps.views.sitemap',
@@ -149,7 +150,7 @@ urlpatterns = i18n_patterns('',
 #
 # URLs without language prefix
 #
-urlpatterns = urlpatterns + patterns('',
+urlpatterns = urlpatterns + [
     url(r'^robots\.txt$',
         TextTemplateView.as_view(template_name="robots.txt"),
         name='robots'),
@@ -168,4 +169,4 @@ urlpatterns = urlpatterns + patterns('',
         nutrition_api_views.search,
         name='ingredient-search'),
     url(r'^api/v2/', include(router.urls)),
-)
+]

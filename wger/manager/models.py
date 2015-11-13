@@ -34,7 +34,11 @@ from sortedm2m.fields import SortedManyToManyField
 from wger.core.models import DaysOfWeek
 from wger.exercises.models import Exercise
 from wger.manager.helpers import reps_smart_text
-from wger.utils.cache import cache_mapper, reset_workout_canonical_form, reset_workout_log
+from wger.utils.cache import (
+    cache_mapper,
+    reset_workout_canonical_form,
+    reset_workout_log
+)
 from wger.utils.fields import Html5DateField
 
 
@@ -480,8 +484,8 @@ class Day(models.Model):
                     if len(exercise['setting_list']) > common_reps:
                         exercise['setting_list'].pop(-1)
                         exercise['setting_obj_list'].pop(-1)
-                        setting_text, setting_list = reps_smart_text(exercise['setting_obj_list'],
-                                                                     set_obj)
+                        setting_text, setting_list, weight_list, reps_list = \
+                            reps_smart_text(exercise['setting_obj_list'], set_obj)
                         exercise['setting_text'] = setting_text
 
             canonical_repr.append({'obj': set_obj,

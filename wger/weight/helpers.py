@@ -44,8 +44,11 @@ def parse_weight_csv(request, cleaned_data):
     parsed_csv = csv.reader(six.StringIO(cleaned_data['csv_input']),
                             dialect)
     distinct_weight_entries = []
+    entry_dates = set()
     weight_list = []
     error_list = []
+    MAX_ROW_COUNT = 1000
+    row_count = 0
 
     # Process the CSV items first
     for row in parsed_csv:
@@ -54,18 +57,23 @@ def parse_weight_csv(request, cleaned_data):
             parsed_weight = decimal.Decimal(row[1].replace(',', '.'))
             duplicate_date_in_db = WeightEntry.objects.filter(date=parsed_date,
                                                               user=request.user).exists()
-            # within the list there are no duplicates
-            unique_among_csv = (parsed_date, parsed_weight) not in distinct_weight_entries
+            # within the list there are no duplicate dates
+            unique_among_csv = parsed_date not in entry_dates
+
             # there is no existing weight entry in the database for that date
             unique_in_db = not duplicate_date_in_db
 
             if unique_among_csv and unique_in_db:
                 distinct_weight_entries.append((parsed_date, parsed_weight))
+                entry_dates.add(parsed_date)
             else:
                 error_list.append(row)
 
         except (ValueError, IndexError, decimal.InvalidOperation):
             error_list.append(row)
+        row_count += 1
+        if row_count > MAX_ROW_COUNT:
+            break
 
     # Create the valid weight entries
     for date, weight in distinct_weight_entries:

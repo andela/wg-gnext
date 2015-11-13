@@ -15,17 +15,23 @@
 # You should have received a copy of the GNU Affero General Public License
 
 
-from django.conf.urls import patterns, url, include
+from django.conf.urls import (
+    patterns,
+    url,
+    include
+)
 from django.views.generic import TemplateView
 from django.contrib.auth import views
 from django.core.urlresolvers import reverse_lazy
 
-from wger.core.views import user
-from wger.core.views import misc
-from wger.core.views import license
+from wger.core.views import (
+    user,
+    misc,
+    license
+)
 
-# sub patterns for languages
-patterns_user = patterns('',
+# sub patterns for user
+patterns_user = [
     url(r'^login$',
         user.login,
         name='login'),
@@ -65,6 +71,9 @@ patterns_user = patterns('',
     url(r'^(?P<pk>\d+)/overview',
         user.UserDetailView.as_view(),
         name='overview'),
+    url(r'^list',
+        user.UserListView.as_view(),
+        name='list'),
 
     # Password reset is implemented by Django, no need to cook our own soup here
     # (besides the templates)
@@ -92,11 +101,11 @@ patterns_user = patterns('',
         views.password_reset_complete,
         {'template_name': 'user/password_reset_complete.html'},
         name='password_reset_complete'),
-)
+]
 
 
 # sub patterns for licenses
-patterns_license = patterns('',
+patterns_license = [
     url(r'^license/list$',
         license.LicenseListView.as_view(),
         name='list'),
@@ -109,13 +118,13 @@ patterns_license = patterns('',
     url(r'^license/(?P<pk>\d+)/delete',
         license.LicenseDeleteView.as_view(),
         name='delete'),
-)
+]
 
 
 #
 # Actual patterns
 #
-urlpatterns = patterns('',
+urlpatterns = [
 
     # The landing page
     url(r'^$',
@@ -140,4 +149,4 @@ urlpatterns = patterns('',
 
     url(r'^user/', include(patterns_user, namespace="user")),
     url(r'^license/', include(patterns_license, namespace="license")),
-)
+]
