@@ -113,14 +113,6 @@
     },
     {
         "model": "exercises.muscle",
-        "pk": 15,
-        "fields": {
-            "is_front": false,
-            "name": "Soleus"
-        }
-    },
-    {
-        "model": "exercises.muscle",
         "pk": 16,
         "fields": {
             "is_front": false,
