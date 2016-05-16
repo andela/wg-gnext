@@ -11,8 +11,8 @@ def generate_uuids(apps, schema_editor):
     :param schema_editor:
     :return:
     '''
-    Excercise = apps.get_model("exercises", "Exercise")
-    for exercise in Excercise.objects.all():
+    Exercise = apps.get_model("exercises", "Exercise")
+    for exercise in Exercise.objects.all():
         exercise.uuid = uuid.uuid4()
         exercise.save()
 
