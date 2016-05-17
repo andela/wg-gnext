@@ -12,7 +12,14 @@ def merge_muscles(apps, schema_editor):
     :return:
     '''
     Muscle = apps.get_model("exercises", "Muscle")
-    soleus = Muscle.objects.get(pk=15)
+
+    # If there is no soleus, the database was newly created from the fixtures
+    # which don't have it. In this case, there is nothing to do.
+    try:
+        soleus = Muscle.objects.get(pk=15)
+    except Muscle.DoesNotExist:
+        return
+
     gastrocnemius = Muscle.objects.get(pk=7)
     for exercise in soleus.exercise_set.all():
         # Add the gastrocnemius if its not already present, deleting the soleus
