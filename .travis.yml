@@ -68,4 +68,4 @@ script:
 
 notifications:
   # slack integration
-  slack: andela:cZDZmDhpwS1gjyj6tN29LIyl
+  slack: andela:RCxAz67YjwBcTXAdepVJkytl
