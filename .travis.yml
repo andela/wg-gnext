@@ -65,3 +65,6 @@ script:
 
   # Code coverage
   - coverage report
+
+notifications:
+  slack: andela:rPrzE1vjbkGnXEkKedWQ13RW
