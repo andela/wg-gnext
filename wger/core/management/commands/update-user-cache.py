@@ -27,7 +27,8 @@ class Command(BaseCommand):
 
     help = 'Update the user cache-table. This is only needed when the python' \
            'code used to calculate any of the cached entries is changed and ' \
-           'the ones in the database need to be updated to reflect the new logic.'
+           'the ones in the database need to be updated to reflect the new '\
+           'logic.'
 
     def handle(self, **options):
         '''

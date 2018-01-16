@@ -22,7 +22,8 @@ from django.template.context_processors import csrf
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.utils import translation
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import (PermissionRequiredMixin,
+                                        LoginRequiredMixin)
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as django_login
 from django.contrib.auth import logout as django_logout
@@ -36,7 +37,8 @@ from django.conf import settings
 from rest_framework.authtoken.models import Token
 
 from wger.utils.constants import USER_TAB
-from wger.utils.generic_views import WgerFormMixin, WgerMultiplePermissionRequiredMixin
+from wger.utils.generic_views import (WgerFormMixin,
+                                      WgerMultiplePermissionRequiredMixin)
 from wger.utils.user_agents import check_request_amazon, check_request_android
 from wger.core.forms import (UserPreferencesForm, UserPersonalInformationForm,
                              PasswordConfirmationForm, RegistrationForm,
@@ -70,10 +72,11 @@ def login(request):
 @login_required()
 def delete(request, user_pk=None):
     '''
-    Delete a user account and all his data, requires password confirmation first
+    Delete a user account and all his data, requires password confirmation
+     first
 
-    If no user_pk is present, the user visiting the URL will be deleted, otherwise
-    a gym administrator is deleting a different user
+    If no user_pk is present, the user visiting the URL will be deleted,
+    otherwise a gym administrator is deleting a different user
     '''
 
     if user_pk:
@@ -84,7 +87,8 @@ def delete(request, user_pk=None):
         # gym or is an admin as well. General admins can delete all users.
         if not request.user.has_perm('gym.manage_gyms') \
                 and (not request.user.has_perm('gym.manage_gym')
-                     or request.user.userprofile.gym_id != user.userprofile.gym_id
+                     or (request.user.userprofile.gym_id !=
+                         user.userprofile.gym_id)
                      or user.has_perm('gym.manage_gym')
                      or user.has_perm('gym.gym_trainer')
                      or user.has_perm('gym.manage_gyms')):
@@ -150,8 +154,8 @@ def trainer_login(request, user_pk):
         own = True
 
     # Note: it seems we have to manually set the authentication backend here
-    # - https://docs.djangoproject.com/en/1.6/topics/auth/default/#auth-web-requests
-    # - http://stackoverflow.com/questions/3807777/django-login-without-authenticating
+    # https://docs.djangoproject.com/en/1.6/topics/auth/default/#auth-web-requests
+    # http://stackoverflow.com/questions/3807777/django-login-without-authenticating
     if own:
         del (request.session['trainer.identity'])
     user.backend = 'django.contrib.auth.backends.ModelBackend'
@@ -318,8 +322,10 @@ class UserDeactivateView(LoginRequiredMixin,
         if not request.user.is_authenticated():
             return HttpResponseForbidden()
 
-        if (request.user.has_perm('gym.manage_gym') or request.user.has_perm('gym.gym_trainer')) \
-                and edit_user.userprofile.gym_id != request.user.userprofile.gym_id:
+        if (request.user.has_perm('gym.manage_gym') or
+            request.user.has_perm('gym.gym_trainer')) \
+                and (edit_user.userprofile.gym_id !=
+                     request.user.userprofile.gym_id):
             return HttpResponseForbidden()
 
         return super(UserDeactivateView, self).dispatch(
@@ -353,8 +359,10 @@ class UserActivateView(LoginRequiredMixin, WgerMultiplePermissionRequiredMixin,
         if not request.user.is_authenticated():
             return HttpResponseForbidden()
 
-        if (request.user.has_perm('gym.manage_gym') or request.user.has_perm('gym.gym_trainer')) \
-                and edit_user.userprofile.gym_id != request.user.userprofile.gym_id:
+        if (request.user.has_perm('gym.manage_gym') or
+            request.user.has_perm('gym.gym_trainer')) \
+                and (edit_user.userprofile.gym_id !=
+                     request.user.userprofile.gym_id):
             return HttpResponseForbidden()
 
         return super(UserActivateView, self).dispatch(request, *args, **kwargs)
@@ -463,7 +471,8 @@ class UserDetailView(LoginRequiredMixin, WgerMultiplePermissionRequiredMixin,
         if not user.is_authenticated():
             return HttpResponseForbidden()
 
-        if (user.has_perm('gym.manage_gym') or user.has_perm('gym.gym_trainer')) \
+        if (user.has_perm('gym.manage_gym') or
+            user.has_perm('gym.gym_trainer')) \
                 and not user.has_perm('gym.manage_gyms') \
                 and user.userprofile.gym != self.get_object().userprofile.gym:
             return HttpResponseForbidden()
@@ -485,10 +494,10 @@ class UserDetailView(LoginRequiredMixin, WgerMultiplePermissionRequiredMixin,
                 'last_log': logs.last()
             })
         context['workouts'] = out
-        context['weight_entries'] = WeightEntry.objects.filter(user=self.object)\
-            .order_by('-date')[:5]
-        context['nutrition_plans'] = NutritionPlan.objects.filter(user=self.object)\
-            .order_by('-creation_date')[:5]
+        context['weight_entries'] = WeightEntry.objects.filter(
+            user=self.object).order_by('-date')[:5]
+        context['nutrition_plans'] = NutritionPlan.objects.filter(
+            user=self.object).order_by('-creation_date')[:5]
         context['session'] = WorkoutSession.objects.filter(
             user=self.object).order_by('-date')[:10]
         context['admin_notes'] = AdminUserNote.objects.filter(

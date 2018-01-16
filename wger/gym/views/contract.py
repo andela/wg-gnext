@@ -16,7 +16,8 @@
 import logging
 
 from django.core.urlresolvers import reverse
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import (PermissionRequiredMixin,
+                                        LoginRequiredMixin)
 from django.contrib.auth.models import User
 from django.http.response import HttpResponseForbidden
 from django.shortcuts import get_object_or_404
@@ -46,9 +47,9 @@ class AddView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin,
         '''
         Get the initial data for new contracts
 
-        Since the user's data probably didn't change between one contract and the
-        next, try to fill in as much data as possible from previous ones or the
-        user's profile
+        Since the user's data probably didn't change between one contract and
+        the next, try to fill in as much data as possible from previous ones
+         or the user's profile
         '''
         out = {}
         if Contract.objects.filter(member=self.member).exists():

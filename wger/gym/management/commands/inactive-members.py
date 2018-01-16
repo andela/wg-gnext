@@ -32,7 +32,8 @@ class Command(BaseCommand):
     '''
     Sends overviews of inactive users to gym trainers
     '''
-    help = 'Send out emails to trainers with users that have not shown recent activity'
+    help = 'Send out emails to trainers with users that have not shown'\
+        ' recent activity'
 
     def handle(self, **options):
         '''

@@ -78,7 +78,8 @@ class CopyWorkoutTestCase(WorkoutManagerTestCase):
             days_original = original.day_set.all()
             days_copy = copy.day_set.all()
 
-            # Test that the different attributes and objects are correctly copied over
+            # Test that the different attributes and objects are correctly
+            # copied over
             for i in range(0, original.day_set.count()):
                 self.assertEqual(days_original[i].description,
                                  days_copy[i].description)
@@ -113,7 +114,8 @@ class CopyWorkoutTestCase(WorkoutManagerTestCase):
 
     def test_copy_shared_not_allowed(self):
         '''
-        Test copying a workout from another shared user where user does not share workouts
+        Test copying a workout from another shared user where user does
+        not share workouts
         '''
         profile = UserProfile.objects.get(user__username='test')
         profile.ro_access = False
@@ -128,7 +130,8 @@ class CopyWorkoutTestCase(WorkoutManagerTestCase):
 
     def test_copy_shared_allowed(self):
         '''
-        Test copying a workout from another shared user where user does share workouts
+        Test copying a workout from another shared user where user
+        does share workouts
         '''
         profile = UserProfile.objects.get(user__username='test')
         profile.ro_access = True

@@ -36,7 +36,8 @@ class LanguageConfig(models.Model):
     '''
     Configuration for languages
 
-    Allows to specify what exercises and ingredients are shown for each language
+    Allows to specify what exercises and ingredients are shown for each
+    language
     '''
     SHOW_ITEM_EXERCISES = '1'
     SHOW_ITEM_INGREDIENTS = '2'

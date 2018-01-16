@@ -50,7 +50,8 @@ class WorkoutPdfLogExportTestCase(WorkoutManagerTestCase):
 
     def export_pdf_token_wrong(self):
         '''
-        Helper function to test exporting a workout as a pdf using a wrong token
+        Helper function to test exporting a workout as a pdf using a wrong
+        token
         '''
 
         uid = 'AB'
@@ -90,7 +91,8 @@ class WorkoutPdfLogExportTestCase(WorkoutManagerTestCase):
 
     def export_pdf_with_comments(self, fail=False):
         '''
-        Helper function to test exporting a workout as a pdf, with exercise coments
+        Helper function to test exporting a workout as a pdf, with exercise
+        comments
         '''
 
         response = self.client.get(
@@ -114,7 +116,8 @@ class WorkoutPdfLogExportTestCase(WorkoutManagerTestCase):
 
     def export_pdf_with_images(self, fail=False):
         '''
-        Helper function to test exporting a workout as a pdf, with exercise images
+        Helper function to test exporting a workout as a pdf, with exercise
+        images
         '''
 
         response = self.client.get(
@@ -137,7 +140,8 @@ class WorkoutPdfLogExportTestCase(WorkoutManagerTestCase):
 
     def export_pdf_with_images_and_comments(self, fail=False):
         '''
-        Helper function to test exporting a workout as a pdf, with images and comments
+        Helper function to test exporting a workout as a pdf, with images and
+        comments
         '''
 
         response = self.client.get(
@@ -223,7 +227,8 @@ class WorkoutPdfTableExportTestCase(WorkoutManagerTestCase):
 
     def export_pdf_token_wrong(self):
         '''
-        Helper function to test exporting a workout as a pdf using a wrong token
+        Helper function to test exporting a workout as a pdf using a wrong
+        token
         '''
 
         uid = 'AB'

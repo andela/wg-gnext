@@ -369,8 +369,8 @@ class Ingredient(AbstractLicenseModel, models.Model):
         - 1g of carbohydrates: 4kcal
         - 1g of fat: 9kcal
 
-        The sum is then compared to the given total energy, with ENERGY_APPROXIMATION
-        percent tolerance.
+        The sum is then compared to the given total energy, with
+        ENERGY_APPROXIMATION percent tolerance.
         '''
 
         # Note: calculations in 100 grams, to save us the '/100' everywhere

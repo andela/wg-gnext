@@ -53,8 +53,8 @@ class Command(BaseCommand):
             help='Clear ALL cached entries'),
     )
 
-    help = 'Clears the application cache. You *must* pass an option selecting ' \
-           'what exactly you want to clear. See available options.'
+    help = 'Clears the application cache. You *must* pass an option' \
+        'selecting what exactly you want to clear. See available options.'
 
     def handle(self, **options):
         '''

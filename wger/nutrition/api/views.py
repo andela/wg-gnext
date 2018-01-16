@@ -49,9 +49,9 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
         Calculates the nutritional values for current ingredient and
         the given amount and unit.
 
-        This function basically just performs a multiplication (in the model), and
-        is a candidate to be moved to pure AJAX calls, however doing it like this
-        keeps the logic nicely hidden and respects the DRY principle.
+        This function basically just performs a multiplication (in the model)
+        , and is a candidate to be moved to pure AJAX calls, however doing it
+        like this keeps the logic nicely hidden and respectsthe DRY principle.
         '''
 
         result = {

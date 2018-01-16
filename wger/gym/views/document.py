@@ -16,7 +16,8 @@
 import logging
 
 from django.core.urlresolvers import reverse
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import (PermissionRequiredMixin,
+                                        LoginRequiredMixin)
 from django.contrib.auth.models import User
 from django.http.response import HttpResponseForbidden
 from django.utils.translation import ugettext as _

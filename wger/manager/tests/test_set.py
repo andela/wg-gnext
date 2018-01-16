@@ -178,7 +178,8 @@ class SetDeleteTestCase(WorkoutManagerTestCase):
 
     def test_delete_set_other(self):
         '''
-        Tests deleting a set from a workout as a logged user not owning the data
+        Tests deleting a set from a workout as a logged user not owning the
+         data
         '''
 
         self.user_login('test')

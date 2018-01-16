@@ -15,7 +15,8 @@
 # You should have received a copy of the GNU Affero General Public License
 import logging
 
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import (PermissionRequiredMixin,
+                                        LoginRequiredMixin)
 from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
 from django.forms import ModelForm, ModelChoiceField

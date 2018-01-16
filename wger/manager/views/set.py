@@ -49,8 +49,8 @@ SettingFormset = modelformset_factory(
 @login_required
 def create(request, day_pk):
     '''
-    Creates a new set. This view handles both the set form and the corresponding
-    settings formsets
+    Creates a new set. This view handles both the set form and the
+    corresponding settings formsets
     '''
     day = get_object_or_404(Day, pk=day_pk)
     if day.get_owner_object().user != request.user:
@@ -93,7 +93,8 @@ def create(request, day_pk):
                 all_valid = False
 
         if form.is_valid() and all_valid:
-            # Manually take care of the order, TODO: better move this to the model
+            # Manually take care of the order, TODO: better move this to
+            # the model
             max_order = day.set_set.select_related().aggregate(
                 models.Max('order'))
             form.instance.order = (max_order['order__max'] or 0) + 1

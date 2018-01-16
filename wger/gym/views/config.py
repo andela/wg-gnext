@@ -15,7 +15,8 @@
 # You should have received a copy of the GNU Affero General Public License
 import logging
 
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import (LoginRequiredMixin,
+                                        PermissionRequiredMixin)
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseForbidden
 from django.utils.translation import ugettext as _

@@ -21,7 +21,8 @@ from wger.core.models import Language
 from wger.core.tests import api_base_test
 from wger.core.tests.base_testcase import WorkoutManagerAccessTestCase
 from wger.core.tests.base_testcase import WorkoutManagerAddTestCase
-from wger.core.tests.base_testcase import WorkoutManagerDeleteTestCase, WorkoutManagerTestCase
+from wger.core.tests.base_testcase import (WorkoutManagerDeleteTestCase,
+                                           WorkoutManagerTestCase)
 from wger.core.tests.base_testcase import WorkoutManagerEditTestCase
 
 

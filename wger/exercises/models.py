@@ -405,10 +405,11 @@ class ExerciseImage(AbstractSubmissionModel, AbstractLicenseModel,
                 is_main=False)
             self.is_main = True
         else:
-            if ExerciseImage.objects.accepted().filter(exercise=self.exercise).count() == 0 \
-               or not ExerciseImage.objects.accepted() \
-                            .filter(exercise=self.exercise, is_main=True)\
-                            .count():
+            if ExerciseImage.objects.accepted().filter(
+                exercise=self.exercise).count() == 0 \
+               or not ExerciseImage.objects.accepted().filter(
+                   exercise=self.exercise, is_main=True)\
+                    .count():
                 self.is_main = True
 
         #

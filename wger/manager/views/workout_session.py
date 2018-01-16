@@ -133,7 +133,8 @@ class WorkoutSessionDeleteView(WgerDeleteMixin, LoginRequiredMixin,
 
     def delete(self, request, *args, **kwargs):
         '''
-        Delete the workout session and, if wished, all associated weight logs as well
+        Delete the workout session and, if wished, all associated weight
+         logs as well
         '''
         if self.kwargs['logs'] == 'logs':
             WorkoutLog.objects.filter(

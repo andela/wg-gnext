@@ -24,7 +24,8 @@ from django.forms import (ModelForm, ModelChoiceField,
                           ModelMultipleChoiceField)
 from django.core.cache import cache
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import (PermissionRequiredMixin,
+                                        LoginRequiredMixin)
 from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
 from django.template.loader import render_to_string
@@ -109,7 +110,8 @@ def view(request, id, slug=None):
                     'images/muscles/secondary/muscle-%s.svg' % muscle.id)
 
         # Append the "main" background, with the silhouette of the human body
-        # This has to happen as the last step, so it is rendered behind the muscles.
+        # This has to happen as the last step, so it is rendered behind
+        # the muscles.
         backgrounds_front.append('images/muscles/muscular_system_front.svg')
         backgrounds_back.append('images/muscles/muscular_system_back.svg')
         backgrounds = (backgrounds_front, backgrounds_back)
@@ -149,9 +151,9 @@ class ExercisesEditAddView(WgerFormMixin):
 
     def get_form_class(self):
 
-        # Define the exercise form here because only at this point during the request
-        # have we access to the currently used language. In other places Django defaults
-        # to 'en-us'.
+        # Define the exercise form here because only at this point during the
+        # request have we access to the currently used language. In other
+        # places Django defaults to 'en-us'.
         class ExerciseForm(ModelForm):
             category = ModelChoiceField(
                 queryset=ExerciseCategory.objects.all(),
@@ -231,7 +233,7 @@ class ExerciseCorrectView(ExercisesEditAddView, LoginRequiredMixin,
     '''
     sidebar = 'exercise/form_correct.html'
     messages = _(
-        'Thank you. Once the changes are reviewed the exercise will be updated.'
+        'Thank you. Once the changes are reviewed the exercise will be updated'
     )
 
     def dispatch(self, request, *args, **kwargs):
@@ -256,7 +258,8 @@ class ExerciseCorrectView(ExercisesEditAddView, LoginRequiredMixin,
 
     def form_valid(self, form):
         '''
-        If the form is valid send email notifications to the site administrators.
+        If the form is valid send email notifications to the
+        site administrators.
 
         We don't return the super().form_valid because we don't want the data
         to be saved.

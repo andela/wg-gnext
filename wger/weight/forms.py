@@ -15,8 +15,8 @@
 # You should have received a copy of the GNU Affero General Public License
 
 from django import forms
-from django.forms import (Form, CharField, Textarea,
-                          ModelForm, DateField, widgets)
+from django.forms import (Form, CharField, Textarea, ModelForm, DateField,
+                          widgets)
 from django.utils.translation import ugettext as _
 
 from wger.utils.constants import DATE_FORMATS

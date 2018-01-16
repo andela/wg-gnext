@@ -45,7 +45,8 @@ class ImagePendingDetailTestCase(WorkoutManagerTestCase):
 
     def test_pending_view_admin(self):
         '''
-        Tests the detail page of an exercise with a pending image as an admin user
+        Tests the detail page of an exercise with a pending image as an
+         admin user
         '''
 
         self.user_login('admin')
@@ -53,7 +54,8 @@ class ImagePendingDetailTestCase(WorkoutManagerTestCase):
 
     def test_pending_view_user(self):
         '''
-        Tests the detail page of an exercise with a pending image as a regular user
+        Tests the detail page of an exercise with a pending image
+         as a regular user
         '''
 
         self.user_login('test')
@@ -61,7 +63,8 @@ class ImagePendingDetailTestCase(WorkoutManagerTestCase):
 
     def test_pending_view_logged_out(self):
         '''
-        Tests the detail page of an exercise with a pending image as a logged out user
+        Tests the detail page of an exercise with a pending image as a
+         logged out user
         '''
 
         self.pending_view(fail=True)

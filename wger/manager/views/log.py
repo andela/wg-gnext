@@ -18,7 +18,8 @@ import logging
 import uuid
 import datetime
 
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import (PermissionRequiredMixin,
+                                        LoginRequiredMixin)
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponseForbidden
@@ -89,9 +90,9 @@ def add(request, pk):
     if day.get_owner_object().user != request.user:
         return HttpResponseForbidden()
 
-    # We need several lists here because we need to assign specific form to each
-    # exercise: the entries for weight and repetitions have no indicator to which
-    # exercise they belong besides the form-ID, from Django's formset
+    # We need several lists here because we need to assign specific form to
+    # each exercise: the entries for weight and repetitions have no indicator
+    # to which exercise they belong besides the form-ID, from Django's formset
     counter = 0
     total_sets = 0
     exercise_list = {}
@@ -127,9 +128,9 @@ def add(request, pk):
     # Process the request
     if request.method == 'POST':
 
-        # Make a copy of the POST data and go through it. The reason for this is
-        # that the form expects a value for the exercise which is not present in
-        # the form (for space and usability reasons)
+        # Make a copy of the POST data and go through it. The reason for this
+        # is that the form expects a value for the exercise which is not
+        # present in the form (for space and usability reasons)
         post_copy = request.POST.copy()
 
         for form_id in form_to_exercise:
@@ -155,7 +156,8 @@ def add(request, pk):
                 session_form = HelperWorkoutSessionForm(
                     data=post_copy, instance=session)
 
-            # Save the Workout Session only if there is not already one for this date
+            # Save the Workout Session only if there is not already one for
+            # this date
             instance = session_form.save(commit=False)
             if not WorkoutSession.objects.filter(
                     user=request.user, date=log_date).exists():
@@ -195,8 +197,9 @@ def add(request, pk):
 
         dateform = HelperDateForm(initial={'date': datetime.date.today()})
 
-        # Depending on whether there is already a workout session for today, update
-        # the current one or create a new one (this will be the most usual case)
+        # Depending on whether there is already a workout session for today,
+        # update the current one or create a new one (this will be the
+        # most usual case)
         if WorkoutSession.objects.filter(
                 user=request.user, date=datetime.date.today()).exists():
             session = WorkoutSession.objects.get(
@@ -254,18 +257,19 @@ class WorkoutLogDetailView(DetailView, LoginRequiredMixin):
                     exercise_id = exercise_list['obj'].id
                     exercise_log[exercise_id] = []
 
-                    # Filter the logs for user and exclude all units that are not weight
+                    # Filter the logs for user and exclude all units that are
+                    # not weight
                     #
-                    # TODO: add the repetition_unit to the filter. For some reason (bug
-                    #       in django? DB problems?) when adding the filter there, the
-                    #       execution time explodes. The weight unit filter works as
-                    #       expected. Also, adding the unit IDs to the exclude list
-                    #       also has the disadvantage that if new ones are added in a
+                    # TODO: add the repetition_unit to the filter. For some
+                    #       reason (bug in django? DB problems?) when adding
+                    #       the filter there, the execution time explodes. The
+                    #       weight unit filter works as expected. Also, adding
+                    #       the unit IDs to the exclude list also has the
+                    #       disadvantage that if new ones are added in a
                     #       local instance, they could "slip" through.
-                    logs = exercise_list['obj'].workoutlog_set.filter(user=self.owner_user,
-                                                                      weight_unit__in=(
-                                                                          1, 2),
-                                                                      workout=self.object) \
+                    logs = exercise_list['obj'].workoutlog_set.filter(
+                        user=self.owner_user, weight_unit__in=(1, 2),
+                        workout=self.object)\
                         .exclude(repetition_unit_id__in=(2, 3, 4, 5, 6, 7, 8))
                     entry_log, chart_data = process_log_entries(logs)
                     if entry_log:

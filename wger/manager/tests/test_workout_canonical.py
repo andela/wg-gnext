@@ -230,7 +230,8 @@ class WorkoutCacheTestCase(WorkoutManagerTestCase):
 
     def test_canonical_form_cache(self):
         '''
-        Tests that the workout cache of the canonical form is correctly generated
+        Tests that the workout cache of the canonical form is correctly
+         generated
         '''
         self.assertFalse(cache.get(cache_mapper.get_workout_canonical(1)))
 

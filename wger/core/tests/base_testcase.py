@@ -211,9 +211,9 @@ class WorkoutManagerTestCase(BaseTestCase, TestCase):
 
 class WorkoutManagerDeleteTestCase(WorkoutManagerTestCase):
     '''
-    Tests deleting an object an authorized user, a different one and a logged out
-    one. This assumes the delete action is only triggered with a POST request and
-    GET will only show a confirmation dialog.
+    Tests deleting an object an authorized user, a different one and a
+    logged out one. This assumes the delete action is only triggered with a
+    POST request and GET will only show a confirmation dialog.
     '''
 
     pk = None
@@ -262,9 +262,10 @@ class WorkoutManagerDeleteTestCase(WorkoutManagerTestCase):
                 self.object_class.objects.get,
                 pk=self.pk)
 
-            # TODO: the redirection page might not have a language prefix (e.g. /user/login
-            #       instead of /en/user/login) so there is an additional redirect
-            # # The page we are redirected to doesn't trigger an error
+            # TODO: the redirection page might not have a language prefix
+            # (e.g. /user/login instead of /en/user/login) so there is an
+            # additional redirect. The page we are redirected to doesn't
+            # trigger an error
             # response = self.client.get(response['Location'])
             # self.assertEqual(response.status_code, 200)
         self.post_test_hook()
@@ -295,8 +296,8 @@ class WorkoutManagerDeleteTestCase(WorkoutManagerTestCase):
 
 class WorkoutManagerEditTestCase(WorkoutManagerTestCase):
     '''
-    Tests editing an object as an authorized user, a different one and a logged out
-    one.
+    Tests editing an object as an authorized user, a different one and
+    a logged out one.
     '''
 
     object_class = ''
@@ -306,8 +307,8 @@ class WorkoutManagerEditTestCase(WorkoutManagerTestCase):
     data_ignore = ()
     fileupload = None
     '''
-    If the form requires a file upload, specify the field name and the file path
-    here in a list or tuple:
+    If the form requires a file upload, specify the field name and the file
+    path here in a list or tuple:
 
     ['fielname', 'path']
     '''
@@ -366,9 +367,10 @@ class WorkoutManagerEditTestCase(WorkoutManagerTestCase):
                 current_field = getattr(entry_after, i)
                 self.compare_fields(current_field, self.data[i])
 
-            # TODO: the redirection page might not have a language prefix (e.g. /user/login
-            #       instead of /en/user/login) so there is an additional redirect
-            # # The page we are redirected to doesn't trigger an error
+            # TODO: the redirection page might not have a language prefix
+            # (e.g. /user/login instead of /en/user/login) so there is an
+            # additional redirect. The page we are redirected to doesn't
+            # trigger an error
             # response = self.client.get(response['Location'])
             # self.assertEqual(response.status_code, 200)
         self.post_test_hook()
@@ -399,8 +401,8 @@ class WorkoutManagerEditTestCase(WorkoutManagerTestCase):
 
 class WorkoutManagerAddTestCase(WorkoutManagerTestCase):
     '''
-    Tests adding an object as an authorized user, a different one and a logged out
-    one.
+    Tests adding an object as an authorized user, a different one and a logged
+    out one.
     '''
 
     object_class = ''
@@ -412,8 +414,8 @@ class WorkoutManagerAddTestCase(WorkoutManagerTestCase):
     data_ignore = ()
     fileupload = None
     '''
-    If the form requires a file upload, specify the field name and the file path
-    here in a list or tuple:
+    If the form requires a file upload, specify the field name and the file
+    path here in a list or tuple:
 
     ['fielname', 'path']
     '''
@@ -471,9 +473,10 @@ class WorkoutManagerAddTestCase(WorkoutManagerTestCase):
 
             self.assertEqual(count_before + 1, count_after)
 
-            # TODO: the redirection page might not have a language prefix (e.g. /user/login
-            #       instead of /en/user/login) so there is an additional redirect
-            # # The page we are redirected to doesn't trigger an error
+            # TODO: the redirection page might not have a language prefix
+            # (e.g. /user/login instead of /en/user/login) so there is an
+            # additional redirect. The page we are redirected to doesn't
+            # trigger an error
             # response = self.client.get(response['Location'])
             # self.assertEqual(response.status_code, 200)
         self.post_test_hook()
@@ -508,8 +511,8 @@ class WorkoutManagerAddTestCase(WorkoutManagerTestCase):
 
 class WorkoutManagerAccessTestCase(WorkoutManagerTestCase):
     '''
-    Tests accessing a URL per GET as an authorized user, an unauthorized one and
-    a logged out one.
+    Tests accessing a URL per GET as an authorized user, an unauthorized one
+    and a logged out one.
     '''
 
     url = ''
@@ -525,8 +528,9 @@ class WorkoutManagerAccessTestCase(WorkoutManagerTestCase):
         if fail:
             self.assertIn(response.status_code, STATUS_CODES_FAIL)
 
-            # TODO: the redirection page might not have a language prefix (e.g. /user/login
-            #       instead of /en/user/login) so there is an additional redirect
+            # TODO: the redirection page might not have a language prefix
+            # (e.g. /user/login instead of /en/user/login) so there is an
+            # additional redirect
             # if response.status_code == 302:
             #     # The page we are redirected to doesn't trigger an error
             #     response = self.client.get(response['Location'])

@@ -399,7 +399,8 @@ class WorkoutLogCacheTestCase(WorkoutManagerTestCase):
 
     def test_calendar_day(self):
         '''
-        Test the log cache on the calendar day view is correctly generated on visit
+        Test the log cache on the calendar day view is correctly generated
+         on visit
         '''
         log_hash = hash((1, 2012, 10, 1))
         self.user_login('admin')

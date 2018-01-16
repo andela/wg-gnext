@@ -118,7 +118,8 @@ class NutritionalPlanPdfExportTestCase(WorkoutManagerTestCase):
 
     def test_export_pdf_other(self):
         '''
-        Tests exporting a nutritional plan as a pdf as a logged user not owning the data
+        Tests exporting a nutritional plan as a pdf as a logged user
+         not owning the data
         '''
 
         self.user_login('admin')

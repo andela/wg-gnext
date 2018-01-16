@@ -34,8 +34,8 @@ logger = logging.getLogger(__name__)
 
 class WgerMultiplePermissionRequiredMixin(PermissionRequiredMixin):
     '''
-    A PermissionRequiredMixin that checks that the user has at least one permission
-    instead of all of them.
+    A PermissionRequiredMixin that checks that the user has at least one
+    permission instead of all of them.
     '''
 
     def has_permission(self):
@@ -57,8 +57,8 @@ class WgerPermissionMixin(object):
     '''
     The name of the permission required to access this class.
 
-    This can be a string or a tuple, in the latter case having any of the permissions
-    listed is enough to access the resource
+    This can be a string or a tuple, in the latter case having any of the
+    permissions listed is enough to access the resource
     '''
 
     login_required = False
@@ -342,7 +342,8 @@ class TextTemplateView(TemplateView):
 
 class WebappManifestView(TemplateView):
     '''
-    A regular templateView that sets the mime type as application/x-web-app-manifest+json
+    A regular templateView that sets the mime type as
+    application/x-web-app-manifest+json
 
     This is used in the mozilla market place
     '''

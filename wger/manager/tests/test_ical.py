@@ -54,7 +54,8 @@ class WorkoutICalExportTestCase(WorkoutManagerTestCase):
 
     def export_ical_token(self):
         '''
-        Helper function that checks exporing an ical file using tokens for access
+        Helper function that checks exporing an ical file using tokens
+        for access
         '''
 
         user = User.objects.get(username='test')
@@ -138,7 +139,8 @@ class WorkoutICalExportTestCase(WorkoutManagerTestCase):
 
     def test_export_ical_other(self):
         '''
-        Tests exporting a workout as an ical file as a logged user not owning the data
+        Tests exporting a workout as an ical file as a logged user not owning
+        the data
         '''
 
         self.user_login('admin')
@@ -154,7 +156,8 @@ class ScheduleICalExportTestCase(WorkoutManagerTestCase):
 
     def export_ical_token(self):
         '''
-        Helper function that checks exporing an ical file using tokens for access
+        Helper function that checks exporing an ical file using tokens
+        for access
         '''
 
         user = User.objects.get(username='test')
@@ -238,7 +241,8 @@ class ScheduleICalExportTestCase(WorkoutManagerTestCase):
 
     def test_export_ical_other(self):
         '''
-        Tests exporting a schedule as an ical file as a logged user not owning the data
+        Tests exporting a schedule as an ical file as a logged user not
+        owning the data
         '''
 
         self.user_login('test')

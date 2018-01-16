@@ -107,8 +107,8 @@ def workout_log(request,
 
     # Create the HttpResponse object with the appropriate PDF headers.
     response[
-        'Content-Disposition'] = 'attachment; filename=Workout-{0}-log.pdf'.format(
-            id)
+        'Content-Disposition'] = 'attachment; filename=Workout-{0}-log.pdf'\
+        .format(id)
     response['Content-Length'] = len(response.content)
     return response
 
@@ -184,7 +184,7 @@ def workout_view(request,
 
     # Create the HttpResponse object with the appropriate PDF headers.
     response[
-        'Content-Disposition'] = 'attachment; filename=Workout-{0}-table.pdf'.format(
-            id)
+        'Content-Disposition'] = 'attachment; filename=Workout-{0}-table.pdf'\
+        .format(id)
     response['Content-Length'] = len(response.content)
     return response

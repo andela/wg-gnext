@@ -140,8 +140,7 @@ class UserProfile(models.Model):
 creating a nutritional plan. These ingredients are extracted from a list
 provided by the US Department of Agriculture. It is extremely complete,
 with around 7000 entries, but can be somewhat overwhelming and make the
-search difficult.'''
-                    ),
+search difficult.'''),
         default=True)
 
     workout_reminder_active = models.BooleanField(
@@ -373,8 +372,7 @@ search difficult.'''
         Make sure the total amount of hours is 24
         '''
         if ((self.sleep_hours and self.freetime_hours and self.work_hours) and
-                (self.sleep_hours +
-                 self.freetime_hours + self.work_hours) > 24):
+            (self.sleep_hours + self.freetime_hours + self.work_hours) > 24):
             raise ValidationError(_('The sum of all hours has to be 24'))
 
     def __str__(self):

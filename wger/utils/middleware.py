@@ -82,7 +82,8 @@ class WgerAuthenticationMiddleware(object):
         assert hasattr(
             request,
             'session'), "The Django authentication middleware requires "
-        "session middleware to be installed. Edit your MIDDLEWARE_CLASSES setting to insert"
+        "session middleware to be installed. Edit your MIDDLEWARE_CLASSES"
+        "setting to insert"
         "'django.contrib.sessions.middleware.SessionMiddleware'."
 
         request.user = SimpleLazyObject(lambda: get_user(request))
