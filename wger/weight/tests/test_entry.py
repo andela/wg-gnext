@@ -33,7 +33,8 @@ class MealRepresentationTestCase(WorkoutManagerTestCase):
         '''
         Test that the representation of an object is correct
         '''
-        self.assertEqual("{0}".format(WeightEntry.objects.get(pk=1)), '2012-10-01: 77.00 kg')
+        self.assertEqual("{0}".format(
+            WeightEntry.objects.get(pk=1)), '2012-10-01: 77.00 kg')
 
 
 class WeightEntryAccessTestCase(WorkoutManagerTestCase):

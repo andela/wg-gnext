@@ -134,6 +134,7 @@ class EmailListFormPreview(FormPreview):
         email_log.save()
 
         # ...and bulk create cron entries
-        CronEntry.objects.bulk_create([CronEntry(log=email_log, email=email) for email in emails])
+        CronEntry.objects.bulk_create(
+            [CronEntry(log=email_log, email=email) for email in emails])
 
         return HttpResponseRedirect(reverse('gym:gym:user-list', kwargs={'pk': self.gym.pk}))

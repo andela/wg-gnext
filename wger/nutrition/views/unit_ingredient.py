@@ -60,7 +60,8 @@ class WeightUnitIngredientCreateView(WgerFormMixin,
 
     # Send some additional data to the template
     def get_context_data(self, **kwargs):
-        context = super(WeightUnitIngredientCreateView, self).get_context_data(**kwargs)
+        context = super(WeightUnitIngredientCreateView,
+                        self).get_context_data(**kwargs)
         context['form_action'] = reverse('nutrition:unit_ingredient:add',
                                          kwargs={'ingredient_pk': self.kwargs['ingredient_pk']})
         return context
@@ -69,7 +70,8 @@ class WeightUnitIngredientCreateView(WgerFormMixin,
         return reverse('nutrition:ingredient:view', kwargs={'id': self.kwargs['ingredient_pk']})
 
     def form_valid(self, form):
-        ingredient = get_object_or_404(Ingredient, pk=self.kwargs['ingredient_pk'])
+        ingredient = get_object_or_404(
+            Ingredient, pk=self.kwargs['ingredient_pk'])
         form.instance.ingredient = ingredient
         return super(WeightUnitIngredientCreateView, self).form_valid(form)
 
@@ -79,7 +81,8 @@ class WeightUnitIngredientCreateView(WgerFormMixin,
         '''
 
         class IngredientWeightUnitForm(ModelForm):
-            unit = ModelChoiceField(queryset=WeightUnit.objects.filter(language=load_language()))
+            unit = ModelChoiceField(
+                queryset=WeightUnit.objects.filter(language=load_language()))
 
             class Meta:
                 model = IngredientWeightUnit
@@ -110,7 +113,8 @@ class WeightUnitIngredientUpdateView(WgerFormMixin,
         '''
 
         class IngredientWeightUnitForm(ModelForm):
-            unit = ModelChoiceField(queryset=WeightUnit.objects.filter(language=load_language()))
+            unit = ModelChoiceField(
+                queryset=WeightUnit.objects.filter(language=load_language()))
 
             class Meta:
                 model = IngredientWeightUnit

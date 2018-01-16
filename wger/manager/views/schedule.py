@@ -135,7 +135,8 @@ def export_pdf_log(request, pk, images=False, comments=False, uidb64=None, token
     elements = []
 
     # Set the title
-    p = Paragraph(u'<para align="center">{0}</para>'.format(schedule), styleSheet["HeaderBold"])
+    p = Paragraph(
+        u'<para align="center">{0}</para>'.format(schedule), styleSheet["HeaderBold"])
     elements.append(p)
     elements.append(Spacer(10 * cm, 0.5 * cm))
 
@@ -158,7 +159,8 @@ def export_pdf_log(request, pk, images=False, comments=False, uidb64=None, token
 
     # write the document and send the response to the browser
     doc.build(elements)
-    response['Content-Disposition'] = 'attachment; filename=Schedule-{0}-log.pdf'.format(pk)
+    response['Content-Disposition'] = 'attachment; filename=Schedule-{0}-log.pdf'.format(
+        pk)
     response['Content-Length'] = len(response.content)
     return response
 
@@ -200,7 +202,8 @@ def export_pdf_table(request, pk, images=False, comments=False, uidb64=None, tok
     elements = []
 
     # Set the title
-    p = Paragraph(u'<para align="center">{0}</para>'.format(schedule), styleSheet["HeaderBold"])
+    p = Paragraph(
+        u'<para align="center">{0}</para>'.format(schedule), styleSheet["HeaderBold"])
     elements.append(p)
     elements.append(Spacer(10 * cm, 0.5 * cm))
 
@@ -224,7 +227,8 @@ def export_pdf_table(request, pk, images=False, comments=False, uidb64=None, tok
 
     # write the document and send the response to the browser
     doc.build(elements)
-    response['Content-Disposition'] = 'attachment; filename=Schedule-{0}-table.pdf'.format(pk)
+    response['Content-Disposition'] = 'attachment; filename=Schedule-{0}-table.pdf'.format(
+        pk)
     response['Content-Length'] = len(response.content)
     return response
 

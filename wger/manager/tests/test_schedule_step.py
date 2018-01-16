@@ -32,7 +32,8 @@ class ScheduleStepRepresentationTestCase(WorkoutManagerTestCase):
         '''
         Test that the representation of an object is correct
         '''
-        self.assertEqual("{0}".format(ScheduleStep.objects.get(pk=1)), 'A test workout')
+        self.assertEqual("{0}".format(
+            ScheduleStep.objects.get(pk=1)), 'A test workout')
 
 
 class ScheduleStepTestCase(WorkoutManagerTestCase):
@@ -48,9 +49,12 @@ class ScheduleStepTestCase(WorkoutManagerTestCase):
         s2 = ScheduleStep.objects.get(pk=2)
         s3 = ScheduleStep.objects.get(pk=3)
 
-        self.assertEqual(s1.get_dates(), (datetime.date(2013, 4, 21), datetime.date(2013, 5, 12)))
-        self.assertEqual(s2.get_dates(), (datetime.date(2013, 5, 12), datetime.date(2013, 6, 16)))
-        self.assertEqual(s3.get_dates(), (datetime.date(2013, 6, 16), datetime.date(2013, 6, 30)))
+        self.assertEqual(s1.get_dates(), (datetime.date(
+            2013, 4, 21), datetime.date(2013, 5, 12)))
+        self.assertEqual(s2.get_dates(), (datetime.date(
+            2013, 5, 12), datetime.date(2013, 6, 16)))
+        self.assertEqual(s3.get_dates(), (datetime.date(
+            2013, 6, 16), datetime.date(2013, 6, 30)))
 
 
 class CreateScheduleStepTestCase(WorkoutManagerAddTestCase):

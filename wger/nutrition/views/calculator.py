@@ -49,8 +49,10 @@ def view(request):
 
     context = {}
     context['form'] = BmrForm(initial=form_data)
-    context['form_activities'] = PhysicalActivitiesForm(instance=request.user.userprofile)
-    context['form_calories'] = DailyCaloriesForm(instance=request.user.userprofile)
+    context['form_activities'] = PhysicalActivitiesForm(
+        instance=request.user.userprofile)
+    context['form_calories'] = DailyCaloriesForm(
+        instance=request.user.userprofile)
 
     return render(request, 'rate/form.html', context)
 
@@ -90,7 +92,8 @@ def calculate_activities(request):
 
     data = []
 
-    form = PhysicalActivitiesForm(data=request.POST, instance=request.user.userprofile)
+    form = PhysicalActivitiesForm(
+        data=request.POST, instance=request.user.userprofile)
     if form.is_valid():
         form.save()
 

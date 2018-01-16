@@ -163,7 +163,8 @@ class UpdateView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, Upd
         Send some additional data to the template
         '''
         context = super(UpdateView, self).get_context_data(**kwargs)
-        context['form_action'] = reverse('gym:document:edit', kwargs={'pk': self.object.id})
+        context['form_action'] = reverse(
+            'gym:document:edit', kwargs={'pk': self.object.id})
         context['title'] = _(u'Edit {0}').format(self.object)
         return context
 
@@ -201,5 +202,6 @@ class DeleteView(WgerDeleteMixin, LoginRequiredMixin, PermissionRequiredMixin, D
         '''
         context = super(DeleteView, self).get_context_data(**kwargs)
         context['title'] = _(u'Delete {0}?').format(self.object)
-        context['form_action'] = reverse('gym:document:delete', kwargs={'pk': self.kwargs['pk']})
+        context['form_action'] = reverse('gym:document:delete', kwargs={
+                                         'pk': self.kwargs['pk']})
         return context

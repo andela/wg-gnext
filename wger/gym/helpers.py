@@ -34,7 +34,8 @@ def get_user_last_activity(user):
         last_activity = last_log.date
 
     # Check workout sessions
-    last_session = WorkoutSession.objects.filter(user=user).order_by('date').last()
+    last_session = WorkoutSession.objects.filter(
+        user=user).order_by('date').last()
     if last_session:
         last_session = last_session.date
 

@@ -120,7 +120,8 @@ class SetAddTestCase(WorkoutManagerAddTestCase):
                      'exercise2-3-reps': 10,
                      'exercise2-3-repetition_unit': 2,
                      'exercise2-3-weight_unit': 2}
-        response = self.client.post(reverse('manager:set:add', kwargs={'day_pk': 5}), post_data)
+        response = self.client.post(
+            reverse('manager:set:add', kwargs={'day_pk': 5}), post_data)
         self.assertEqual(response.status_code, 302)
 
         set_obj = Set.objects.get(pk=Set.objects.latest('id').id)
@@ -150,7 +151,8 @@ class SetDeleteTestCase(WorkoutManagerTestCase):
 
         # Fetch the overview page
         count_before = Set.objects.count()
-        response = self.client.get(reverse('manager:set:delete', kwargs={'pk': 3}))
+        response = self.client.get(
+            reverse('manager:set:delete', kwargs={'pk': 3}))
         count_after = Set.objects.count()
 
         if fail:
@@ -197,16 +199,20 @@ class TestSetOrderTestCase(WorkoutManagerTestCase):
         '''
         nr_sets = 4
         post_data = {'exercises': exercises_id,
-                     'exercise_list': exercises_id[0],  # Only for mobile version,
+                     # Only for mobile version,
+                     'exercise_list': exercises_id[0],
                      'sets': nr_sets}
         for exercise_id in exercises_id:
             post_data['exercise{0}-TOTAL_FORMS'.format(exercise_id)] = nr_sets
             post_data['exercise{0}-INITIAL_FORMS'.format(exercise_id)] = 0
             post_data['exercise{0}-MAX_NUM_FORMS'.format(exercise_id)] = 1000
             for set_nr in range(0, nr_sets):
-                post_data['exercise{0}-{1}-repetition_unit'.format(exercise_id, set_nr)] = 1
-                post_data['exercise{0}-{1}-weight_unit'.format(exercise_id, set_nr)] = 1
-                post_data['exercise{0}-{1}-reps'.format(exercise_id, set_nr)] = 8
+                post_data['exercise{0}-{1}-repetition_unit'.format(
+                    exercise_id, set_nr)] = 1
+                post_data['exercise{0}-{1}-weight_unit'.format(
+                    exercise_id, set_nr)] = 1
+                post_data['exercise{0}-{1}-reps'.format(
+                    exercise_id, set_nr)] = 8
 
         response = self.client.post(reverse('manager:set:add', kwargs={'day_pk': 5}),
                                     post_data)
@@ -254,7 +260,7 @@ class TestSetAddFormset(WorkoutManagerTestCase):
         '''
         exercise = Exercise.objects.get(pk=1)
         response = self.client.get(reverse('manager:set:get-formset',
-                                   kwargs={'exercise_pk': 1, 'reps': 4}))
+                                           kwargs={'exercise_pk': 1, 'reps': 4}))
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['exercise'], exercise)
@@ -280,7 +286,8 @@ class SetEditEditTestCase(WorkoutManagerTestCase):
         '''
 
         # Fetch the edit page
-        response = self.client.get(reverse('manager:set:edit', kwargs={'pk': 3}))
+        response = self.client.get(
+            reverse('manager:set:edit', kwargs={'pk': 3}))
         entry_before = Set.objects.get(pk=3)
 
         if fail:
@@ -365,10 +372,12 @@ class SetWorkoutCacheTestCase(WorkoutManagerTestCase):
         '''
         set = Set.objects.get(pk=1)
         set.exerciseday.training.canonical_representation
-        self.assertTrue(cache.get(cache_mapper.get_workout_canonical(set.exerciseday.training_id)))
+        self.assertTrue(
+            cache.get(cache_mapper.get_workout_canonical(set.exerciseday.training_id)))
 
         set.save()
-        self.assertFalse(cache.get(cache_mapper.get_workout_canonical(set.exerciseday.training_id)))
+        self.assertFalse(
+            cache.get(cache_mapper.get_workout_canonical(set.exerciseday.training_id)))
 
     def test_canonical_form_cache_delete(self):
         '''
@@ -376,10 +385,12 @@ class SetWorkoutCacheTestCase(WorkoutManagerTestCase):
         '''
         set = Set.objects.get(pk=1)
         set.exerciseday.training.canonical_representation
-        self.assertTrue(cache.get(cache_mapper.get_workout_canonical(set.exerciseday.training_id)))
+        self.assertTrue(
+            cache.get(cache_mapper.get_workout_canonical(set.exerciseday.training_id)))
 
         set.delete()
-        self.assertFalse(cache.get(cache_mapper.get_workout_canonical(set.exerciseday.training_id)))
+        self.assertFalse(
+            cache.get(cache_mapper.get_workout_canonical(set.exerciseday.training_id)))
 
 
 class SettingWorkoutCacheTestCase(WorkoutManagerTestCase):
@@ -394,10 +405,12 @@ class SettingWorkoutCacheTestCase(WorkoutManagerTestCase):
         setting = Setting.objects.get(pk=1)
         workout_id = setting.set.exerciseday.training_id
         setting.set.exerciseday.training.canonical_representation
-        self.assertTrue(cache.get(cache_mapper.get_workout_canonical(workout_id)))
+        self.assertTrue(
+            cache.get(cache_mapper.get_workout_canonical(workout_id)))
 
         setting.save()
-        self.assertFalse(cache.get(cache_mapper.get_workout_canonical(workout_id)))
+        self.assertFalse(
+            cache.get(cache_mapper.get_workout_canonical(workout_id)))
 
     def test_canonical_form_cache_delete(self):
         '''
@@ -406,10 +419,12 @@ class SettingWorkoutCacheTestCase(WorkoutManagerTestCase):
         setting = Setting.objects.get(pk=1)
         workout_id = setting.set.exerciseday.training_id
         setting.set.exerciseday.training.canonical_representation
-        self.assertTrue(cache.get(cache_mapper.get_workout_canonical(workout_id)))
+        self.assertTrue(
+            cache.get(cache_mapper.get_workout_canonical(workout_id)))
 
         setting.delete()
-        self.assertFalse(cache.get(cache_mapper.get_workout_canonical(workout_id)))
+        self.assertFalse(
+            cache.get(cache_mapper.get_workout_canonical(workout_id)))
 
 
 class SetApiTestCase(api_base_test.ApiBaseResourceTestCase):

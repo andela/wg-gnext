@@ -43,7 +43,6 @@ class BmiTestCase(WorkoutManagerTestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_calculator(self):
-
         '''
         Tests the calculator itself
         '''
@@ -54,12 +53,12 @@ class BmiTestCase(WorkoutManagerTestCase):
                                      'weight': 80})
         self.assertEqual(response.status_code, 200)
         bmi = json.loads(response.content.decode('utf8'))
-        self.assertEqual(Decimal(bmi['bmi']), Decimal(24.69).quantize(TWOPLACES))
+        self.assertEqual(Decimal(bmi['bmi']),
+                         Decimal(24.69).quantize(TWOPLACES))
         self.assertEqual(Decimal(bmi['weight']), Decimal(80))
         self.assertEqual(Decimal(bmi['height']), Decimal(180))
 
     def test_calculator_imperial(self):
-
         '''
         Tests the calculator using imperial units
         '''
@@ -73,8 +72,10 @@ class BmiTestCase(WorkoutManagerTestCase):
                                      'weight': 176.36})
         self.assertEqual(response.status_code, 200)
         bmi = json.loads(response.content.decode('utf8'))
-        self.assertEqual(Decimal(bmi['bmi']), Decimal(24.69).quantize(TWOPLACES))
-        self.assertEqual(Decimal(bmi['weight']), Decimal(176.36).quantize(TWOPLACES))
+        self.assertEqual(Decimal(bmi['bmi']),
+                         Decimal(24.69).quantize(TWOPLACES))
+        self.assertEqual(Decimal(bmi['weight']),
+                         Decimal(176.36).quantize(TWOPLACES))
         self.assertEqual(Decimal(bmi['height']), Decimal(180))
 
     def test_automatic_weight_entry(self):

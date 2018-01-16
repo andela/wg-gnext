@@ -72,7 +72,8 @@ class WorkoutForm(ModelForm):
 
 class WorkoutCopyForm(Form):
     comment = CharField(max_length=100,
-                        help_text=_('The goal or description of the new workout.'),
+                        help_text=_(
+                            'The goal or description of the new workout.'),
                         required=False)
 
 

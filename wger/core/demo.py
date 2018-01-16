@@ -124,7 +124,8 @@ def create_demo_entries(user):
     day_set.save()
     day_set.exercises.add(exercise)
 
-    setting_list.append(Setting(set=day_set, exercise=exercise, reps=8, order=1))
+    setting_list.append(
+        Setting(set=day_set, exercise=exercise, reps=8, order=1))
 
     # Weight log entries
     for reps in (7, 10):
@@ -146,7 +147,8 @@ def create_demo_entries(user):
     day_set.save()
     day_set.exercises.add(exercise)
 
-    setting_list.append(Setting(set=day_set, exercise=exercise, reps=10, order=1))
+    setting_list.append(
+        Setting(set=day_set, exercise=exercise, reps=10, order=1))
 
     # Weight log entries
     for reps in (5, 10, 12):
@@ -168,9 +170,12 @@ def create_demo_entries(user):
     day_set.save()
     day_set.exercises.add(exercise)
 
-    setting_list.append(Setting(set=day_set, exercise=exercise, reps=30, order=1))
-    setting_list.append(Setting(set=day_set, exercise=exercise, reps=99, order=2))
-    setting_list.append(Setting(set=day_set, exercise=exercise, reps=35, order=3))
+    setting_list.append(
+        Setting(set=day_set, exercise=exercise, reps=30, order=1))
+    setting_list.append(
+        Setting(set=day_set, exercise=exercise, reps=99, order=2))
+    setting_list.append(
+        Setting(set=day_set, exercise=exercise, reps=35, order=3))
 
     # Leg raises, supersets with crunches
     if language.short_name == 'de':
@@ -179,9 +184,12 @@ def create_demo_entries(user):
         exercise = Exercise.objects.get(pk=126)
     day_set.exercises.add(exercise)
 
-    setting_list.append(Setting(set=day_set, exercise=exercise, reps=30, order=1))
-    setting_list.append(Setting(set=day_set, exercise=exercise, reps=40, order=2))
-    setting_list.append(Setting(set=day_set, exercise=exercise, reps=99, order=3))
+    setting_list.append(
+        Setting(set=day_set, exercise=exercise, reps=30, order=1))
+    setting_list.append(
+        Setting(set=day_set, exercise=exercise, reps=40, order=2))
+    setting_list.append(
+        Setting(set=day_set, exercise=exercise, reps=99, order=3))
 
     Setting.objects.bulk_create(setting_list)
 
@@ -340,11 +348,14 @@ def create_demo_entries(user):
     #
 
     # create some empty workouts to fill the list
-    workout2 = Workout(user=user, comment=_('Placeholder workout nr {0} for schedule').format(1))
+    workout2 = Workout(user=user, comment=_(
+        'Placeholder workout nr {0} for schedule').format(1))
     workout2.save()
-    workout3 = Workout(user=user, comment=_('Placeholder workout nr {0} for schedule').format(2))
+    workout3 = Workout(user=user, comment=_(
+        'Placeholder workout nr {0} for schedule').format(2))
     workout3.save()
-    workout4 = Workout(user=user, comment=_('Placeholder workout nr {0} for schedule').format(3))
+    workout4 = Workout(user=user, comment=_(
+        'Placeholder workout nr {0} for schedule').format(3))
     workout4.save()
 
     schedule = Schedule()

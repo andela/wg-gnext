@@ -28,8 +28,11 @@ class CapitalizerTestCase(WorkoutManagerTestCase):
         '''
         Tests different combinations of input strings
         '''
-        self.assertEqual(smart_capitalize("some long words"), "Some Long Words")
-        self.assertEqual(smart_capitalize("Here a short one"), "Here a Short One")
+        self.assertEqual(smart_capitalize(
+            "some long words"), "Some Long Words")
+        self.assertEqual(smart_capitalize(
+            "Here a short one"), "Here a Short One")
         self.assertEqual(smart_capitalize("meine gym AG"), "Meine Gym AG")
         self.assertEqual(smart_capitalize("ßpecial case"), "ßpecial Case")
-        self.assertEqual(smart_capitalize("fIRST lettER only"), "FIRST LettER Only")
+        self.assertEqual(smart_capitalize(
+            "fIRST lettER only"), "FIRST LettER Only")

@@ -173,7 +173,8 @@ class WgerFormMixin(ModelFormMixin):
 
         # Template to extend. For AJAX requests we don't need the rest of the
         # template, only the form
-        context['extend_template'] = 'base_empty.html' if self.request.is_ajax() else 'base.html'
+        context['extend_template'] = 'base_empty.html' if self.request.is_ajax(
+        ) else 'base.html'
 
         return context
 
@@ -280,7 +281,8 @@ class WgerDeleteMixin(ModelFormMixin):
 
         # Template to extend. For AJAX requests we don't need the rest of the
         # template, only the form
-        context['extend_template'] = 'base_empty.html' if self.request.is_ajax() else 'base.html'
+        context['extend_template'] = 'base_empty.html' if self.request.is_ajax(
+        ) else 'base.html'
 
         return context
 
@@ -325,6 +327,7 @@ class TextTemplateView(TemplateView):
     '''
     A regular templateView that sets the mime type as text/plain
     '''
+
     def render_to_response(self, context, **response_kwargs):
         response_kwargs['content_type'] = 'text/plain'
         return super(TextTemplateView, self).render_to_response(context, **response_kwargs)

@@ -145,4 +145,5 @@ class MealItemForm(forms.ModelForm):
         # Filter the available ingredients
         if ingredient_id:
             self.fields['weight_unit'].queryset = \
-                IngredientWeightUnit.objects.filter(ingredient_id=ingredient_id)
+                IngredientWeightUnit.objects.filter(
+                    ingredient_id=ingredient_id)

@@ -51,7 +51,8 @@ class StatusUserTestCase(WorkoutManagerTestCase):
         user.save()
         self.assertFalse(user.is_active)
 
-        response = self.client.get(reverse('core:user:activate', kwargs={'pk': user.pk}))
+        response = self.client.get(
+            reverse('core:user:activate', kwargs={'pk': user.pk}))
         user = User.objects.get(pk=2)
 
         self.assertIn(response.status_code, (302, 403))
@@ -93,7 +94,8 @@ class StatusUserTestCase(WorkoutManagerTestCase):
         user.save()
         self.assertTrue(user.is_active)
 
-        response = self.client.get(reverse('core:user:deactivate', kwargs={'pk': user.pk}))
+        response = self.client.get(
+            reverse('core:user:deactivate', kwargs={'pk': user.pk}))
         user = User.objects.get(pk=2)
 
         self.assertIn(response.status_code, (302, 403))

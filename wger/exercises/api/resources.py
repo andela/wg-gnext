@@ -35,7 +35,8 @@ from wger.exercises.models import (
 class ExerciseResource(ModelResource):
     category = fields.ToOneField('wger.exercises.api.resources.ExerciseCategoryResource',
                                  'category')
-    muscles = fields.ToManyField('wger.exercises.api.resources.MuscleResource', 'muscles')
+    muscles = fields.ToManyField(
+        'wger.exercises.api.resources.MuscleResource', 'muscles')
     muscles_secondary = fields.ToManyField('wger.exercises.api.resources.MuscleResource',
                                            'muscles_secondary')
     comments = fields.ToManyField('wger.exercises.api.resources.ExerciseCommentResource',
@@ -82,7 +83,8 @@ class ExerciseCategoryResource(ModelResource):
 
 
 class ExerciseImageResource(ModelResource):
-    exercise = fields.ToOneField('wger.exercises.api.resources.ExerciseResource', 'exercise')
+    exercise = fields.ToOneField(
+        'wger.exercises.api.resources.ExerciseResource', 'exercise')
     license = fields.ToOneField(LicenseResource, 'license')
 
     class Meta:
@@ -108,7 +110,8 @@ class ExerciseImageResource(ModelResource):
 
 
 class ExerciseCommentResource(ModelResource):
-    exercise = fields.ToOneField('wger.exercises.api.resources.ExerciseResource', 'exercise')
+    exercise = fields.ToOneField(
+        'wger.exercises.api.resources.ExerciseResource', 'exercise')
 
     class Meta:
         queryset = ExerciseComment.objects.all()

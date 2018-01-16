@@ -72,7 +72,8 @@ class DayView(WgerFormMixin, LoginRequiredMixin):
         used_days.sort()
 
         # Set the queryset for day
-        form.fields['day'].queryset = DaysOfWeek.objects.exclude(id__in=used_days)
+        form.fields['day'].queryset = DaysOfWeek.objects.exclude(
+            id__in=used_days)
 
         return form
 
@@ -103,7 +104,8 @@ class DayCreateView(DayView, CreateView):
         '''
         Set the workout this day belongs to
         '''
-        form.instance.training = Workout.objects.get(pk=self.kwargs['workout_pk'])
+        form.instance.training = Workout.objects.get(
+            pk=self.kwargs['workout_pk'])
         return super(DayCreateView, self).form_valid(form)
 
     # Send some additional data to the template

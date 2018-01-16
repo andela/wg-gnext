@@ -42,7 +42,8 @@ class IngredientRepresentationTestCase(WorkoutManagerTestCase):
         '''
         Test that the representation of an object is correct
         '''
-        self.assertEqual("{0}".format(Ingredient.objects.get(pk=1)), 'Test ingredient 1')
+        self.assertEqual("{0}".format(
+            Ingredient.objects.get(pk=1)), 'Test ingredient 1')
 
 
 class DeleteIngredientTestCase(WorkoutManagerDeleteTestCase):
@@ -111,10 +112,12 @@ class AddIngredientTestCase(WorkoutManagerAddTestCase):
         if self.current_user == 'admin':
             ingredient = Ingredient.objects.get(pk=self.pk_after)
             self.assertEqual(ingredient.creation_date, datetime.date.today())
-            self.assertEqual(ingredient.status, Ingredient.INGREDIENT_STATUS_ADMIN)
+            self.assertEqual(ingredient.status,
+                             Ingredient.INGREDIENT_STATUS_ADMIN)
         elif self.current_user == 'test':
             ingredient = Ingredient.objects.get(pk=self.pk_after)
-            self.assertEqual(ingredient.status, Ingredient.INGREDIENT_STATUS_PENDING)
+            self.assertEqual(ingredient.status,
+                             Ingredient.INGREDIENT_STATUS_PENDING)
 
 
 class IngredientDetailTestCase(WorkoutManagerTestCase):
@@ -127,7 +130,8 @@ class IngredientDetailTestCase(WorkoutManagerTestCase):
         Tests the ingredient details page
         '''
 
-        response = self.client.get(reverse('nutrition:ingredient:view', kwargs={'id': 6}))
+        response = self.client.get(
+            reverse('nutrition:ingredient:view', kwargs={'id': 6}))
         self.assertEqual(response.status_code, 200)
 
         # Correct tab is selected
@@ -145,7 +149,8 @@ class IngredientDetailTestCase(WorkoutManagerTestCase):
             self.assertNotContains(response, 'pending review')
 
         # Non-existent ingredients throw a 404.
-        response = self.client.get(reverse('nutrition:ingredient:view', kwargs={'id': 42}))
+        response = self.client.get(
+            reverse('nutrition:ingredient:view', kwargs={'id': 42}))
         self.assertEqual(response.status_code, 404)
 
     def test_ingredient_detail_editor(self):
@@ -183,15 +188,19 @@ class IngredientSearchTestCase(WorkoutManagerTestCase):
         '''
 
         kwargs = {'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'}
-        response = self.client.get(reverse('ingredient-search'), {'term': 'test'}, **kwargs)
+        response = self.client.get(
+            reverse('ingredient-search'), {'term': 'test'}, **kwargs)
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.content.decode('utf8'))
         self.assertEqual(len(result['suggestions']), 2)
-        self.assertEqual(result['suggestions'][0]['value'], 'Ingredient, test, 2, organic, raw')
-        self.assertEqual(result['suggestions'][1]['value'], 'Test ingredient 1')
+        self.assertEqual(result['suggestions'][0]['value'],
+                         'Ingredient, test, 2, organic, raw')
+        self.assertEqual(result['suggestions'][1]
+                         ['value'], 'Test ingredient 1')
 
         # Search for an ingredient pending review (0 hits, "Pending ingredient")
-        response = self.client.get(reverse('ingredient-search'), {'term': 'Pending'}, **kwargs)
+        response = self.client.get(
+            reverse('ingredient-search'), {'term': 'Pending'}, **kwargs)
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.content.decode('utf8'))
         self.assertEqual(len(result['suggestions']), 0)
@@ -278,6 +287,7 @@ class IngredientTestCase(WorkoutManagerTestCase):
     '''
     Tests other ingredient functions
     '''
+
     def test_compare(self):
         '''
         Tests the custom compare method based on values

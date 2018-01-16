@@ -60,6 +60,7 @@ class DecimalJsonEncoder(json.JSONEncoder):
     individual weight entries in the workout log) and they need to be
     processed, json.dumps() doesn't work on them
     '''
+
     def default(self, obj):
         if isinstance(obj, decimal.Decimal):
             return str(obj)

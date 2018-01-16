@@ -82,12 +82,14 @@ def render_workout_day(day, nr_of_weeks=7, images=False, comments=False, only_ta
     # Note: the _('Date') will be on the 3rd cell, but since we make a span
     #       over 3 cells, the value has to be on the 1st one
     data.append([_('Date') + ' ', '', ''] + [''] * nr_of_weeks)
-    data.append([_('Nr.'), _('Exercise'), _('Reps')] + [_('Weight')] * nr_of_weeks)
+    data.append([_('Nr.'), _('Exercise'), _('Reps')] +
+                [_('Weight')] * nr_of_weeks)
 
     # Sets
     exercise_start = len(data)
     for set in day['set_list']:
-        group_exercise_marker[set['obj'].id] = {'start': len(data), 'end': len(data)}
+        group_exercise_marker[set['obj'].id] = {
+            'start': len(data), 'end': len(data)}
 
         # Exercises
         for exercise in set['exercise_list']:
@@ -97,9 +99,11 @@ def render_workout_day(day, nr_of_weeks=7, images=False, comments=False, only_ta
             if exercise['has_weight']:
                 setting_out = []
                 for i in exercise['setting_text'].split(u'–'):
-                    setting_out.append(Paragraph(i, styleSheet["Small"], bulletText=''))
+                    setting_out.append(
+                        Paragraph(i, styleSheet["Small"], bulletText=''))
             else:
-                setting_out = Paragraph(exercise['setting_text'], styleSheet["Small"])
+                setting_out = Paragraph(
+                    exercise['setting_text'], styleSheet["Small"])
 
             # Collect a list of the exercise comments
             item_list = [Paragraph('', styleSheet["Small"])]
@@ -164,7 +168,8 @@ def render_workout_day(day, nr_of_weeks=7, images=False, comments=False, only_ta
         start_marker = group_exercise_marker[marker]['start']
         end_marker = group_exercise_marker[marker]['end']
 
-        table_style.append(('VALIGN', (0, start_marker), (0, end_marker), 'MIDDLE'))
+        table_style.append(
+            ('VALIGN', (0, start_marker), (0, end_marker), 'MIDDLE'))
         table_style.append(('SPAN', (0, start_marker), (0, end_marker)))
 
     # Set an alternating background colour for rows with exercises.
@@ -172,7 +177,8 @@ def render_workout_day(day, nr_of_weeks=7, images=False, comments=False, only_ta
     # list
     for i in range(exercise_start, len(data) + 1):
         if not i % 2:
-            table_style.append(('BACKGROUND', (1, i - 1), (-1, i - 1), colors.lavender))
+            table_style.append(
+                ('BACKGROUND', (1, i - 1), (-1, i - 1), colors.lavender))
 
     # Put everything together and manually set some of the widths
     t = Table(data, style=table_style)
@@ -307,6 +313,7 @@ class WorkoutCalendar(HTMLCalendar):
     A calendar renderer, see this blog entry for details:
     * http://uggedal.com/journal/creating-a-flexible-monthly-calendar-in-django/
     '''
+
     def __init__(self, workout_logs, *args, **kwargs):
         super(WorkoutCalendar, self).__init__(*args, **kwargs)
         self.workout_logs = workout_logs

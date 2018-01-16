@@ -77,7 +77,8 @@ class WorkoutCanonicalFormTestCase(WorkoutManagerTestCase):
                                                     'backsecondary': [],
                                                     'front': [1]},
                                         'obj': Set.objects.get(pk=1)}]}
-        self.assertEqual(workout.canonical_representation['day_list'][0], canonical_form)
+        self.assertEqual(
+            workout.canonical_representation['day_list'][0], canonical_form)
 
         canonical_form = {'days_of_week': {'day_list': [DaysOfWeek.objects.get(pk=4)],
                                            'text': u'Thursday'},
@@ -110,7 +111,8 @@ class WorkoutCanonicalFormTestCase(WorkoutManagerTestCase):
                                                     'frontsecondary': [1], 'backsecondary': [1],
                                                     'front': []},
                                         'obj': Set.objects.get(pk=2)}]}
-        self.assertEqual(workout.canonical_representation['day_list'][1], canonical_form)
+        self.assertEqual(
+            workout.canonical_representation['day_list'][1], canonical_form)
 
         canonical_form = {'days_of_week': {'day_list': [DaysOfWeek.objects.get(pk=5)],
                                            'text': u'Friday'},
@@ -118,7 +120,8 @@ class WorkoutCanonicalFormTestCase(WorkoutManagerTestCase):
                           'muscles': {'back': [], 'front': [],
                                       'frontsecondary': [], 'backsecondary': []},
                           'set_list': []}
-        self.assertEqual(workout.canonical_representation['day_list'][2], canonical_form)
+        self.assertEqual(
+            workout.canonical_representation['day_list'][2], canonical_form)
 
     def test_canonical_form_day(self):
         '''
@@ -158,7 +161,8 @@ class WorkoutCanonicalFormTestCase(WorkoutManagerTestCase):
                                        'backsecondary': [1], 'front': []},
                            'obj': Set.objects.get(pk=3)}]
 
-        self.assertEqual(day.canonical_representation['set_list'], canonical_form)
+        self.assertEqual(
+            day.canonical_representation['set_list'], canonical_form)
 
 
 class WorkoutCacheTestCase(WorkoutManagerTestCase):

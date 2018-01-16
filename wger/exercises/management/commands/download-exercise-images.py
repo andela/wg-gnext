@@ -58,7 +58,8 @@ class Command(BaseCommand):
     def handle(self, **options):
 
         if not settings.MEDIA_ROOT:
-            raise ImproperlyConfigured('Please set MEDIA_ROOT in your settings file')
+            raise ImproperlyConfigured(
+                'Please set MEDIA_ROOT in your settings file')
 
         remote_url = options['remote_url']
         try:
@@ -71,10 +72,12 @@ class Command(BaseCommand):
         image_api = "{0}/api/v2/exerciseimage/?exercise={1}"
         thumbnail_api = "{0}/api/v2/exerciseimage/{1}/thumbnails/"
 
-        headers = {'User-agent': default_user_agent('wger/{} + requests'.format(get_version()))}
+        headers = {
+            'User-agent': default_user_agent('wger/{} + requests'.format(get_version()))}
 
         # Get all exercises
-        result = requests.get(exercise_api.format(remote_url), headers=headers).json()
+        result = requests.get(exercise_api.format(
+            remote_url), headers=headers).json()
         for exercise_json in result['results']:
             exercise_name = exercise_json['name'].encode('utf-8')
             exercise_uuid = exercise_json['uuid']
@@ -88,11 +91,13 @@ class Command(BaseCommand):
             try:
                 exercise = Exercise.objects.get(uuid=exercise_uuid)
             except Exercise.DoesNotExist:
-                self.stdout.write('    Remote exercise not found in local DB, skipping...')
+                self.stdout.write(
+                    '    Remote exercise not found in local DB, skipping...')
                 continue
 
             # Get all images
-            images = requests.get(image_api.format(remote_url, exercise_id), headers=headers).json()
+            images = requests.get(image_api.format(
+                remote_url, exercise_id), headers=headers).json()
 
             if images['count']:
 
@@ -102,20 +107,24 @@ class Command(BaseCommand):
                                           headers=headers).json()
 
                     image_name = os.path.basename(result['original'])
-                    self.stdout.write('    Fetching image {0} - {1}'.format(image_id, image_name))
+                    self.stdout.write(
+                        '    Fetching image {0} - {1}'.format(image_id, image_name))
 
                     try:
                         image = ExerciseImage.objects.get(pk=image_id)
-                        self.stdout.write('    --> Image already present locally, skipping...')
+                        self.stdout.write(
+                            '    --> Image already present locally, skipping...')
                         continue
                     except ExerciseImage.DoesNotExist:
-                        self.stdout.write('    --> Image not found in local DB, creating now...')
+                        self.stdout.write(
+                            '    --> Image not found in local DB, creating now...')
                         image = ExerciseImage()
                         image.pk = image_id
 
                     # Save the downloaded image, see link for details
                     # http://stackoverflow.com/questions/1308386/programmatically-saving-image-to-
-                    retrieved_image = requests.get(result['original'], headers=headers)
+                    retrieved_image = requests.get(
+                        result['original'], headers=headers)
                     img_temp = NamedTemporaryFile(delete=True)
                     img_temp.write(retrieved_image.content)
                     img_temp.flush()
@@ -130,4 +139,5 @@ class Command(BaseCommand):
                     image.save()
 
             else:
-                self.stdout.write('    No images for this exercise, nothing to do')
+                self.stdout.write(
+                    '    No images for this exercise, nothing to do')

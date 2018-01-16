@@ -43,7 +43,8 @@ class WgerPermission(permissions.BasePermission):
         '''
         Perform the check
         '''
-        owner_object = obj.get_owner_object() if hasattr(obj, 'get_owner_object') else False
+        owner_object = obj.get_owner_object() if hasattr(
+            obj, 'get_owner_object') else False
 
         # Owner
         if owner_object and owner_object.user == request.user:

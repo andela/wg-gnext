@@ -22,7 +22,8 @@ import bleach
 
 from django.db import models
 from django.template.loader import render_to_string
-from django.template.defaultfilters import slugify  # django.utils.text.slugify in django 1.5!
+# django.utils.text.slugify in django 1.5!
+from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.utils.translation import ugettext_lazy as _
@@ -141,7 +142,8 @@ class ExerciseCategory(models.Model):
         # Cached template fragments
         for language in Language.objects.all():
             delete_template_fragment_cache('exercise-overview', language.id)
-            delete_template_fragment_cache('exercise-overview-mobile', language.id)
+            delete_template_fragment_cache(
+                'exercise-overview-mobile', language.id)
 
     def delete(self, *args, **kwargs):
         '''
@@ -149,7 +151,8 @@ class ExerciseCategory(models.Model):
         '''
         for language in Language.objects.all():
             delete_template_fragment_cache('exercise-overview', language.id)
-            delete_template_fragment_cache('exercise-overview-mobile', language.id)
+            delete_template_fragment_cache(
+                'exercise-overview-mobile', language.id)
 
         super(ExerciseCategory, self).delete(*args, **kwargs)
 
@@ -185,7 +188,8 @@ class Exercise(AbstractSubmissionModel, AbstractLicenseModel, models.Model):
     '''Main muscles trained by the exercise'''
 
     muscles_secondary = models.ManyToManyField(Muscle,
-                                               verbose_name=_('Secondary muscles'),
+                                               verbose_name=_(
+                                                   'Secondary muscles'),
                                                related_name='secondary_muscles',
                                                blank=True)
     '''Secondary muscles trained by the exercise'''
@@ -239,7 +243,8 @@ class Exercise(AbstractSubmissionModel, AbstractLicenseModel, models.Model):
         for language in Language.objects.all():
             delete_template_fragment_cache('muscle-overview', language.id)
             delete_template_fragment_cache('exercise-overview', language.id)
-            delete_template_fragment_cache('exercise-overview-mobile', language.id)
+            delete_template_fragment_cache(
+                'exercise-overview-mobile', language.id)
             delete_template_fragment_cache('equipment-overview', language.id)
 
         # Cached workouts
@@ -258,7 +263,8 @@ class Exercise(AbstractSubmissionModel, AbstractLicenseModel, models.Model):
         for language in Language.objects.all():
             delete_template_fragment_cache('muscle-overview', language.id)
             delete_template_fragment_cache('exercise-overview', language.id)
-            delete_template_fragment_cache('exercise-overview-mobile', language.id)
+            delete_template_fragment_cache(
+                'exercise-overview-mobile', language.id)
             delete_template_fragment_cache('equipment-overview', language.id)
 
         # Cached workouts
@@ -307,9 +313,11 @@ class Exercise(AbstractSubmissionModel, AbstractLicenseModel, models.Model):
         except User.DoesNotExist:
             return
         if self.license_author and user.email:
-            translation.activate(user.userprofile.notification_language.short_name)
+            translation.activate(
+                user.userprofile.notification_language.short_name)
             url = request.build_absolute_uri(self.get_absolute_url())
-            subject = _('Exercise was successfully added to the general database')
+            subject = _(
+                'Exercise was successfully added to the general database')
             context = {
                 'exercise': self.name,
                 'url': url,
@@ -364,7 +372,8 @@ class ExerciseImage(AbstractSubmissionModel, AbstractLicenseModel, models.Model)
     '''The exercise the image belongs to'''
 
     image = models.ImageField(verbose_name=_('Image'),
-                              help_text=_('Only PNG and JPEG formats are supported'),
+                              help_text=_(
+                                  'Only PNG and JPEG formats are supported'),
                               upload_to=exercise_image_upload_dir)
     '''Uploaded image'''
 
@@ -387,7 +396,8 @@ class ExerciseImage(AbstractSubmissionModel, AbstractLicenseModel, models.Model)
         Only one image can be marked as main picture at a time
         '''
         if self.is_main:
-            ExerciseImage.objects.filter(exercise=self.exercise).update(is_main=False)
+            ExerciseImage.objects.filter(
+                exercise=self.exercise).update(is_main=False)
             self.is_main = True
         else:
             if ExerciseImage.objects.accepted().filter(exercise=self.exercise).count() == 0 \
@@ -402,7 +412,8 @@ class ExerciseImage(AbstractSubmissionModel, AbstractLicenseModel, models.Model)
         for language in Language.objects.all():
             delete_template_fragment_cache('muscle-overview', language.id)
             delete_template_fragment_cache('exercise-overview', language.id)
-            delete_template_fragment_cache('exercise-overview-mobile', language.id)
+            delete_template_fragment_cache(
+                'exercise-overview-mobile', language.id)
             delete_template_fragment_cache('equipment-overview', language.id)
 
         # And go on
@@ -417,7 +428,8 @@ class ExerciseImage(AbstractSubmissionModel, AbstractLicenseModel, models.Model)
         for language in Language.objects.all():
             delete_template_fragment_cache('muscle-overview', language.id)
             delete_template_fragment_cache('exercise-overview', language.id)
-            delete_template_fragment_cache('exercise-overview-mobile', language.id)
+            delete_template_fragment_cache(
+                'exercise-overview-mobile', language.id)
             delete_template_fragment_cache('equipment-overview', language.id)
 
         # Make sure there is always a main image
@@ -428,10 +440,10 @@ class ExerciseImage(AbstractSubmissionModel, AbstractLicenseModel, models.Model)
                 .filter(is_main=False) \
                 .count():
 
-                image = ExerciseImage.objects.accepted() \
-                    .filter(exercise=self.exercise, is_main=False)[0]
-                image.is_main = True
-                image.save()
+            image = ExerciseImage.objects.accepted() \
+                .filter(exercise=self.exercise, is_main=False)[0]
+            image.is_main = True
+            image.save()
 
     def get_owner_object(self):
         '''

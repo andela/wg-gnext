@@ -61,7 +61,8 @@ class WorkoutPdfLogExportTestCase(WorkoutManagerTestCase):
         Helper function to test exporting a workout as a pdf
         '''
 
-        response = self.client.get(reverse('manager:workout:pdf-log', kwargs={'id': 3}))
+        response = self.client.get(
+            reverse('manager:workout:pdf-log', kwargs={'id': 3}))
 
         if fail:
             self.assertIn(response.status_code, (403, 404, 302))
@@ -210,7 +211,8 @@ class WorkoutPdfTableExportTestCase(WorkoutManagerTestCase):
         '''
 
         # Create a workout
-        response = self.client.get(reverse('manager:workout:pdf-table', kwargs={'id': 3}))
+        response = self.client.get(
+            reverse('manager:workout:pdf-table', kwargs={'id': 3}))
 
         if fail:
             self.assertIn(response.status_code, (403, 404, 302))

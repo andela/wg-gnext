@@ -89,4 +89,5 @@ class GymUserAddForm(GymUserPermisssionForm, UserPersonalInformationForm):
             User._default_manager.get(username=username)
         except User.DoesNotExist:
             return username
-        raise forms.ValidationError(_("A user with that username already exists."))
+        raise forms.ValidationError(
+            _("A user with that username already exists."))

@@ -158,7 +158,8 @@ class ScheduleTestCase(WorkoutManagerTestCase):
         Helper function
         '''
 
-        response = self.client.get(reverse('manager:schedule:view', kwargs={'pk': 2}))
+        response = self.client.get(
+            reverse('manager:schedule:view', kwargs={'pk': 2}))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'This schedule is a loop')
 
@@ -166,7 +167,8 @@ class ScheduleTestCase(WorkoutManagerTestCase):
         schedule.is_loop = False
         schedule.save()
 
-        response = self.client.get(reverse('manager:schedule:view', kwargs={'pk': 2}))
+        response = self.client.get(
+            reverse('manager:schedule:view', kwargs={'pk': 2}))
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, 'This schedule is a loop')
 
@@ -237,7 +239,8 @@ class ScheduleTestCase(WorkoutManagerTestCase):
         self.assertFalse(schedule.is_active)
         self.assertNotEqual(schedule.start_date, datetime.date.today())
 
-        response = self.client.get(reverse('manager:schedule:start', kwargs={'pk': 2}))
+        response = self.client.get(
+            reverse('manager:schedule:start', kwargs={'pk': 2}))
         schedule = Schedule.objects.get(pk=2)
         if fail:
             self.assertIn(response.status_code, STATUS_CODES_FAIL)
@@ -367,7 +370,8 @@ class ScheduleModelTestCase(WorkoutManagerTestCase):
         step.workout = workout
         step.duration = 3
         step.save()
-        self.assertEqual(schedule.get_current_scheduled_workout().workout, workout)
+        self.assertEqual(
+            schedule.get_current_scheduled_workout().workout, workout)
 
     def test_get_workout_steps_test_3(self):
         '''
@@ -402,7 +406,8 @@ class ScheduleModelTestCase(WorkoutManagerTestCase):
         step3.duration = 2
         step3.order = 3
         step3.save()
-        self.assertEqual(schedule.get_current_scheduled_workout().workout, workout2)
+        self.assertEqual(
+            schedule.get_current_scheduled_workout().workout, workout2)
 
     def test_get_workout_steps_test_4(self):
         '''
@@ -448,7 +453,8 @@ class ScheduleModelTestCase(WorkoutManagerTestCase):
         self.delete_objects(user)
 
         start_date = datetime.date.today() - datetime.timedelta(weeks=7)
-        schedule = self.create_schedule(user, start_date=start_date, is_loop=True)
+        schedule = self.create_schedule(
+            user, start_date=start_date, is_loop=True)
         workout = self.create_workout(user)
         step = ScheduleStep()
         step.schedule = schedule
@@ -472,7 +478,8 @@ class ScheduleModelTestCase(WorkoutManagerTestCase):
         step3.duration = 2
         step3.order = 3
         step3.save()
-        self.assertTrue(schedule.get_current_scheduled_workout().workout, workout)
+        self.assertTrue(
+            schedule.get_current_scheduled_workout().workout, workout)
 
 
 class SchedulePdfExportTestCase(WorkoutManagerTestCase):

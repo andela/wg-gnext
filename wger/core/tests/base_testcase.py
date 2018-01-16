@@ -194,7 +194,8 @@ class WorkoutManagerTestCase(BaseTestCase, TestCase):
         # decimal, convert
         elif current_field_class == 'Decimal':
             # TODO: use FOURPLACES when routine branch is merged
-            self.assertEqual(field.quantize(TWOPLACES), decimal.Decimal(value).quantize(TWOPLACES))
+            self.assertEqual(field.quantize(TWOPLACES),
+                             decimal.Decimal(value).quantize(TWOPLACES))
 
         # Related manager and SortedManyToMany, iterate
         elif current_field_class in ('ManyRelatedManager', 'SortedRelatedManager'):
@@ -203,7 +204,8 @@ class WorkoutManagerTestCase(BaseTestCase, TestCase):
 
         # Uploaded image or file, compare the filename
         elif current_field_class in ('ImageFieldFile', 'FieldFile'):
-            self.assertEqual(os.path.basename(field.name), os.path.basename(value.name))
+            self.assertEqual(os.path.basename(field.name),
+                             os.path.basename(value.name))
 
         # Other objects (from foreign keys), check the ID
         else:
@@ -239,7 +241,8 @@ class WorkoutManagerDeleteTestCase(WorkoutManagerTestCase):
 
         # Fetch the delete page
         count_before = self.object_class.objects.count()
-        response = self.client.get(get_reverse(self.url, kwargs={'pk': self.pk}))
+        response = self.client.get(get_reverse(
+            self.url, kwargs={'pk': self.pk}))
         count_after = self.object_class.objects.count()
         self.assertEqual(count_before, count_after)
 
@@ -249,7 +252,8 @@ class WorkoutManagerDeleteTestCase(WorkoutManagerTestCase):
             self.assertEqual(response.status_code, 200)
 
         # Try deleting the object
-        response = self.client.post(get_reverse(self.url, kwargs={'pk': self.pk}))
+        response = self.client.post(
+            get_reverse(self.url, kwargs={'pk': self.pk}))
 
         count_after = self.object_class.objects.count()
 
@@ -323,7 +327,8 @@ class WorkoutManagerEditTestCase(WorkoutManagerTestCase):
             return
 
         # Fetch the edit page
-        response = self.client.get(get_reverse(self.url, kwargs={'pk': self.pk}))
+        response = self.client.get(get_reverse(
+            self.url, kwargs={'pk': self.pk}))
         entry_before = self.object_class.objects.get(pk=self.pk)
 
         if fail:
@@ -343,7 +348,8 @@ class WorkoutManagerEditTestCase(WorkoutManagerTestCase):
                 url = get_reverse(self.url, kwargs={'pk': self.pk})
                 response = self.client.post(url, self.data)
         else:
-            response = self.client.post(get_reverse(self.url, kwargs={'pk': self.pk}), self.data)
+            response = self.client.post(get_reverse(
+                self.url, kwargs={'pk': self.pk}), self.data)
 
         entry_after = self.object_class.objects.get(pk=self.pk)
 

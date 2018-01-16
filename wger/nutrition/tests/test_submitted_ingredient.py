@@ -68,16 +68,19 @@ class IngredientsPendingDetailTestCase(WorkoutManagerTestCase):
         '''
         Helper function
         '''
-        response = self.client.get(reverse('nutrition:ingredient:view', kwargs={'id': 7}))
+        response = self.client.get(
+            reverse('nutrition:ingredient:view', kwargs={'id': 7}))
         self.assertContains(response, 'pending review')
 
         if not fail:
             self.assertEqual(response.status_code, 200)
-            self.assertContains(response, 'Please select one of the options below')
+            self.assertContains(
+                response, 'Please select one of the options below')
             self.assertContains(response, 'Accept')
             self.assertContains(response, 'Decline')
         else:
-            self.assertNotContains(response, 'Please select one of the options below')
+            self.assertNotContains(
+                response, 'Please select one of the options below')
             self.assertNotContains(response, 'Accept')
             self.assertNotContains(response, 'Decline')
 
@@ -115,18 +118,22 @@ class IngredientAcceptTestCase(WorkoutManagerTestCase):
         Helper function
         '''
         ingredient = Ingredient.objects.get(pk=7)
-        self.assertEqual(ingredient.status, Ingredient.INGREDIENT_STATUS_PENDING)
-        response = self.client.get(reverse('nutrition:ingredient:accept', kwargs={'pk': 7}))
+        self.assertEqual(ingredient.status,
+                         Ingredient.INGREDIENT_STATUS_PENDING)
+        response = self.client.get(
+            reverse('nutrition:ingredient:accept', kwargs={'pk': 7}))
         ingredient = Ingredient.objects.get(pk=7)
         self.assertEqual(response.status_code, 302)
 
         if not fail:
-            self.assertEqual(ingredient.status, Ingredient.INGREDIENT_STATUS_ACCEPTED)
+            self.assertEqual(ingredient.status,
+                             Ingredient.INGREDIENT_STATUS_ACCEPTED)
             response = self.client.get(response['Location'])
             self.assertEqual(response.status_code, 200)
             self.assertEqual(len(mail.outbox), 1)
         else:
-            self.assertEqual(ingredient.status, Ingredient.INGREDIENT_STATUS_PENDING)
+            self.assertEqual(ingredient.status,
+                             Ingredient.INGREDIENT_STATUS_PENDING)
             self.assertEqual(len(mail.outbox), 0)
 
     def test_accept_admin(self):
@@ -163,18 +170,22 @@ class IngredientRejectTestCase(WorkoutManagerTestCase):
         Helper function
         '''
         ingredient = Ingredient.objects.get(pk=7)
-        self.assertEqual(ingredient.status, Ingredient.INGREDIENT_STATUS_PENDING)
-        response = self.client.get(reverse('nutrition:ingredient:decline', kwargs={'pk': 7}))
+        self.assertEqual(ingredient.status,
+                         Ingredient.INGREDIENT_STATUS_PENDING)
+        response = self.client.get(
+            reverse('nutrition:ingredient:decline', kwargs={'pk': 7}))
         ingredient = Ingredient.objects.get(pk=7)
         self.assertEqual(response.status_code, 302)
 
         if not fail:
-            self.assertEqual(ingredient.status, Ingredient.INGREDIENT_STATUS_DECLINED)
+            self.assertEqual(ingredient.status,
+                             Ingredient.INGREDIENT_STATUS_DECLINED)
             response = self.client.get(response['Location'])
             self.assertEqual(response.status_code, 200)
 
         else:
-            self.assertEqual(ingredient.status, Ingredient.INGREDIENT_STATUS_PENDING)
+            self.assertEqual(ingredient.status,
+                             Ingredient.INGREDIENT_STATUS_PENDING)
 
     def test_reject_admin(self):
         '''

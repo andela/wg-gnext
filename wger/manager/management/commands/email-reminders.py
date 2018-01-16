@@ -55,7 +55,8 @@ class Command(BaseCommand):
                     < datetime.timedelta(weeks=1)):
                 continue
 
-            (current_workout, schedule) = Schedule.objects.get_current_workout(profile.user)
+            (current_workout, schedule) = Schedule.objects.get_current_workout(
+                profile.user)
 
             # No schedules, use the default workout length in user profile
             if not schedule and current_workout:
@@ -65,7 +66,8 @@ class Command(BaseCommand):
 
                 if datetime.timedelta(days=profile.workout_reminder) > delta:
                     if int(options['verbosity']) >= 3:
-                        self.stdout.write("* Workout '{0}' overdue".format(current_workout))
+                        self.stdout.write(
+                            "* Workout '{0}' overdue".format(current_workout))
                     counter += 1
 
                     self.send_email(profile.user,
@@ -116,7 +118,8 @@ class Command(BaseCommand):
                    'days': abs(delta.days)}
 
         subject = _('Workout will expire soon')
-        message = loader.render_to_string('workout/email_reminder.tpl', context)
+        message = loader.render_to_string(
+            'workout/email_reminder.tpl', context)
         mail.send_mail(subject,
                        message,
                        settings.WGER_SETTINGS['EMAIL_FROM'],

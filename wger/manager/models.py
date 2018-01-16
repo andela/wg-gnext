@@ -112,7 +112,8 @@ class Workout(models.Model):
         of a workout structure is needed. As an additional benefit, the template
         caches are not needed anymore.
         '''
-        workout_canonical_form = cache.get(cache_mapper.get_workout_canonical(self.pk))
+        workout_canonical_form = cache.get(
+            cache_mapper.get_workout_canonical(self.pk))
         if not workout_canonical_form:
             day_canonical_repr = []
             muscles_front = []
@@ -150,7 +151,8 @@ class Workout(models.Model):
                                                   'backsecondary': muscles_back_secondary},
                                       'day_list': day_canonical_repr}
             # Save to cache
-            cache.set(cache_mapper.get_workout_canonical(self.pk), workout_canonical_form)
+            cache.set(cache_mapper.get_workout_canonical(
+                self.pk), workout_canonical_form)
 
         return workout_canonical_form
 
@@ -187,7 +189,8 @@ class ScheduleManager(models.Manager):
 
             schedule = False
             try:
-                active_workout = Workout.objects.filter(user=user).latest('creation_date')
+                active_workout = Workout.objects.filter(
+                    user=user).latest('creation_date')
 
             # no luck, there aren't even workouts for the user
             except ObjectDoesNotExist:
@@ -277,7 +280,8 @@ class Schedule(models.Model):
             return False
         while not found:
             for step in steps:
-                current_limit = start_date + datetime.timedelta(weeks=step.duration)
+                current_limit = start_date + \
+                    datetime.timedelta(weeks=step.duration)
                 if current_limit >= datetime.date.today():
                     found = True
                     return step
@@ -507,7 +511,8 @@ class Day(models.Model):
                         exercise['setting_obj_list'].pop(-1)
                         setting_text, setting_list, weight_list,\
                             reps_list, repetition_units, weight_units = \
-                            reps_smart_text(exercise['setting_obj_list'], set_obj)
+                            reps_smart_text(
+                                exercise['setting_obj_list'], set_obj)
                         exercise['setting_text'] = setting_text
                         exercise['repetition_units'] = repetition_units
 
@@ -530,7 +535,7 @@ class Day(models.Model):
         return {'obj': self,
                 'days_of_week': {
                     'text': u', '.join([six.text_type(_(i.day_of_week))
-                                       for i in tmp_days_of_week]),
+                                        for i in tmp_days_of_week]),
                     'day_list': tmp_days_of_week},
                 'muscles': {
                     'back': muscles_back,
@@ -756,7 +761,8 @@ class WorkoutLog(models.Model):
         '''
         Reset cache
         '''
-        reset_workout_log(self.user_id, self.date.year, self.date.month, self.date.day)
+        reset_workout_log(self.user_id, self.date.year,
+                          self.date.month, self.date.day)
 
         # If the user selected "Until Failure", do only 1 "repetition",
         # everythin else doesn't make sense.
@@ -768,7 +774,8 @@ class WorkoutLog(models.Model):
         '''
         Reset cache
         '''
-        reset_workout_log(self.user_id, self.date.year, self.date.month, self.date.day)
+        reset_workout_log(self.user_id, self.date.year,
+                          self.date.month, self.date.day)
         super(WorkoutLog, self).delete(*args, **kwargs)
 
 
@@ -860,10 +867,12 @@ class WorkoutSession(models.Model):
         '''
 
         if (not self.time_end and self.time_start) or (self.time_end and not self.time_start):
-            raise ValidationError(_("If you enter a time, you must enter both start and end time."))
+            raise ValidationError(
+                _("If you enter a time, you must enter both start and end time."))
 
         if self.time_end and self.time_start and self.time_start > self.time_end:
-            raise ValidationError(_("The start time cannot be after the end time."))
+            raise ValidationError(
+                _("The start time cannot be after the end time."))
 
     def get_owner_object(self):
         '''

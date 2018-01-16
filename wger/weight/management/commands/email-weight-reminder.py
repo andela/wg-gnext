@@ -37,7 +37,8 @@ class Command(BaseCommand):
 
     def handle(self, **options):
 
-        profile_list = UserProfile.objects.filter(num_days_weight_reminder__gt=0)
+        profile_list = UserProfile.objects.filter(
+            num_days_weight_reminder__gt=0)
 
         for profile in profile_list:
 
@@ -49,7 +50,8 @@ class Command(BaseCommand):
             today = datetime.datetime.now().date()
 
             try:
-                last_entry = WeightEntry.objects.filter(user=profile.user).latest().date
+                last_entry = WeightEntry.objects.filter(
+                    user=profile.user).latest().date
                 datediff = (today - last_entry).days
 
                 if datediff >= profile.num_days_weight_reminder:
@@ -75,7 +77,8 @@ class Command(BaseCommand):
                    'user': user}
 
         subject = _('You have to enter your weight')
-        message = loader.render_to_string('workout/email_weight_reminder.tpl', context)
+        message = loader.render_to_string(
+            'workout/email_weight_reminder.tpl', context)
         mail.send_mail(subject,
                        message,
                        settings.WGER_SETTINGS['EMAIL_FROM'],

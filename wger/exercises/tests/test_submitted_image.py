@@ -28,7 +28,8 @@ class ImagePendingDetailTestCase(WorkoutManagerTestCase):
         '''
         Helper function
         '''
-        response = self.client.get(reverse('exercise:exercise:view', kwargs={'id': 2}))
+        response = self.client.get(
+            reverse('exercise:exercise:view', kwargs={'id': 2}))
         self.assertEqual(response.status_code, 200)
 
         if not fail:
@@ -75,7 +76,8 @@ class ImageAcceptTestCase(WorkoutManagerTestCase):
         '''
         image = ExerciseImage.objects.get(pk=3)
         self.assertEqual(image.status, ExerciseImage.STATUS_PENDING)
-        response = self.client.get(reverse('exercise:image:accept', kwargs={'pk': 3}))
+        response = self.client.get(
+            reverse('exercise:image:accept', kwargs={'pk': 3}))
         image = ExerciseImage.objects.get(pk=3)
         self.assertEqual(response.status_code, 302)
 
@@ -123,7 +125,8 @@ class ImageRejectTestCase(WorkoutManagerTestCase):
         '''
         image = ExerciseImage.objects.get(pk=3)
         self.assertEqual(image.status, ExerciseImage.STATUS_PENDING)
-        response = self.client.get(reverse('exercise:image:decline', kwargs={'pk': 3}))
+        response = self.client.get(
+            reverse('exercise:image:decline', kwargs={'pk': 3}))
         image = ExerciseImage.objects.get(pk=3)
         self.assertEqual(response.status_code, 302)
 

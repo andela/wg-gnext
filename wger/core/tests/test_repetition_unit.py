@@ -34,7 +34,8 @@ class RepresentationTestCase(WorkoutManagerTestCase):
         '''
         Test that the representation of an object is correct
         '''
-        self.assertEqual("{0}".format(RepetitionUnit.objects.get(pk=1)), 'Repetitions')
+        self.assertEqual("{0}".format(
+            RepetitionUnit.objects.get(pk=1)), 'Repetitions')
 
 
 class OverviewTest(WorkoutManagerAccessTestCase):

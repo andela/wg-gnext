@@ -38,7 +38,8 @@ class FeedbackTestCase(WorkoutManagerTestCase):
             self.assertEqual(response.status_code, 200)
 
             # Short comment
-            response = self.client.post(reverse('core:feedback'), {'comment': '12345'})
+            response = self.client.post(
+                reverse('core:feedback'), {'comment': '12345'})
             self.assertEqual(response.status_code, 200)
             self.assertEqual(len(response.context['form'].errors), 1)
         else:

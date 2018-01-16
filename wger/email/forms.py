@@ -29,4 +29,5 @@ class EmailListForm(Form):
     '''
 
     subject = CharField(label=pgettext('As in "email subject"', 'Subject'))
-    body = CharField(widget=Textarea, label=pgettext('As in "content of an email"', 'Content'))
+    body = CharField(widget=Textarea, label=pgettext(
+        'As in "content of an email"', 'Content'))

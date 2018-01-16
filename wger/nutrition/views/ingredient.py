@@ -227,7 +227,8 @@ def accept(request, pk):
     ingredient.status = Ingredient.INGREDIENT_STATUS_ACCEPTED
     ingredient.save()
     ingredient.send_email(request)
-    messages.success(request, _('Ingredient was successfully added to the general database'))
+    messages.success(request, _(
+        'Ingredient was successfully added to the general database'))
 
     return HttpResponseRedirect(ingredient.get_absolute_url())
 
@@ -240,5 +241,6 @@ def decline(request, pk):
     ingredient = get_object_or_404(Ingredient, pk=pk)
     ingredient.status = Ingredient.INGREDIENT_STATUS_DECLINED
     ingredient.save()
-    messages.success(request, _('Ingredient was successfully marked as rejected'))
+    messages.success(request, _(
+        'Ingredient was successfully marked as rejected'))
     return HttpResponseRedirect(ingredient.get_absolute_url())

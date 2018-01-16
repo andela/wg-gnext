@@ -75,7 +75,8 @@ class WorkoutViewSet(viewsets.ModelViewSet):
         This is basically the same form as used in the application
         '''
 
-        out = WorkoutCanonicalFormSerializer(self.get_object().canonical_representation).data
+        out = WorkoutCanonicalFormSerializer(
+            self.get_object().canonical_representation).data
         return Response(out)
 
 

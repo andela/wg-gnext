@@ -59,7 +59,8 @@ class CaloriesCalculatorTestCase(WorkoutManagerTestCase):
         result = json.loads(response.content.decode('utf8'))
         self.assertEqual(decimal.Decimal(result['factor']),
                          decimal.Decimal(1.57).quantize(TWOPLACES))
-        self.assertEqual(decimal.Decimal(result['activities']), decimal.Decimal(2920))
+        self.assertEqual(decimal.Decimal(
+            result['activities']), decimal.Decimal(2920))
 
     def test_automatic_weight_entry_bmi(self):
         '''

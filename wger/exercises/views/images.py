@@ -83,7 +83,8 @@ class ExerciseImageAddView(WgerFormMixin,
     form_class = ExerciseImageForm
 
     def form_valid(self, form):
-        form.instance.exercise = Exercise.objects.get(pk=self.kwargs['exercise_pk'])
+        form.instance.exercise = Exercise.objects.get(
+            pk=self.kwargs['exercise_pk'])
         form.instance.set_author(self.request)
         return super(ExerciseImageAddView, self).form_valid(form)
 
@@ -127,7 +128,8 @@ class ExerciseImageDeleteView(WgerDeleteMixin,
         '''
         pk = self.kwargs['pk']
         exercise_pk = self.kwargs['exercise_pk']
-        context = super(ExerciseImageDeleteView, self).get_context_data(**kwargs)
+        context = super(ExerciseImageDeleteView,
+                        self).get_context_data(**kwargs)
 
         context['title'] = _('Delete exercise image?')
         context['form_action'] = reverse('exercise:image:delete',

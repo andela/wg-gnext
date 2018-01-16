@@ -26,6 +26,7 @@ class GymManager(models.Manager):
     '''
     Custom query manager for Gyms
     '''
+
     def get_members(self, gym_pk):
         '''
         Returns all members for this gym (i.e non-admin ones)

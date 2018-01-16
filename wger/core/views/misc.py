@@ -98,7 +98,8 @@ def dashboard(request):
 
     # Load the last nutritional plan, if one exists
     try:
-        plan = NutritionPlan.objects.filter(user=request.user).latest('creation_date')
+        plan = NutritionPlan.objects.filter(
+            user=request.user).latest('creation_date')
     except ObjectDoesNotExist:
         plan = False
     template_data['plan'] = plan
@@ -124,7 +125,8 @@ def dashboard(request):
 
         if week.id in used_days:
             day_has_workout = True
-            week_day_result.append((_(week.day_of_week), used_days[week.id], True))
+            week_day_result.append(
+                (_(week.day_of_week), used_days[week.id], True))
 
         if not day_has_workout:
             week_day_result.append((_(week.day_of_week), _('Rest day'), False))
@@ -171,7 +173,8 @@ class FeedbackClass(FormView):
         context['form_action'] = reverse('core:feedback')
         context['submit_text'] = _('Send')
         context['contribute_url'] = reverse('software:contribute')
-        context['extend_template'] = 'base_empty.html' if self.request.is_ajax() else 'base.html'
+        context['extend_template'] = 'base_empty.html' if self.request.is_ajax(
+        ) else 'base.html'
         return context
 
     def get_form_class(self):
@@ -188,7 +191,8 @@ class FeedbackClass(FormView):
         '''
         Send the feedback to the administrators
         '''
-        messages.success(self.request, _('Your feedback was successfully sent. Thank you!'))
+        messages.success(self.request, _(
+            'Your feedback was successfully sent. Thank you!'))
 
         context = {}
         context['user'] = self.request.user

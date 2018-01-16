@@ -36,7 +36,8 @@ class WeightCsvImportForm(Form):
     A helper form with only a textarea
     '''
     csv_input = CharField(widget=Textarea, label=_('Input'))
-    date_format = forms.ChoiceField(choices=CSV_DATE_FORMAT, label=_('Date format'))
+    date_format = forms.ChoiceField(
+        choices=CSV_DATE_FORMAT, label=_('Date format'))
 
 
 class WeightForm(ModelForm):

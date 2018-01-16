@@ -66,7 +66,8 @@ class Command(BaseCommand):
         if (not options['clear_template']
                 and not options['clear_workout']
                 and not options['clear_all']):
-            raise CommandError('Please select what cache you need to delete, see help')
+            raise CommandError(
+                'Please select what cache you need to delete, see help')
 
         # Exercises, cached template fragments
         if options['clear_template']:
@@ -75,7 +76,8 @@ class Command(BaseCommand):
 
             for user in User.objects.all():
                 if int(options['verbosity']) >= 2:
-                    self.stdout.write("* Processing user {0}".format(user.username))
+                    self.stdout.write(
+                        "* Processing user {0}".format(user.username))
 
                 for entry in WorkoutLog.objects.filter(user=user).dates('date', 'year'):
 
@@ -85,21 +87,27 @@ class Command(BaseCommand):
                                                            date__year=entry.year).dates('date',
                                                                                         'month'):
                         if int(options['verbosity']) >= 3:
-                            self.stdout.write("    Month {0}".format(entry.month))
+                            self.stdout.write(
+                                "    Month {0}".format(entry.month))
                         reset_workout_log(user.id, entry.year, entry.month)
                         for day in WorkoutLog.objects.filter(user=user,
                                                              date__year=entry.year,
                                                              date__month=month.month).dates('date',
                                                                                             'day'):
                             if int(options['verbosity']) >= 3:
-                                self.stdout.write("      Day {0}".format(day.day))
-                            reset_workout_log(user.id, entry.year, entry.month, day)
+                                self.stdout.write(
+                                    "      Day {0}".format(day.day))
+                            reset_workout_log(
+                                user.id, entry.year, entry.month, day)
 
             for language in Language.objects.all():
                 delete_template_fragment_cache('muscle-overview', language.id)
-                delete_template_fragment_cache('exercise-overview', language.id)
-                delete_template_fragment_cache('exercise-overview-mobile', language.id)
-                delete_template_fragment_cache('equipment-overview', language.id)
+                delete_template_fragment_cache(
+                    'exercise-overview', language.id)
+                delete_template_fragment_cache(
+                    'exercise-overview-mobile', language.id)
+                delete_template_fragment_cache(
+                    'equipment-overview', language.id)
 
         # Workout canonical form
         if options['clear_workout']:

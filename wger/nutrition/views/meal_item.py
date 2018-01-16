@@ -78,7 +78,8 @@ class MealItemCreateView(WgerFormMixin, CreateView):
         context = super(MealItemCreateView, self).get_context_data(**kwargs)
         context['form_action'] = reverse('nutrition:meal_item:add',
                                          kwargs={'meal_id': self.meal.id})
-        context['ingredient_searchfield'] = self.request.POST.get('ingredient_searchfield', '')
+        context['ingredient_searchfield'] = self.request.POST.get(
+            'ingredient_searchfield', '')
         return context
 
     def form_valid(self, form):
