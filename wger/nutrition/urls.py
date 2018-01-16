@@ -16,7 +16,7 @@
 # along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 from django.contrib.auth.decorators import login_required
-from django.conf.urls import (patterns, url, include)
+from django.conf.urls import url, include  # patterns,
 
 from wger.nutrition.views import (ingredient, bmi, calculator, plan, meal,
                                   meal_item, unit, unit_ingredient)

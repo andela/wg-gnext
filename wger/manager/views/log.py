@@ -18,8 +18,7 @@ import logging
 import uuid
 import datetime
 
-from django.contrib.auth.mixins import (PermissionRequiredMixin,
-                                        LoginRequiredMixin)
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponseForbidden
@@ -279,8 +278,8 @@ class WorkoutLogDetailView(DetailView, LoginRequiredMixin):
                         workout_log[day_id][exercise_id] = {}
                         workout_log[day_id][exercise_id][
                             'log_by_date'] = entry_log
-                        workout_log[day_id][exercise_id]['div_uuid'] = 'div-' + \
-                            str(uuid.uuid4())
+                        workout_log[day_id][exercise_id]['div_uuid'] = 'div-'\
+                            + str(uuid.uuid4())
                         workout_log[day_id][exercise_id][
                             'chart_data'] = chart_data
 

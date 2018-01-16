@@ -26,7 +26,7 @@ from django.utils.translation import ugettext_lazy
 from django.views.generic import (DetailView, ListView, CreateView, UpdateView)
 
 from wger.utils.generic_views import WgerFormMixin
-from wger.gym.models import Contract, Gym
+from wger.gym.models import Contract  # , Gym
 
 logger = logging.getLogger(__name__)
 

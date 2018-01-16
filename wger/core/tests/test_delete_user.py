@@ -190,7 +190,7 @@ class DeleteUserByAdminTestCase(WorkoutManagerTestCase):
         self.user_login('member1')
         self.delete_user(fail=True)
 
-    def test_delete_user_member(self):
+    def test_deletes_user_member(self):
         '''
         Tests deleting the user account as a gym member
         '''

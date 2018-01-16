@@ -23,8 +23,7 @@ from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.template.context_processors import csrf
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.utils.translation import ugettext_lazy, ugettext as _
-from django.contrib.auth.mixins import (PermissionRequiredMixin,
-                                        LoginRequiredMixin)
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic import DeleteView, UpdateView
 
@@ -196,7 +195,7 @@ def copy_workout(request, pk):
         template_data['submit_text'] = _('Copy')
         template_data[
             'extend_template'] = 'base_empty.html' if request.is_ajax(
-            ) else 'base.html'
+        ) else 'base.html'
 
         return render(request, 'form.html', template_data)
 

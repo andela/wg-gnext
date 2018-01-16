@@ -14,7 +14,7 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 
-from django.conf.urls import (patterns, url, include)
+from django.conf.urls import url, include  # patterns,
 from django.views.generic import TemplateView
 from django.contrib.auth import views
 from django.core.urlresolvers import reverse_lazy
@@ -67,8 +67,8 @@ patterns_user = [
         user.InactiveUserListView.as_view(),
         name='inactiveList'),
 
-    # Password reset is implemented by Django, no need to cook our own soup here
-    # (besides the templates)
+    # Password reset is implemented by Django, no need to cook our
+    # own soup here (besides the templates)
     url(r'^password/change$',
         views.password_change, {
             'template_name': 'user/change_password.html',

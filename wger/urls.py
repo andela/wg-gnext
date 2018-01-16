@@ -46,7 +46,7 @@ from wger.weight.api import views as weight_api_views
 # REST API
 #
 
-### /api/v1 - tastypie - deprecated
+# /api/v1 - tastypie - deprecated
 v1_api = Api(api_name='v1')
 
 v1_api.register(exercises_api.ExerciseCategoryResource())
@@ -79,7 +79,7 @@ v1_api.register(core_api.DaysOfWeekResource())
 v1_api.register(core_api.UserProfileResource())
 v1_api.register(core_api.LicenseResource())
 
-### /api/v2 - django rest framework
+#  /api/v2 - django rest framework
 router = routers.DefaultRouter()
 
 # Manager app
@@ -169,7 +169,7 @@ router.register(
     weight_api_views.WeightEntryViewSet,
     base_name='weightentry')
 
-from django.contrib import admin
+from django.contrib import admin  # noqa: E402
 admin.autodiscover()
 
 #
