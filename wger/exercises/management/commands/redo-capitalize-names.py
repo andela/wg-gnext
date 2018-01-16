@@ -35,8 +35,8 @@ class Command(BaseCommand):
         exercises = Exercise.objects.all()
         for exercise in exercises:
             if options['verbosity'] > 1:
-                self.stdout.write('#{} {} -> {}'.format(exercise.id,
-                                                        exercise.name,
-                                                        smart_capitalize(exercise.name_original)))
+                self.stdout.write('#{} {} -> {}'.format(
+                    exercise.id, exercise.name,
+                    smart_capitalize(exercise.name_original)))
             exercise.name = smart_capitalize(exercise.name_original)
             exercise.save()

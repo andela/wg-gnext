@@ -21,19 +21,10 @@ from django.contrib.auth.models import User
 from django.http.response import HttpResponseForbidden
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy
-from django.views.generic import (
-    ListView,
-    DeleteView,
-    CreateView,
-    UpdateView
-)
+from django.views.generic import (ListView, DeleteView, CreateView, UpdateView)
 
 from wger.gym.models import AdminUserNote
-from wger.utils.generic_views import (
-    WgerFormMixin,
-    WgerDeleteMixin
-)
-
+from wger.utils.generic_views import (WgerFormMixin, WgerDeleteMixin)
 
 logger = logging.getLogger(__name__)
 
@@ -71,13 +62,16 @@ class ListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
         Send some additional data to the template
         '''
         context = super(ListView, self).get_context_data(**kwargs)
-        context['form_action'] = reverse('gym:admin_note:add',
-                                         kwargs={'user_pk': self.kwargs['user_pk']})
+        context['form_action'] = reverse(
+            'gym:admin_note:add', kwargs={
+                'user_pk': self.kwargs['user_pk']
+            })
         context['member'] = self.member
         return context
 
 
-class AddView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class AddView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin,
+              CreateView):
     '''
     View to add a new admin note
     '''
@@ -92,7 +86,10 @@ class AddView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, Create
         '''
         Redirect back to user page
         '''
-        return reverse('gym:admin_note:list', kwargs={'user_pk': self.member.pk})
+        return reverse(
+            'gym:admin_note:list', kwargs={
+                'user_pk': self.member.pk
+            })
 
     def dispatch(self, request, *args, **kwargs):
         '''
@@ -121,12 +118,15 @@ class AddView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, Create
         Send some additional data to the template
         '''
         context = super(AddView, self).get_context_data(**kwargs)
-        context['form_action'] = reverse('gym:admin_note:add',
-                                         kwargs={'user_pk': self.kwargs['user_pk']})
+        context['form_action'] = reverse(
+            'gym:admin_note:add', kwargs={
+                'user_pk': self.kwargs['user_pk']
+            })
         return context
 
 
-class UpdateView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class UpdateView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin,
+                 UpdateView):
     '''
     View to update an existing admin note
     '''
@@ -139,8 +139,10 @@ class UpdateView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, Upd
         '''
         Redirect back to user page
         '''
-        return reverse('gym:admin_note:list', kwargs={'user_pk':
-                                                      self.object.member.pk})
+        return reverse(
+            'gym:admin_note:list', kwargs={
+                'user_pk': self.object.member.pk
+            })
 
     def dispatch(self, request, *args, **kwargs):
         '''
@@ -161,12 +163,15 @@ class UpdateView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, Upd
         '''
         context = super(UpdateView, self).get_context_data(**kwargs)
         context['form_action'] = reverse(
-            'gym:admin_note:edit', kwargs={'pk': self.object.id})
+            'gym:admin_note:edit', kwargs={
+                'pk': self.object.id
+            })
         context['title'] = _(u'Edit {0}').format(self.object)
         return context
 
 
-class DeleteView(WgerDeleteMixin, LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class DeleteView(WgerDeleteMixin, LoginRequiredMixin, PermissionRequiredMixin,
+                 DeleteView):
     '''
     View to delete an existing admin note
     '''
@@ -179,7 +184,10 @@ class DeleteView(WgerDeleteMixin, LoginRequiredMixin, PermissionRequiredMixin, D
         '''
         Redirect back to user page
         '''
-        return reverse('gym:admin_note:list', kwargs={'user_pk': self.object.member.pk})
+        return reverse(
+            'gym:admin_note:list', kwargs={
+                'user_pk': self.object.member.pk
+            })
 
     def dispatch(self, request, *args, **kwargs):
         '''
@@ -199,6 +207,8 @@ class DeleteView(WgerDeleteMixin, LoginRequiredMixin, PermissionRequiredMixin, D
         '''
         context = super(DeleteView, self).get_context_data(**kwargs)
         context['title'] = _(u'Delete {0}?').format(self.object)
-        context['form_action'] = reverse('gym:admin_note:delete', kwargs={
-                                         'pk': self.kwargs['pk']})
+        context['form_action'] = reverse(
+            'gym:admin_note:delete', kwargs={
+                'pk': self.kwargs['pk']
+            })
         return context

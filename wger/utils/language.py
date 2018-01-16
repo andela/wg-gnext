@@ -22,9 +22,7 @@ from wger.core.models import Language
 from wger.config.models import LanguageConfig
 from wger.utils.cache import cache_mapper
 
-
 logger = logging.getLogger(__name__)
-
 
 # ************************
 # Language functions
@@ -79,8 +77,8 @@ def load_item_languages(item, language_code=None):
         for i in config:
             languages.append(i.language_target)
 
-        cache.set(cache_mapper.get_language_config_key(
-            language, item), languages)
+        cache.set(
+            cache_mapper.get_language_config_key(language, item), languages)
 
     return languages
 

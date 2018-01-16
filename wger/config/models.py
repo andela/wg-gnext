@@ -28,7 +28,6 @@ from wger.gym.models import Gym, GymUserConfig
 from wger.utils.cache import delete_template_fragment_cache
 from wger.utils.cache import cache_mapper
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -46,22 +45,22 @@ class LanguageConfig(models.Model):
         (SHOW_ITEM_INGREDIENTS, _('Ingredients')),
     )
 
-    language = models.ForeignKey(Language,
-                                 related_name='language_source',
-                                 editable=False)
-    language_target = models.ForeignKey(Language,
-                                        related_name='language_target',
-                                        editable=False)
-    item = models.CharField(max_length=2,
-                            choices=SHOW_ITEM_LIST,
-                            editable=False)
+    language = models.ForeignKey(
+        Language, related_name='language_source', editable=False)
+    language_target = models.ForeignKey(
+        Language, related_name='language_target', editable=False)
+    item = models.CharField(
+        max_length=2, choices=SHOW_ITEM_LIST, editable=False)
     show = models.BooleanField(default=1)
 
     class Meta:
         '''
         Set some other properties
         '''
-        ordering = ["item", "language_target", ]
+        ordering = [
+            "item",
+            "language_target",
+        ]
 
     def __str__(self):
         '''
@@ -77,8 +76,8 @@ class LanguageConfig(models.Model):
         super(LanguageConfig, self).save(*args, **kwargs)
 
         # Cached objects
-        cache.delete(cache_mapper.get_language_config_key(
-            self.language, self.item))
+        cache.delete(
+            cache_mapper.get_language_config_key(self.language, self.item))
 
         # Cached template fragments
         delete_template_fragment_cache('muscle-overview', self.language_id)
@@ -90,8 +89,8 @@ class LanguageConfig(models.Model):
         '''
 
         # Cached objects
-        cache.delete(cache_mapper.get_language_config_key(
-            self.language, self.item))
+        cache.delete(
+            cache_mapper.get_language_config_key(self.language, self.item))
 
         # Cached template fragments
         delete_template_fragment_cache('muscle-overview', self.language_id)
@@ -109,14 +108,15 @@ class GymConfig(models.Model):
     TODO: close registration (users can only become members thorough an admin)
     '''
 
-    default_gym = models.ForeignKey(Gym,
-                                    verbose_name=_('Default gym'),
-                                    help_text=_('Select the default gym for this installation. '
-                                                'This will assign all new registered users to this '
-                                                'gym and update all existing users without a '
-                                                'gym.'),
-                                    null=True,
-                                    blank=True)
+    default_gym = models.ForeignKey(
+        Gym,
+        verbose_name=_('Default gym'),
+        help_text=_('Select the default gym for this installation. '
+                    'This will assign all new registered users to this '
+                    'gym and update all existing users without a '
+                    'gym.'),
+        null=True,
+        blank=True)
     '''
     Default gym for the wger installation
     '''
@@ -148,6 +148,7 @@ class GymConfig(models.Model):
                         config.user = user
                         config.save()
                         logger.debug(
-                            'Creating GymUserConfig for user {0}'.format(user.username))
+                            'Creating GymUserConfig for user {0}'.format(
+                                user.username))
 
         return super(GymConfig, self).save(*args, **kwargs)

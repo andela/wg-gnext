@@ -18,28 +18,16 @@
 from django.conf.urls import patterns, url, include
 from django.contrib.auth.decorators import login_required
 
-from wger.exercises.views import (
-    exercises,
-    comments,
-    categories,
-    muscles,
-    images,
-    equipment
-)
-
-
+from wger.exercises.views import (exercises, comments, categories, muscles,
+                                  images, equipment)
 
 # sub patterns for muscles
 patterns_muscle = [
-    url(r'^overview/$',
-        muscles.MuscleListView.as_view(),
-        name='overview'),
+    url(r'^overview/$', muscles.MuscleListView.as_view(), name='overview'),
     url(r'^admin-overview/$',
         muscles.MuscleAdminListView.as_view(),
         name='admin-list'),
-    url(r'^add/$',
-        muscles.MuscleAddView.as_view(),
-        name='add'),
+    url(r'^add/$', muscles.MuscleAddView.as_view(), name='add'),
     url(r'^(?P<pk>\d+)/edit/$',
         muscles.MuscleUpdateView.as_view(),
         name='edit'),
@@ -59,12 +47,8 @@ patterns_images = [
     url(r'^(?P<exercise_pk>\d+)/image/(?P<pk>\d+)/delete$',
         images.ExerciseImageDeleteView.as_view(),
         name='delete'),
-    url(r'^(?P<pk>\d+)/accept/$',
-        images.accept,
-        name='accept'),
-    url(r'^(?P<pk>\d+)/decline/$',
-        images.decline,
-        name='decline'),
+    url(r'^(?P<pk>\d+)/accept/$', images.accept, name='accept'),
+    url(r'^(?P<pk>\d+)/decline/$', images.decline, name='decline'),
 ]
 
 # sub patterns for exercise comments
@@ -75,22 +59,16 @@ patterns_comment = [
     url(r'^(?P<pk>\d+)/edit/$',
         comments.ExerciseCommentEditView.as_view(),
         name='edit'),
-    url(r'^(?P<id>\d+)/delete/$',
-        comments.delete,
-        name='delete'),
+    url(r'^(?P<id>\d+)/delete/$', comments.delete, name='delete'),
 ]
 
 # sub patterns for categories
 patterns_category = [
-    url(r'^list$',
-        categories.ExerciseCategoryListView.as_view(),
-        name='list'),
+    url(r'^list$', categories.ExerciseCategoryListView.as_view(), name='list'),
     url(r'^(?P<pk>\d+)/edit/$',
         categories.ExerciseCategoryUpdateView.as_view(),
         name='edit'),
-    url(r'^add/$',
-        categories.ExerciseCategoryAddView.as_view(),
-        name='add'),
+    url(r'^add/$', categories.ExerciseCategoryAddView.as_view(), name='add'),
     url(r'^(?P<pk>\d+)/delete/$',
         categories.ExerciseCategoryDeleteView.as_view(),
         name='delete'),
@@ -98,12 +76,8 @@ patterns_category = [
 
 # sub patterns for equipment
 patterns_equipment = [
-    url(r'^list$',
-        equipment.EquipmentListView.as_view(),
-        name='list'),
-    url(r'^add$',
-        equipment.EquipmentAddView.as_view(),
-        name='add'),
+    url(r'^list$', equipment.EquipmentListView.as_view(), name='list'),
+    url(r'^add$', equipment.EquipmentAddView.as_view(), name='add'),
     url(r'^(?P<pk>\d+)/edit$',
         equipment.EquipmentEditView.as_view(),
         name='edit'),
@@ -115,18 +89,11 @@ patterns_equipment = [
         name='overview'),
 ]
 
-
 # sub patterns for exercises
 patterns_exercise = [
-    url(r'^overview/$',
-        exercises.ExerciseListView.as_view(),
-        name='overview'),
-    url(r'^(?P<id>\d+)/view/$',
-        exercises.view,
-        name='view'),
-    url(r'^(?P<id>\d+)/view/(?P<slug>[-\w]*)/?$',
-        exercises.view,
-        name='view'),
+    url(r'^overview/$', exercises.ExerciseListView.as_view(), name='overview'),
+    url(r'^(?P<id>\d+)/view/$', exercises.view, name='view'),
+    url(r'^(?P<id>\d+)/view/(?P<slug>[-\w]*)/?$', exercises.view, name='view'),
     url(r'^add/$',
         login_required(exercises.ExerciseAddView.as_view()),
         name='add'),
@@ -142,20 +109,15 @@ patterns_exercise = [
     url(r'^pending/$',
         exercises.PendingExerciseListView.as_view(),
         name='pending'),
-    url(r'^(?P<pk>\d+)/accept/$',
-        exercises.accept,
-        name='accept'),
-    url(r'^(?P<pk>\d+)/decline/$',
-        exercises.decline,
-        name='decline'),
+    url(r'^(?P<pk>\d+)/accept/$', exercises.accept, name='accept'),
+    url(r'^(?P<pk>\d+)/decline/$', exercises.decline, name='decline'),
 ]
 
-
 urlpatterns = [
-   url(r'^muscle/', include(patterns_muscle, namespace="muscle")),
-   url(r'^image/', include(patterns_images, namespace="image")),
-   url(r'^comment/', include(patterns_comment, namespace="comment")),
-   url(r'^category/', include(patterns_category, namespace="category")),
-   url(r'^equipment/', include(patterns_equipment, namespace="equipment")),
-   url(r'^', include(patterns_exercise, namespace="exercise")),
+    url(r'^muscle/', include(patterns_muscle, namespace="muscle")),
+    url(r'^image/', include(patterns_images, namespace="image")),
+    url(r'^comment/', include(patterns_comment, namespace="comment")),
+    url(r'^category/', include(patterns_category, namespace="category")),
+    url(r'^equipment/', include(patterns_equipment, namespace="equipment")),
+    url(r'^', include(patterns_exercise, namespace="exercise")),
 ]

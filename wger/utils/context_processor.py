@@ -51,7 +51,6 @@ def processor(request):
         'request_absolute_path': request.build_absolute_uri(),
         'image_absolute_path': request.build_absolute_uri(static_path),
 
-
         # Translation links
         'i18n_path': i18n_path,
 

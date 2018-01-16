@@ -37,19 +37,25 @@ class GymAddUserTestCase(WorkoutManagerTestCase):
         count_before = User.objects.all().count()
         GymAdminConfig.objects.all().delete()
         response = self.client.get(
-            reverse('gym:gym:add-user', kwargs={'gym_pk': 1}))
+            reverse('gym:gym:add-user', kwargs={
+                'gym_pk': 1
+            }))
         self.assertEqual(GymAdminConfig.objects.all().count(), 0)
         if fail:
             self.assertEqual(response.status_code, 403)
         else:
             self.assertEqual(response.status_code, 200)
 
-        response = self.client.post(reverse('gym:gym:add-user', kwargs={'gym_pk': 1}),
-                                    {'first_name': 'Cletus',
-                                     'last_name': 'Spuckle',
-                                     'username': 'cletus',
-                                     'email': 'cletus@spuckle-megacorp.com',
-                                     'role': 'admin'})
+        response = self.client.post(
+            reverse('gym:gym:add-user', kwargs={
+                'gym_pk': 1
+            }), {
+                'first_name': 'Cletus',
+                'last_name': 'Spuckle',
+                'username': 'cletus',
+                'email': 'cletus@spuckle-megacorp.com',
+                'role': 'admin'
+            })
         count_after = User.objects.all().count()
         if fail:
             self.assertEqual(response.status_code, 403)
@@ -152,7 +158,9 @@ class TrainerLoginTestCase(WorkoutManagerTestCase):
         Test the trainer login as an anonymous user
         '''
         response = self.client.get(
-            reverse('core:user:trainer-login', kwargs={'user_pk': 1}))
+            reverse('core:user:trainer-login', kwargs={
+                'user_pk': 1
+            }))
         self.assertEqual(response.status_code, 302)
         self.assertFalse(self.client.session.get('trainer.identity'))
 
@@ -162,7 +170,9 @@ class TrainerLoginTestCase(WorkoutManagerTestCase):
         '''
         self.user_login('test')
         response = self.client.get(
-            reverse('core:user:trainer-login', kwargs={'user_pk': 1}))
+            reverse('core:user:trainer-login', kwargs={
+                'user_pk': 1
+            }))
         self.assertEqual(response.status_code, 403)
         self.assertFalse(self.client.session.get('trainer.identity'))
 
@@ -172,7 +182,9 @@ class TrainerLoginTestCase(WorkoutManagerTestCase):
         '''
         self.user_login('admin')
         response = self.client.get(
-            reverse('core:user:trainer-login', kwargs={'user_pk': 2}))
+            reverse('core:user:trainer-login', kwargs={
+                'user_pk': 2
+            }))
         self.assertEqual(response.status_code, 302)
         self.assertTrue(self.client.session.get('trainer.identity'))
 
@@ -185,7 +197,9 @@ class TrainerLoginTestCase(WorkoutManagerTestCase):
         profile.save()
         self.user_login('admin')
         response = self.client.get(
-            reverse('core:user:trainer-login', kwargs={'user_pk': 2}))
+            reverse('core:user:trainer-login', kwargs={
+                'user_pk': 2
+            }))
         self.assertEqual(response.status_code, 403)
         self.assertFalse(self.client.session.get('trainer.identity'))
 
@@ -201,7 +215,9 @@ class TrainerLoginTestCase(WorkoutManagerTestCase):
 
         self.user_login('admin')
         response = self.client.get(
-            reverse('core:user:trainer-login', kwargs={'user_pk': 2}))
+            reverse('core:user:trainer-login', kwargs={
+                'user_pk': 2
+            }))
         self.assertEqual(response.status_code, 403)
         self.assertFalse(self.client.session.get('trainer.identity'))
 
@@ -217,7 +233,9 @@ class TrainerLoginTestCase(WorkoutManagerTestCase):
 
         self.user_login('admin')
         response = self.client.get(
-            reverse('core:user:trainer-login', kwargs={'user_pk': 2}))
+            reverse('core:user:trainer-login', kwargs={
+                'user_pk': 2
+            }))
         self.assertEqual(response.status_code, 403)
         self.assertFalse(self.client.session.get('trainer.identity'))
 
@@ -233,7 +251,9 @@ class TrainerLoginTestCase(WorkoutManagerTestCase):
 
         self.user_login('admin')
         response = self.client.get(
-            reverse('core:user:trainer-login', kwargs={'user_pk': 2}))
+            reverse('core:user:trainer-login', kwargs={
+                'user_pk': 2
+            }))
         self.assertEqual(response.status_code, 403)
         self.assertFalse(self.client.session.get('trainer.identity'))
 
@@ -249,9 +269,13 @@ class TrainerLogoutTestCase(WorkoutManagerTestCase):
         '''
         self.user_login('admin')
         self.client.get(
-            reverse('core:user:trainer-login', kwargs={'user_pk': 2}))
+            reverse('core:user:trainer-login', kwargs={
+                'user_pk': 2
+            }))
         self.assertTrue(self.client.session.get('trainer.identity'))
 
         self.client.get(
-            reverse('core:user:trainer-login', kwargs={'user_pk': 1}))
+            reverse('core:user:trainer-login', kwargs={
+                'user_pk': 1
+            }))
         self.assertFalse(self.client.session.get('trainer.identity'))

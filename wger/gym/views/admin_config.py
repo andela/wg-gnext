@@ -23,7 +23,6 @@ from django.views.generic import UpdateView
 from wger.gym.models import GymAdminConfig
 from wger.utils.generic_views import WgerFormMixin
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -48,6 +47,8 @@ class ConfigUpdateView(WgerFormMixin, UpdateView):
         '''
         context = super(ConfigUpdateView, self).get_context_data(**kwargs)
         context['form_action'] = reverse(
-            'gym:admin_config:edit', kwargs={'pk': self.object.id})
+            'gym:admin_config:edit', kwargs={
+                'pk': self.object.id
+            })
         context['title'] = _('Configuration')
         return context

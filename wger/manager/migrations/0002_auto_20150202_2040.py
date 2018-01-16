@@ -16,7 +16,10 @@ class Migration(migrations.Migration):
         AlterSortedManyToManyField(
             model_name='set',
             name='exercises',
-            field=sortedm2m.fields.SortedManyToManyField(help_text=None, to='exercises.Exercise', verbose_name='Exercises'),
+            field=sortedm2m.fields.SortedManyToManyField(
+                help_text=None,
+                to='exercises.Exercise',
+                verbose_name='Exercises'),
             preserve_default=True,
         )
     ]

@@ -41,7 +41,9 @@ class WorkoutTimerTestCase(WorkoutManagerTestCase):
         # Fetch the timer page
         self.user_login('test')
         response = self.client.get(
-            reverse('manager:workout:timer', kwargs={'day_pk': 5}))
+            reverse('manager:workout:timer', kwargs={
+                'day_pk': 5
+            }))
         self.assertEqual(response.status_code, 200)
 
         # Check some of the steps
@@ -58,7 +60,9 @@ class WorkoutTimerTestCase(WorkoutManagerTestCase):
 
         # Fetch the timer page
         response = self.client.get(
-            reverse('manager:workout:timer', kwargs={'day_pk': 2}))
+            reverse('manager:workout:timer', kwargs={
+                'day_pk': 2
+            }))
 
         if fail:
             self.assertIn(response.status_code, (302, 404))
@@ -74,19 +78,22 @@ class WorkoutTimerTestCase(WorkoutManagerTestCase):
             self.assertEqual(
                 current_step['exercise'], Exercise.objects.get(pk=2))
             self.assertEqual(current_step['reps'], 10)
+            self.assertEqual(current_step['step_nr'],
+                             list_length - len(step_list))
             self.assertEqual(
-                current_step['step_nr'], list_length - len(step_list))
-            self.assertEqual(math.floor(current_step['step_percent']),
-                             math.floor(current_step['step_nr'] * (100.0 / list_length)))
+                math.floor(current_step['step_percent']),
+                math.floor(current_step['step_nr'] * (100.0 / list_length)))
             self.assertEqual(current_step['type'], 'exercise')
             self.assertEqual(current_step['weight'], Decimal(15))
 
             if pause_active:
                 current_step = step_list.pop()
+                self.assertEqual(current_step['step_nr'],
+                                 list_length - len(step_list))
                 self.assertEqual(
-                    current_step['step_nr'], list_length - len(step_list))
-                self.assertEqual(math.floor(current_step['step_percent']),
-                                 math.floor(current_step['step_nr'] * (100.0 / list_length)))
+                    math.floor(current_step['step_percent']),
+                    math.floor(current_step['step_nr'] *
+                               (100.0 / list_length)))
                 self.assertEqual(current_step['time'], pause_seconds)
                 self.assertEqual(current_step['type'], 'pause')
 
@@ -94,19 +101,22 @@ class WorkoutTimerTestCase(WorkoutManagerTestCase):
             self.assertEqual(
                 current_step['exercise'], Exercise.objects.get(pk=2))
             self.assertEqual(current_step['reps'], 10)
+            self.assertEqual(current_step['step_nr'],
+                             list_length - len(step_list))
             self.assertEqual(
-                current_step['step_nr'], list_length - len(step_list))
-            self.assertEqual(math.floor(current_step['step_percent']),
-                             math.floor(current_step['step_nr'] * (100.0 / list_length)))
+                math.floor(current_step['step_percent']),
+                math.floor(current_step['step_nr'] * (100.0 / list_length)))
             self.assertEqual(current_step['type'], 'exercise')
             self.assertEqual(current_step['weight'], Decimal(15))
 
             if pause_active:
                 current_step = step_list.pop()
+                self.assertEqual(current_step['step_nr'],
+                                 list_length - len(step_list))
                 self.assertEqual(
-                    current_step['step_nr'], list_length - len(step_list))
-                self.assertEqual(math.floor(current_step['step_percent']),
-                                 math.floor(current_step['step_nr'] * (100.0 / list_length)))
+                    math.floor(current_step['step_percent']),
+                    math.floor(current_step['step_nr'] *
+                               (100.0 / list_length)))
                 self.assertEqual(current_step['time'], pause_seconds)
                 self.assertEqual(current_step['type'], 'pause')
 
@@ -114,10 +124,11 @@ class WorkoutTimerTestCase(WorkoutManagerTestCase):
             self.assertEqual(
                 current_step['exercise'], Exercise.objects.get(pk=2))
             self.assertEqual(current_step['reps'], 10)
+            self.assertEqual(current_step['step_nr'],
+                             list_length - len(step_list))
             self.assertEqual(
-                current_step['step_nr'], list_length - len(step_list))
-            self.assertEqual(math.floor(current_step['step_percent']),
-                             math.floor(current_step['step_nr'] * (100.0 / list_length)))
+                math.floor(current_step['step_percent']),
+                math.floor(current_step['step_nr'] * (100.0 / list_length)))
             self.assertEqual(current_step['type'], 'exercise')
             self.assertEqual(current_step['weight'], Decimal(15))
 
@@ -178,12 +189,18 @@ class WorkoutTimerWorkoutSessionTestCase(WorkoutManagerTestCase):
 
         today = datetime.date.today()
         response = self.client.get(
-            reverse('manager:workout:timer', kwargs={'day_pk': 5}))
+            reverse('manager:workout:timer', kwargs={
+                'day_pk': 5
+            }))
         self.assertEqual(response.context['form_action'],
-                         reverse('manager:session:add', kwargs={'workout_pk': 3,
-                                                                'year': today.year,
-                                                                'month': today.month,
-                                                                'day': today.day}))
+                         reverse(
+                             'manager:session:add',
+                             kwargs={
+                                 'workout_pk': 3,
+                                 'year': today.year,
+                                 'month': today.month,
+                                 'day': today.day
+                             }))
 
         session = WorkoutSession()
         session.user = User.objects.get(username='test')
@@ -196,6 +213,11 @@ class WorkoutTimerWorkoutSessionTestCase(WorkoutManagerTestCase):
         session.save()
 
         response = self.client.get(
-            reverse('manager:workout:timer', kwargs={'day_pk': 5}))
+            reverse('manager:workout:timer', kwargs={
+                'day_pk': 5
+            }))
         self.assertEqual(response.context['form_action'],
-                         reverse('manager:session:edit', kwargs={'pk': session.pk}))
+                         reverse(
+                             'manager:session:edit', kwargs={
+                                 'pk': session.pk
+                             }))

@@ -22,6 +22,7 @@ def capitalize_name(apps, schema_editor):
     The algorithm is copied here as it was implemented on the day the migration
     was written.
     '''
+
     def capitalize(input):
         out = []
         for word in input.split(' '):
@@ -36,6 +37,7 @@ def capitalize_name(apps, schema_editor):
         exercise.name = capitalize(exercise.name_original)
         exercise.save()
 
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -46,8 +48,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='exercise',
             name='name_original',
-            field=models.CharField(default='', max_length=200, verbose_name='Name'),
+            field=models.CharField(
+                default='', max_length=200, verbose_name='Name'),
         ),
-        migrations.RunPython(copy_name, reverse_code=migrations.RunPython.noop),
-        migrations.RunPython(capitalize_name, reverse_code=migrations.RunPython.noop),
+        migrations.RunPython(
+            copy_name, reverse_code=migrations.RunPython.noop),
+        migrations.RunPython(
+            capitalize_name, reverse_code=migrations.RunPython.noop),
     ]

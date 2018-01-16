@@ -21,22 +21,12 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from wger.nutrition.api.serializers import (
-    NutritionPlanSerializer,
-    IngredientWeightUnitSerializer,
-    WeightUnitSerializer,
-    MealItemSerializer,
-    MealSerializer,
-    IngredientSerializer
-)
+    NutritionPlanSerializer, IngredientWeightUnitSerializer,
+    WeightUnitSerializer, MealItemSerializer, MealSerializer,
+    IngredientSerializer)
 from wger.nutrition.forms import UnitChooserForm
-from wger.nutrition.models import (
-    Ingredient,
-    Meal,
-    MealItem,
-    WeightUnit,
-    IngredientWeightUnit,
-    NutritionPlan
-)
+from wger.nutrition.models import (Ingredient, Meal, MealItem, WeightUnit,
+                                   IngredientWeightUnit, NutritionPlan)
 from wger.utils.language import load_ingredient_languages, load_language
 from wger.utils.viewsets import WgerOwnerObjectModelViewSet
 
@@ -48,22 +38,10 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     ordering_fields = '__all__'
-    filter_fields = ('carbohydrates',
-                     'carbohydrates_sugar',
-                     'creation_date',
-                     'energy',
-                     'fat',
-                     'fat_saturated',
-                     'fibres',
-                     'name',
-                     'protein',
-                     'sodium',
-                     'status',
-                     'update_date',
-                     'language',
-                     'user',
-                     'license',
-                     'license_author')
+    filter_fields = ('carbohydrates', 'carbohydrates_sugar', 'creation_date',
+                     'energy', 'fat', 'fat_saturated', 'fibres', 'name',
+                     'protein', 'sodium', 'status', 'update_date', 'language',
+                     'user', 'license', 'license_author')
 
     @detail_route()
     def get_values(self, request, pk):
@@ -126,9 +104,10 @@ def search(request):
     json_response = {}
     if q:
         languages = load_ingredient_languages(request)
-        ingredients = Ingredient.objects.filter(name__icontains=q,
-                                                language__in=languages,
-                                                status__in=Ingredient.INGREDIENT_STATUS_OK)
+        ingredients = Ingredient.objects.filter(
+            name__icontains=q,
+            language__in=languages,
+            status__in=Ingredient.INGREDIENT_STATUS_OK)
 
         for ingredient in ingredients:
             ingredient_json = {
@@ -151,8 +130,7 @@ class WeightUnitViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = WeightUnit.objects.all()
     serializer_class = WeightUnitSerializer
     ordering_fields = '__all__'
-    filter_fields = ('language',
-                     'name')
+    filter_fields = ('language', 'name')
 
 
 class IngredientWeightUnitViewSet(viewsets.ReadOnlyModelViewSet):
@@ -162,10 +140,7 @@ class IngredientWeightUnitViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = IngredientWeightUnit.objects.all()
     serializer_class = IngredientWeightUnitSerializer
     ordering_fields = '__all__'
-    filter_fields = ('amount',
-                     'gram',
-                     'ingredient',
-                     'unit')
+    filter_fields = ('amount', 'gram', 'ingredient', 'unit')
 
 
 class NutritionPlanViewSet(viewsets.ModelViewSet):
@@ -175,9 +150,7 @@ class NutritionPlanViewSet(viewsets.ModelViewSet):
     serializer_class = NutritionPlanSerializer
     is_private = True
     ordering_fields = '__all__'
-    filter_fields = ('creation_date',
-                     'language',
-                     'description',
+    filter_fields = ('creation_date', 'language', 'description',
                      'has_goal_calories')
 
     def get_queryset(self):
@@ -197,7 +170,8 @@ class NutritionPlanViewSet(viewsets.ModelViewSet):
         '''
         Return an overview of the nutritional plan's values
         '''
-        return Response(NutritionPlan.objects.get(pk=pk).get_nutritional_values())
+        return Response(
+            NutritionPlan.objects.get(pk=pk).get_nutritional_values())
 
 
 class MealViewSet(WgerOwnerObjectModelViewSet):
@@ -207,9 +181,7 @@ class MealViewSet(WgerOwnerObjectModelViewSet):
     serializer_class = MealSerializer
     is_private = True
     ordering_fields = '__all__'
-    filter_fields = ('order',
-                     'plan',
-                     'time')
+    filter_fields = ('order', 'plan', 'time')
 
     def get_queryset(self):
         '''
@@ -244,11 +216,7 @@ class MealItemViewSet(WgerOwnerObjectModelViewSet):
     serializer_class = MealItemSerializer
     is_private = True
     ordering_fields = '__all__'
-    filter_fields = ('amount',
-                     'ingredient',
-                     'meal',
-                     'order',
-                     'weight_unit')
+    filter_fields = ('amount', 'ingredient', 'meal', 'order', 'weight_unit')
 
     def get_queryset(self):
         '''

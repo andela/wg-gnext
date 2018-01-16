@@ -19,10 +19,7 @@ from django.core.cache import cache
 from django.core.urlresolvers import reverse
 
 from wger.core.tests.base_testcase import (
-    STATUS_CODES_FAIL,
-    WorkoutManagerTestCase,
-    WorkoutManagerDeleteTestCase
-)
+    STATUS_CODES_FAIL, WorkoutManagerTestCase, WorkoutManagerDeleteTestCase)
 from wger.exercises.models import (
     Exercise,
     Muscle,
@@ -40,8 +37,8 @@ class ExerciseRepresentationTestCase(WorkoutManagerTestCase):
         '''
         Test that the representation of an object is correct
         '''
-        self.assertEqual("{0}".format(
-            Exercise.objects.get(pk=1)), 'An exercise')
+        self.assertEqual(
+            "{0}".format(Exercise.objects.get(pk=1)), 'An exercise')
 
 
 class ExerciseShareButtonTestCase(WorkoutManagerTestCase):
@@ -66,7 +63,6 @@ class ExerciseShareButtonTestCase(WorkoutManagerTestCase):
 
 
 class ExerciseIndexTestCase(WorkoutManagerTestCase):
-
     def exercise_index(self, logged_in=True, demo=False, admin=False):
         '''
         Tests the exercise overview page
@@ -103,12 +99,12 @@ class ExerciseIndexTestCase(WorkoutManagerTestCase):
 
         # Only authorized users see the edit links
         if admin:
-            self.assertNotContains(
-                response, 'Only registered users can do this')
+            self.assertNotContains(response,
+                                   'Only registered users can do this')
 
         if logged_in and not demo:
-            self.assertNotContains(
-                response, 'Only registered users can do this')
+            self.assertNotContains(response,
+                                   'Only registered users can do this')
 
         if logged_in and demo:
             self.assertContains(response, 'Only registered users can do this')
@@ -166,7 +162,9 @@ class ExerciseDetailTestCase(WorkoutManagerTestCase):
         '''
 
         response = self.client.get(
-            reverse('exercise:exercise:view', kwargs={'id': 1}))
+            reverse('exercise:exercise:view', kwargs={
+                'id': 1
+            }))
         self.assertEqual(response.status_code, 200)
 
         # Correct tab is selected
@@ -197,7 +195,9 @@ class ExerciseDetailTestCase(WorkoutManagerTestCase):
 
         # Ensure that non-existent exercises throw a 404.
         response = self.client.get(
-            reverse('exercise:exercise:view', kwargs={'id': 42}))
+            reverse('exercise:exercise:view', kwargs={
+                'id': 42
+            }))
         self.assertEqual(response.status_code, 404)
 
     def test_exercise_detail_editor(self):
@@ -236,11 +236,13 @@ class ExercisesTestCase(WorkoutManagerTestCase):
 
         # Add an exercise
         count_before = Exercise.objects.count()
-        response = self.client.post(reverse('exercise:exercise:add'),
-                                    {'category': 2,
-                                     'name_original': 'my test exercise',
-                                     'license': 1,
-                                     'muscles': [1, 2]})
+        response = self.client.post(
+            reverse('exercise:exercise:add'), {
+                'category': 2,
+                'name_original': 'my test exercise',
+                'license': 1,
+                'muscles': [1, 2]
+            })
         count_after = Exercise.objects.count()
         self.assertIn(response.status_code, STATUS_CODES_FAIL)
 
@@ -272,12 +274,14 @@ class ExercisesTestCase(WorkoutManagerTestCase):
         # Add an exercise
         count_before = Exercise.objects.count()
         description = 'a nice, long and accurate description for the exercise'
-        response = self.client.post(reverse('exercise:exercise:add'),
-                                    {'category': 2,
-                                     'name_original': 'my test exercise',
-                                     'license': 1,
-                                     'description': description,
-                                     'muscles': [1, 2]})
+        response = self.client.post(
+            reverse('exercise:exercise:add'), {
+                'category': 2,
+                'name_original': 'my test exercise',
+                'license': 1,
+                'description': description,
+                'muscles': [1, 2]
+            })
         count_after = Exercise.objects.count()
         self.assertEqual(response.status_code, 302)
         new_location = response['Location']
@@ -297,7 +301,9 @@ class ExercisesTestCase(WorkoutManagerTestCase):
             self.assertEqual(exercise.status, Exercise.STATUS_PENDING)
 
         response = self.client.get(
-            reverse('exercise:exercise:view', kwargs={'id': exercise_id}))
+            reverse('exercise:exercise:view', kwargs={
+                'id': exercise_id
+            }))
         self.assertEqual(response.status_code, 200)
 
         # Navigation tab
@@ -307,38 +313,50 @@ class ExercisesTestCase(WorkoutManagerTestCase):
         self.assertEqual(exercise_1.name, 'my Test Exercise')
 
         # Wrong category - adding
-        response = self.client.post(reverse('exercise:exercise:add'),
-                                    {'category': 111,
-                                     'name_original': 'my test exercise',
-                                     'license': 1,
-                                     'muscles': [1, 2]})
+        response = self.client.post(
+            reverse('exercise:exercise:add'), {
+                'category': 111,
+                'name_original': 'my test exercise',
+                'license': 1,
+                'muscles': [1, 2]
+            })
         self.assertTrue(response.context['form'].errors['category'])
 
         # Wrong category - editing
-        response = self.client.post(reverse('exercise:exercise:edit', kwargs={'pk': '1'}),
-                                    {'category': 111,
-                                     'name_original': 'my test exercise',
-                                     'license': 1,
-                                     'muscles': [1, 2]})
+        response = self.client.post(
+            reverse('exercise:exercise:edit', kwargs={
+                'pk': '1'
+            }), {
+                'category': 111,
+                'name_original': 'my test exercise',
+                'license': 1,
+                'muscles': [1, 2]
+            })
         if admin:
             self.assertTrue(response.context['form'].errors['category'])
         else:
             self.assertIn(response.status_code, STATUS_CODES_FAIL)
 
         # No muscles - adding
-        response = self.client.post(reverse('exercise:exercise:add'),
-                                    {'category': 1,
-                                     'name_original': 'my test exercise',
-                                     'license': 1,
-                                     'muscles': []})
+        response = self.client.post(
+            reverse('exercise:exercise:add'), {
+                'category': 1,
+                'name_original': 'my test exercise',
+                'license': 1,
+                'muscles': []
+            })
         self.assertFalse(response.context['form'].errors.get('muscles'))
 
         # No muscles - editing
-        response = self.client.post(reverse('exercise:exercise:edit', kwargs={'pk': '1'}),
-                                    {'category': 1,
-                                     'name_original': 'my test exercise',
-                                     'license': 1,
-                                     'muscles': []})
+        response = self.client.post(
+            reverse('exercise:exercise:edit', kwargs={
+                'pk': '1'
+            }), {
+                'category': 1,
+                'name_original': 'my test exercise',
+                'license': 1,
+                'muscles': []
+            })
         if admin:
             self.assertFalse(response.context['form'].errors.get('muscles'))
         else:
@@ -365,23 +383,27 @@ class ExercisesTestCase(WorkoutManagerTestCase):
         '''
 
         # 1 hit, "Very cool exercise"
-        response = self.client.get(reverse('exercise-search'),
-                                   {'term': 'cool'})
+        response = self.client.get(
+            reverse('exercise-search'), {
+                'term': 'cool'
+            })
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.content.decode('utf8'))
         self.assertEqual(len(result), 1)
-        self.assertEqual(result['suggestions'][0]
-                         ['value'], 'Very cool exercise')
+        self.assertEqual(result['suggestions'][0]['value'],
+                         'Very cool exercise')
         self.assertEqual(result['suggestions'][0]['data']['id'], 2)
-        self.assertEqual(result['suggestions'][0]['data']
-                         ['category'], 'Another category')
+        self.assertEqual(result['suggestions'][0]['data']['category'],
+                         'Another category')
         self.assertEqual(result['suggestions'][0]['data']['image'], None)
-        self.assertEqual(result['suggestions'][0]
-                         ['data']['image_thumbnail'], None)
+        self.assertEqual(result['suggestions'][0]['data']['image_thumbnail'],
+                         None)
 
         # 0 hits, "Pending exercise"
-        response = self.client.get(reverse('exercise-search'),
-                                   {'term': 'Pending'})
+        response = self.client.get(
+            reverse('exercise-search'), {
+                'term': 'Pending'
+            })
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.content.decode('utf8'))
         self.assertEqual(len(result['suggestions']), 0)
@@ -425,10 +447,12 @@ class ExercisesCacheTestCase(WorkoutManagerTestCase):
         '''
         if self.is_mobile:
             self.assertFalse(
-                cache.get(get_template_cache_name('exercise-overview-mobile', 2)))
+                cache.get(
+                    get_template_cache_name('exercise-overview-mobile', 2)))
             self.client.get(reverse('exercise:exercise:overview'))
             self.assertTrue(
-                cache.get(get_template_cache_name('exercise-overview-mobile', 2)))
+                cache.get(
+                    get_template_cache_name('exercise-overview-mobile', 2)))
         else:
             self.assertFalse(
                 cache.get(get_template_cache_name('exercise-overview', 2)))
@@ -464,8 +488,8 @@ class ExercisesCacheTestCase(WorkoutManagerTestCase):
             get_template_cache_name('muscle-overview', 2))
         old_exercise_overview = cache.get(
             get_template_cache_name('exercise-overview', 2))
-        old_exercise_overview_mobile = cache.get(get_template_cache_name('exercise-overview-mobile',
-                                                                         2))
+        old_exercise_overview_mobile = cache.get(
+            get_template_cache_name('exercise-overview-mobile', 2))
 
         exercise = Exercise.objects.get(pk=2)
         exercise.name = 'Very cool exercise 2'
@@ -490,8 +514,8 @@ class ExercisesCacheTestCase(WorkoutManagerTestCase):
             get_template_cache_name('muscle-overview', 2))
         new_exercise_overview = cache.get(
             get_template_cache_name('exercise-overview', 2))
-        new_exercise_overview_mobile = cache.get(get_template_cache_name('exercise-overview-mobile',
-                                                                         2))
+        new_exercise_overview_mobile = cache.get(
+            get_template_cache_name('exercise-overview-mobile', 2))
 
         if not self.is_mobile:
             self.assertNotEqual(old_exercise_bg, new_exercise_bg)

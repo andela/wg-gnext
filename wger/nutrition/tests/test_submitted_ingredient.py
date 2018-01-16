@@ -69,18 +69,20 @@ class IngredientsPendingDetailTestCase(WorkoutManagerTestCase):
         Helper function
         '''
         response = self.client.get(
-            reverse('nutrition:ingredient:view', kwargs={'id': 7}))
+            reverse('nutrition:ingredient:view', kwargs={
+                'id': 7
+            }))
         self.assertContains(response, 'pending review')
 
         if not fail:
             self.assertEqual(response.status_code, 200)
-            self.assertContains(
-                response, 'Please select one of the options below')
+            self.assertContains(response,
+                                'Please select one of the options below')
             self.assertContains(response, 'Accept')
             self.assertContains(response, 'Decline')
         else:
-            self.assertNotContains(
-                response, 'Please select one of the options below')
+            self.assertNotContains(response,
+                                   'Please select one of the options below')
             self.assertNotContains(response, 'Accept')
             self.assertNotContains(response, 'Decline')
 
@@ -121,7 +123,9 @@ class IngredientAcceptTestCase(WorkoutManagerTestCase):
         self.assertEqual(ingredient.status,
                          Ingredient.INGREDIENT_STATUS_PENDING)
         response = self.client.get(
-            reverse('nutrition:ingredient:accept', kwargs={'pk': 7}))
+            reverse('nutrition:ingredient:accept', kwargs={
+                'pk': 7
+            }))
         ingredient = Ingredient.objects.get(pk=7)
         self.assertEqual(response.status_code, 302)
 
@@ -173,7 +177,9 @@ class IngredientRejectTestCase(WorkoutManagerTestCase):
         self.assertEqual(ingredient.status,
                          Ingredient.INGREDIENT_STATUS_PENDING)
         response = self.client.get(
-            reverse('nutrition:ingredient:decline', kwargs={'pk': 7}))
+            reverse('nutrition:ingredient:decline', kwargs={
+                'pk': 7
+            }))
         ingredient = Ingredient.objects.get(pk=7)
         self.assertEqual(response.status_code, 302)
 

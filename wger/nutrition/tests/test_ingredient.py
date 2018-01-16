@@ -23,11 +23,8 @@ from django.core.urlresolvers import reverse
 from wger.core.models import Language
 from wger.core.tests import api_base_test
 from wger.core.tests.base_testcase import (
-    WorkoutManagerTestCase,
-    WorkoutManagerDeleteTestCase,
-    WorkoutManagerEditTestCase,
-    WorkoutManagerAddTestCase
-)
+    WorkoutManagerTestCase, WorkoutManagerDeleteTestCase,
+    WorkoutManagerEditTestCase, WorkoutManagerAddTestCase)
 from wger.nutrition.models import Ingredient
 from wger.nutrition.models import Meal
 from wger.utils.constants import NUTRITION_TAB
@@ -42,8 +39,8 @@ class IngredientRepresentationTestCase(WorkoutManagerTestCase):
         '''
         Test that the representation of an object is correct
         '''
-        self.assertEqual("{0}".format(
-            Ingredient.objects.get(pk=1)), 'Test ingredient 1')
+        self.assertEqual(
+            "{0}".format(Ingredient.objects.get(pk=1)), 'Test ingredient 1')
 
 
 class DeleteIngredientTestCase(WorkoutManagerDeleteTestCase):
@@ -64,17 +61,19 @@ class EditIngredientTestCase(WorkoutManagerEditTestCase):
     object_class = Ingredient
     url = 'nutrition:ingredient:edit'
     pk = 1
-    data = {'name': 'A new name',
-            'sodium': 2,
-            'energy': 200,
-            'fat': 10,
-            'carbohydrates_sugar': 5,
-            'fat_saturated': 3.14,
-            'fibres': 2.1,
-            'protein': 20,
-            'carbohydrates': 10,
-            'license': 2,
-            'license_author': 'me!'}
+    data = {
+        'name': 'A new name',
+        'sodium': 2,
+        'energy': 200,
+        'fat': 10,
+        'carbohydrates_sugar': 5,
+        'fat_saturated': 3.14,
+        'fibres': 2.1,
+        'protein': 20,
+        'carbohydrates': 10,
+        'license': 2,
+        'license_author': 'me!'
+    }
 
     def post_test_hook(self):
         '''
@@ -93,17 +92,19 @@ class AddIngredientTestCase(WorkoutManagerAddTestCase):
     object_class = Ingredient
     url = 'nutrition:ingredient:add'
     user_fail = False
-    data = {'name': 'A new ingredient',
-            'sodium': 2,
-            'energy': 200,
-            'fat': 10,
-            'carbohydrates_sugar': 5,
-            'fat_saturated': 3.14,
-            'fibres': 2.1,
-            'protein': 20,
-            'carbohydrates': 10,
-            'license': 2,
-            'license_author': 'me!'}
+    data = {
+        'name': 'A new ingredient',
+        'sodium': 2,
+        'energy': 200,
+        'fat': 10,
+        'carbohydrates_sugar': 5,
+        'fat_saturated': 3.14,
+        'fibres': 2.1,
+        'protein': 20,
+        'carbohydrates': 10,
+        'license': 2,
+        'license_author': 'me!'
+    }
 
     def post_test_hook(self):
         '''
@@ -131,7 +132,9 @@ class IngredientDetailTestCase(WorkoutManagerTestCase):
         '''
 
         response = self.client.get(
-            reverse('nutrition:ingredient:view', kwargs={'id': 6}))
+            reverse('nutrition:ingredient:view', kwargs={
+                'id': 6
+            }))
         self.assertEqual(response.status_code, 200)
 
         # Correct tab is selected
@@ -150,7 +153,9 @@ class IngredientDetailTestCase(WorkoutManagerTestCase):
 
         # Non-existent ingredients throw a 404.
         response = self.client.get(
-            reverse('nutrition:ingredient:view', kwargs={'id': 42}))
+            reverse('nutrition:ingredient:view', kwargs={
+                'id': 42
+            }))
         self.assertEqual(response.status_code, 404)
 
     def test_ingredient_detail_editor(self):
@@ -195,8 +200,8 @@ class IngredientSearchTestCase(WorkoutManagerTestCase):
         self.assertEqual(len(result['suggestions']), 2)
         self.assertEqual(result['suggestions'][0]['value'],
                          'Ingredient, test, 2, organic, raw')
-        self.assertEqual(result['suggestions'][1]
-                         ['value'], 'Test ingredient 1')
+        self.assertEqual(result['suggestions'][1]['value'],
+                         'Test ingredient 1')
 
         # Search for an ingredient pending review (0 hits, "Pending ingredient")
         response = self.client.get(
@@ -232,40 +237,54 @@ class IngredientValuesTestCase(WorkoutManagerTestCase):
         '''
 
         # Get the nutritional values in 1 gram of product
-        response = self.client.get(reverse('api-ingredient-get-values', kwargs={'pk': 1}),
-                                   {'amount': 1,
-                                    'ingredient': 1,
-                                    'unit': ''})
+        response = self.client.get(
+            reverse('api-ingredient-get-values', kwargs={
+                'pk': 1
+            }), {
+                'amount': 1,
+                'ingredient': 1,
+                'unit': ''
+            })
 
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.content.decode('utf8'))
         self.assertEqual(len(result), 8)
-        self.assertEqual(result, {u'sodium': u'0.01',
-                                  u'energy': u'1.76',
-                                  u'fat': u'0.08',
-                                  u'carbohydrates_sugar': u'0.00',
-                                  u'fat_saturated': u'0.03',
-                                  u'fibres': u'0.00',
-                                  u'protein': u'0.26',
-                                  u'carbohydrates': u'0.00'})
+        self.assertEqual(
+            result, {
+                u'sodium': u'0.01',
+                u'energy': u'1.76',
+                u'fat': u'0.08',
+                u'carbohydrates_sugar': u'0.00',
+                u'fat_saturated': u'0.03',
+                u'fibres': u'0.00',
+                u'protein': u'0.26',
+                u'carbohydrates': u'0.00'
+            })
 
         # Get the nutritional values in 1 unit of product
-        response = self.client.get(reverse('api-ingredient-get-values', kwargs={'pk': 1}),
-                                   {'amount': 1,
-                                    'ingredient': 1,
-                                    'unit': 2})
+        response = self.client.get(
+            reverse('api-ingredient-get-values', kwargs={
+                'pk': 1
+            }), {
+                'amount': 1,
+                'ingredient': 1,
+                'unit': 2
+            })
 
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.content.decode('utf8'))
         self.assertEqual(len(result), 8)
-        self.assertEqual(result, {u'sodium': u'0.61',
-                                  u'energy': u'196.24',
-                                  u'fat': u'9.13',
-                                  u'carbohydrates_sugar': u'0.00',
-                                  u'fat_saturated': u'3.62',
-                                  u'fibres': u'0.00',
-                                  u'protein': u'28.58',
-                                  u'carbohydrates': u'0.14'})
+        self.assertEqual(
+            result, {
+                u'sodium': u'0.61',
+                u'energy': u'196.24',
+                u'fat': u'9.13',
+                u'carbohydrates_sugar': u'0.00',
+                u'fat_saturated': u'3.62',
+                u'fibres': u'0.00',
+                u'protein': u'28.58',
+                u'carbohydrates': u'0.14'
+            })
 
     def test_calculate_value_anonymous(self):
         '''
@@ -363,5 +382,4 @@ class IngredientApiTestCase(api_base_test.ApiBaseResourceTestCase):
     pk = 4
     resource = Ingredient
     private_resource = False
-    data = {'language': 1,
-            'license': 2}
+    data = {'language': 1, 'license': 2}

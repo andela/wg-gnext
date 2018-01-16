@@ -28,19 +28,15 @@ from wger.exercises.forms import CommentForm
 from wger.exercises.models import Exercise, ExerciseComment
 from wger.utils.generic_views import WgerFormMixin
 
-
 logger = logging.getLogger(__name__)
-
 
 # ************************
 #    Exercise comments
 # ************************
 
 
-class ExerciseCommentEditView(WgerFormMixin,
-                              LoginRequiredMixin,
-                              PermissionRequiredMixin,
-                              UpdateView):
+class ExerciseCommentEditView(WgerFormMixin, LoginRequiredMixin,
+                              PermissionRequiredMixin, UpdateView):
     '''
     Generic view to update an existing exercise comment
     '''
@@ -51,22 +47,25 @@ class ExerciseCommentEditView(WgerFormMixin,
     permission_required = 'exercises.change_exercisecomment'
 
     def get_success_url(self):
-        return reverse('exercise:exercise:view', kwargs={'id': self.object.exercise.id})
+        return reverse(
+            'exercise:exercise:view', kwargs={
+                'id': self.object.exercise.id
+            })
 
     # Send some additional data to the template
     def get_context_data(self, **kwargs):
         context = super(ExerciseCommentEditView,
                         self).get_context_data(**kwargs)
-        context['form_action'] = reverse('exercise:comment:edit',
-                                         kwargs={'pk': self.object.id})
+        context['form_action'] = reverse(
+            'exercise:comment:edit', kwargs={
+                'pk': self.object.id
+            })
 
         return context
 
 
-class ExerciseCommentAddView(WgerFormMixin,
-                             LoginRequiredMixin,
-                             PermissionRequiredMixin,
-                             CreateView):
+class ExerciseCommentAddView(WgerFormMixin, LoginRequiredMixin,
+                             PermissionRequiredMixin, CreateView):
     '''
     Generic view to add a new exercise comment
     '''
@@ -82,7 +81,10 @@ class ExerciseCommentAddView(WgerFormMixin,
         return super(ExerciseCommentAddView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse('exercise:exercise:view', kwargs={'id': self.object.exercise.id})
+        return reverse(
+            'exercise:exercise:view', kwargs={
+                'id': self.object.exercise.id
+            })
 
     def get_context_data(self, **kwargs):
         '''
@@ -90,8 +92,11 @@ class ExerciseCommentAddView(WgerFormMixin,
         '''
         context = super(ExerciseCommentAddView,
                         self).get_context_data(**kwargs)
-        context['form_action'] = reverse('exercise:comment:add',
-                                         kwargs={'exercise_pk': self.kwargs['exercise_pk']})
+        context['form_action'] = reverse(
+            'exercise:comment:add',
+            kwargs={
+                'exercise_pk': self.kwargs['exercise_pk']
+            })
 
         return context
 
@@ -103,4 +108,7 @@ def delete(request, id):
     exercise_id = comment.exercise.id
     comment.delete()
 
-    return HttpResponseRedirect(reverse('exercise:exercise:view', kwargs={'id': exercise_id}))
+    return HttpResponseRedirect(
+        reverse('exercise:exercise:view', kwargs={
+            'id': exercise_id
+        }))

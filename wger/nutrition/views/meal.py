@@ -28,10 +28,10 @@ from wger.utils.generic_views import WgerFormMixin
 
 logger = logging.getLogger(__name__)
 
-
 # ************************
 # Meal functions
 # ************************
+
 
 class MealCreateView(WgerFormMixin, CreateView):
     '''
@@ -56,8 +56,10 @@ class MealCreateView(WgerFormMixin, CreateView):
     # Send some additional data to the template
     def get_context_data(self, **kwargs):
         context = super(MealCreateView, self).get_context_data(**kwargs)
-        context['form_action'] = reverse('nutrition:meal:add',
-                                         kwargs={'plan_pk': self.kwargs['plan_pk']})
+        context['form_action'] = reverse(
+            'nutrition:meal:add', kwargs={
+                'plan_pk': self.kwargs['plan_pk']
+            })
 
         return context
 

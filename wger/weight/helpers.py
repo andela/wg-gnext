@@ -41,8 +41,7 @@ def parse_weight_csv(request, cleaned_data):
         dialect = 'excel'
 
     # csv.reader expects a file-like object, so use StringIO
-    parsed_csv = csv.reader(six.StringIO(cleaned_data['csv_input']),
-                            dialect)
+    parsed_csv = csv.reader(six.StringIO(cleaned_data['csv_input']), dialect)
     distinct_weight_entries = []
     entry_dates = set()
     weight_list = []
@@ -56,8 +55,8 @@ def parse_weight_csv(request, cleaned_data):
             parsed_date = datetime.datetime.strptime(
                 row[0], cleaned_data['date_format'])
             parsed_weight = decimal.Decimal(row[1].replace(',', '.'))
-            duplicate_date_in_db = WeightEntry.objects.filter(date=parsed_date,
-                                                              user=request.user).exists()
+            duplicate_date_in_db = WeightEntry.objects.filter(
+                date=parsed_date, user=request.user).exists()
             # within the list there are no duplicate dates
             unique_among_csv = parsed_date not in entry_dates
 
@@ -78,9 +77,8 @@ def parse_weight_csv(request, cleaned_data):
 
     # Create the valid weight entries
     for date, weight in distinct_weight_entries:
-        weight_list.append(WeightEntry(date=date,
-                                       weight=weight,
-                                       user=request.user))
+        weight_list.append(
+            WeightEntry(date=date, weight=weight, user=request.user))
 
     return (weight_list, error_list)
 
@@ -102,21 +100,19 @@ def group_log_entries(user, year, month, day=None):
     else:
         log_hash = hash((user.pk, year, month))
 
-    # There can be workout sessions without any associated log entries, so it is
-    # not enough so simply iterate through the logs
+    # There can be workout sessions without any associated log entries,
+    # so it is not enough so simply iterate through the logs
     if day:
         filter_date = datetime.date(year, month, day)
         logs = WorkoutLog.objects.filter(user=user, date=filter_date)
         sessions = WorkoutSession.objects.filter(user=user, date=filter_date)
 
     else:
-        logs = WorkoutLog.objects.filter(user=user,
-                                         date__year=year,
-                                         date__month=month)
+        logs = WorkoutLog.objects.filter(
+            user=user, date__year=year, date__month=month)
 
-        sessions = WorkoutSession.objects.filter(user=user,
-                                                 date__year=year,
-                                                 date__month=month)
+        sessions = WorkoutSession.objects.filter(
+            user=user, date__year=year, date__month=month)
 
     logs = logs.order_by('date', 'id')
     out = cache.get(cache_mapper.get_workout_log_list(log_hash))
@@ -128,10 +124,12 @@ def group_log_entries(user, year, month, day=None):
         # Logs
         for entry in logs:
             if not out.get(entry.date):
-                out[entry.date] = {'date': entry.date,
-                                   'workout': entry.workout,
-                                   'session': entry.get_workout_session(),
-                                   'logs': OrderedDict()}
+                out[entry.date] = {
+                    'date': entry.date,
+                    'workout': entry.workout,
+                    'session': entry.get_workout_session(),
+                    'logs': OrderedDict()
+                }
 
             if not out[entry.date]['logs'].get(entry.exercise):
                 out[entry.date]['logs'][entry.exercise] = []
@@ -141,10 +139,12 @@ def group_log_entries(user, year, month, day=None):
         # Sessions
         for entry in sessions:
             if not out.get(entry.date):
-                out[entry.date] = {'date': entry.date,
-                                   'workout': entry.workout,
-                                   'session': entry,
-                                   'logs': {}}
+                out[entry.date] = {
+                    'date': entry.date,
+                    'workout': entry.workout,
+                    'session': entry,
+                    'logs': {}
+                }
 
         cache.set(cache_mapper.get_workout_log_list(log_hash), out)
     return out
@@ -188,14 +188,17 @@ def process_log_entries(logs):
         # Only add if weight is the maximum for the day
         if entry.weight != max_weight[entry.date][entry.reps]:
             continue
-        if (entry.date, entry.reps, entry.weight) in entry_list[entry.reps]['seen']:
+        if (entry.date, entry.reps,
+                entry.weight) in entry_list[entry.reps]['seen']:
             continue
 
-        entry_list[entry.reps]['seen'].append(
-            (entry.date, entry.reps, entry.weight))
-        entry_list[entry.reps]['list'].append({'date': entry.date,
-                                               'weight': entry.weight,
-                                               'reps': entry.reps})
+        entry_list[entry.reps]['seen'].append((entry.date, entry.reps,
+                                               entry.weight))
+        entry_list[entry.reps]['list'].append({
+            'date': entry.date,
+            'weight': entry.weight,
+            'reps': entry.reps
+        })
     for rep in entry_list:
         chart_data.append(entry_list[rep]['list'])
 

@@ -15,7 +15,6 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
 
-
 from wger import get_version
 
 VERSION = get_version()

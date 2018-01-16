@@ -43,8 +43,7 @@ class AddWorkoutDayTestCase(WorkoutManagerAddTestCase):
     url = reverse('manager:day:add', kwargs={'workout_pk': 3})
     user_success = 'test'
     user_fail = 'admin'
-    data = {'description': 'a new day',
-            'day': [1, 4]}
+    data = {'description': 'a new day', 'day': [1, 4]}
 
 
 class DeleteWorkoutDayTestCase(WorkoutManagerTestCase):
@@ -60,7 +59,9 @@ class DeleteWorkoutDayTestCase(WorkoutManagerTestCase):
         # Fetch the day edit page
         count_before = Day.objects.count()
         response = self.client.get(
-            reverse('manager:day:delete', kwargs={'pk': 5}))
+            reverse('manager:day:delete', kwargs={
+                'pk': 5
+            }))
         count_after = Day.objects.count()
 
         if fail:
@@ -78,7 +79,7 @@ class DeleteWorkoutDayTestCase(WorkoutManagerTestCase):
         Test deleting a day as an anonymous user
         '''
 
-        self. delete_day(fail=True)
+        self.delete_day(fail=True)
 
     def test_delete_workout_owner(self):
         '''
@@ -107,8 +108,7 @@ class EditWorkoutDayTestCase(WorkoutManagerEditTestCase):
     pk = 5
     user_success = 'test'
     user_fail = 'admin'
-    data = {'description': 'a different description',
-            'day': [1, 4]}
+    data = {'description': 'a different description', 'day': [1, 4]}
 
 
 class RenderWorkoutDayTestCase(WorkoutManagerTestCase):
@@ -123,7 +123,9 @@ class RenderWorkoutDayTestCase(WorkoutManagerTestCase):
 
         # Fetch the day edit page
         response = self.client.get(
-            reverse('manager:day:view', kwargs={'id': 5}))
+            reverse('manager:day:view', kwargs={
+                'id': 5
+            }))
 
         if fail:
             self.assertIn(response.status_code, (302, 404))

@@ -76,8 +76,7 @@ class WeightUnitOverviewTestCase(WorkoutManagerTestCase):
 
         # Add more ingredient units so we can test the pagination
         self.user_login('admin')
-        data = {"name": "A new, cool unit",
-                "language": 2}
+        data = {"name": "A new, cool unit", "language": 2}
         for i in range(0, 50):
             self.client.post(reverse('nutrition:weight_unit:add'), data)
 
@@ -88,29 +87,39 @@ class WeightUnitOverviewTestCase(WorkoutManagerTestCase):
             len(response.context['unit_list']), PAGINATION_OBJECTS_PER_PAGE)
 
         response = self.client.get(
-            reverse('nutrition:weight_unit:list'), {'page': 2})
+            reverse('nutrition:weight_unit:list'), {
+                'page': 2
+            })
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             len(response.context['unit_list']), PAGINATION_OBJECTS_PER_PAGE)
 
         response = self.client.get(
-            reverse('nutrition:weight_unit:list'), {'page': 3})
+            reverse('nutrition:weight_unit:list'), {
+                'page': 3
+            })
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context['unit_list']), 3)
 
         # 'last' is a special case
         response = self.client.get(
-            reverse('nutrition:weight_unit:list'), {'page': 'last'})
+            reverse('nutrition:weight_unit:list'), {
+                'page': 'last'
+            })
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context['unit_list']), 3)
 
         # Page does not exist
         response = self.client.get(
-            reverse('nutrition:weight_unit:list'), {'page': 100})
+            reverse('nutrition:weight_unit:list'), {
+                'page': 100
+            })
         self.assertEqual(response.status_code, 404)
 
         response = self.client.get(
-            reverse('nutrition:weight_unit:list'), {'page': 'foobar'})
+            reverse('nutrition:weight_unit:list'), {
+                'page': 'foobar'
+            })
         self.assertEqual(response.status_code, 404)
 
 

@@ -30,10 +30,7 @@ from wger import get_version
 from wger.manager.models import Workout, Schedule
 from wger.utils.helpers import next_weekday, check_token
 
-
 logger = logging.getLogger(__name__)
-
-
 '''
 Exports workouts and schedules as an iCal file that can be imported to a
 calendaring application.
@@ -85,8 +82,8 @@ def get_events_workout(calendar, workout, duration, start_date=None):
         for set in day['set_list']:
             for exercise in set['exercise_list']:
                 description_list.append(six.text_type(exercise['obj']))
-        description = ', '.join(
-            description_list) if description_list else day['obj'].description
+        description = ', '.join(description_list) if description_list else day[
+            'obj'].description
 
         # Make an event for each weekday
         for weekday in day['days_of_week']['day_list']:

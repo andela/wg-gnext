@@ -21,17 +21,9 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy
 from django.http import HttpResponseForbidden
-from django.views.generic import (
-    ListView,
-    DeleteView,
-    CreateView,
-    UpdateView
-)
+from django.views.generic import (ListView, DeleteView, CreateView, UpdateView)
 
-from wger.utils.generic_views import (
-    WgerFormMixin,
-    WgerDeleteMixin
-)
+from wger.utils.generic_views import (WgerFormMixin, WgerDeleteMixin)
 
 from wger.core.models import License, RepetitionUnit
 
@@ -47,7 +39,8 @@ class ListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     template_name = 'repetition_unit/list.html'
 
 
-class AddView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class AddView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin,
+              CreateView):
     '''
     View to add a new setting unit
     '''
@@ -60,7 +53,8 @@ class AddView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, Create
     permission_required = 'core.add_repetitionunit'
 
 
-class UpdateView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class UpdateView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin,
+                 UpdateView):
     '''
     View to update an existing setting unit
     '''
@@ -80,7 +74,8 @@ class UpdateView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, Upd
         return context
 
 
-class DeleteView(WgerDeleteMixin, LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class DeleteView(WgerDeleteMixin, LoginRequiredMixin, PermissionRequiredMixin,
+                 DeleteView):
     '''
     View to delete an existing license
     '''

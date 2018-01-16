@@ -79,48 +79,95 @@ v1_api.register(core_api.DaysOfWeekResource())
 v1_api.register(core_api.UserProfileResource())
 v1_api.register(core_api.LicenseResource())
 
-
 ### /api/v2 - django rest framework
 router = routers.DefaultRouter()
 
 # Manager app
-router.register(r'workout', manager_api_views.WorkoutViewSet, base_name='workout')
-router.register(r'workoutsession', manager_api_views.WorkoutSessionViewSet, base_name='workoutsession')
-router.register(r'schedulestep', manager_api_views.ScheduleStepViewSet, base_name='schedulestep')
-router.register(r'schedule', manager_api_views.ScheduleViewSet, base_name='schedule')
+router.register(
+    r'workout', manager_api_views.WorkoutViewSet, base_name='workout')
+router.register(
+    r'workoutsession',
+    manager_api_views.WorkoutSessionViewSet,
+    base_name='workoutsession')
+router.register(
+    r'schedulestep',
+    manager_api_views.ScheduleStepViewSet,
+    base_name='schedulestep')
+router.register(
+    r'schedule', manager_api_views.ScheduleViewSet, base_name='schedule')
 router.register(r'day', manager_api_views.DayViewSet, base_name='day')
 router.register(r'set', manager_api_views.SetViewSet, base_name='Set')
-router.register(r'setting', manager_api_views.SettingViewSet, base_name='Setting')
-router.register(r'workoutlog', manager_api_views.WorkoutLogViewSet, base_name='workoutlog')
+router.register(
+    r'setting', manager_api_views.SettingViewSet, base_name='Setting')
+router.register(
+    r'workoutlog', manager_api_views.WorkoutLogViewSet, base_name='workoutlog')
 
 # Core app
-router.register(r'userprofile', core_api_views.UserProfileViewSet, base_name='userprofile')
-router.register(r'language', core_api_views.LanguageViewSet, base_name='language')
-router.register(r'daysofweek', core_api_views.DaysOfWeekViewSet, base_name='daysofweek')
+router.register(
+    r'userprofile', core_api_views.UserProfileViewSet, base_name='userprofile')
+router.register(
+    r'language', core_api_views.LanguageViewSet, base_name='language')
+router.register(
+    r'daysofweek', core_api_views.DaysOfWeekViewSet, base_name='daysofweek')
 router.register(r'license', core_api_views.LicenseViewSet, base_name='license')
-router.register(r'setting-repetitionunit', core_api_views.RepetitionUnitViewSet, base_name='setting-repetition-unit')
-router.register(r'setting-weightunit', core_api_views.WeightUnitViewSet, base_name='setting-weight-unit')
+router.register(
+    r'setting-repetitionunit',
+    core_api_views.RepetitionUnitViewSet,
+    base_name='setting-repetition-unit')
+router.register(
+    r'setting-weightunit',
+    core_api_views.WeightUnitViewSet,
+    base_name='setting-weight-unit')
 
 # Exercises app
-router.register(r'exercise', exercises_api_views.ExerciseViewSet, base_name='exercise')
-router.register(r'exercisedetails', exercises_api_views.ExerciseDetailViewSet, base_name='exercisedetails')
-router.register(r'equipment', exercises_api_views.EquipmentViewSet, base_name='api')
-router.register(r'exercisecategory', exercises_api_views.ExerciseCategoryViewSet, base_name='exercisecategory')
-router.register(r'exerciseimage', exercises_api_views.ExerciseImageViewSet, base_name='exerciseimage')
-router.register(r'exercisecomment', exercises_api_views.ExerciseCommentViewSet, base_name='exercisecomment')
-router.register(r'muscle', exercises_api_views.MuscleViewSet, base_name='muscle')
+router.register(
+    r'exercise', exercises_api_views.ExerciseViewSet, base_name='exercise')
+router.register
+    (r'exercisedetails', exercises_api_views.ExerciseDetailViewSet, 
+     base_name='exercisedetails')
+router.register(
+    r'equipment', exercises_api_views.EquipmentViewSet, base_name='api')
+router.register(
+    r'exercisecategory',
+    exercises_api_views.ExerciseCategoryViewSet,
+    base_name='exercisecategory')
+router.register(
+    r'exerciseimage',
+    exercises_api_views.ExerciseImageViewSet,
+    base_name='exerciseimage')
+router.register(
+    r'exercisecomment',
+    exercises_api_views.ExerciseCommentViewSet,
+    base_name='exercisecomment')
+router.register(
+    r'muscle', exercises_api_views.MuscleViewSet, base_name='muscle')
 
 # Nutrition app
-router.register(r'ingredient', nutrition_api_views.IngredientViewSet, base_name='api-ingredient')
-router.register(r'weightunit', nutrition_api_views.WeightUnitViewSet, base_name='weightunit')
-router.register(r'ingredientweightunit', nutrition_api_views.IngredientWeightUnitViewSet, base_name='ingredientweightunit')
-router.register(r'nutritionplan', nutrition_api_views.NutritionPlanViewSet, base_name='nutritionplan')
+router.register(
+    r'ingredient',
+    nutrition_api_views.IngredientViewSet,
+    base_name='api-ingredient')
+router.register(
+    r'weightunit',
+    nutrition_api_views.WeightUnitViewSet,
+    base_name='weightunit')
+router.register(
+    r'ingredientweightunit',
+    nutrition_api_views.IngredientWeightUnitViewSet,
+    base_name='ingredientweightunit')
+router.register(
+    r'nutritionplan',
+    nutrition_api_views.NutritionPlanViewSet,
+    base_name='nutritionplan')
 router.register(r'meal', nutrition_api_views.MealViewSet, base_name='meal')
-router.register(r'mealitem', nutrition_api_views.MealItemViewSet, base_name='mealitem')
+router.register(
+    r'mealitem', nutrition_api_views.MealItemViewSet, base_name='mealitem')
 
 # Weight app
-router.register(r'weightentry', weight_api_views.WeightEntryViewSet, base_name='weightentry')
-
+router.register(
+    r'weightentry',
+    weight_api_views.WeightEntryViewSet,
+    base_name='weightentry')
 
 from django.contrib import admin
 admin.autodiscover()
@@ -128,8 +175,7 @@ admin.autodiscover()
 #
 # Sitemaps
 #
-sitemaps = {'exercises': ExercisesSitemap,
-            'nutrition': NutritionSitemap}
+sitemaps = {'exercises': ExercisesSitemap, 'nutrition': NutritionSitemap}
 
 #
 # The actual URLs
@@ -141,15 +187,14 @@ urlpatterns = i18n_patterns(
     url(r'exercise/', include('wger.exercises.urls', namespace='exercise')),
     url(r'weight/', include('wger.weight.urls', namespace='weight')),
     url(r'nutrition/', include('wger.nutrition.urls', namespace='nutrition')),
-    url(r'software/', include('wger.software.urls', namespace='software', app_name='software')),
-    url(r'config/', include('wger.config.urls', namespace='config', app_name='config')),
+    url(r'software/',
+        include(
+            'wger.software.urls', namespace='software', app_name='software')),
+    url(r'config/',
+        include('wger.config.urls', namespace='config', app_name='config')),
     url(r'gym/', include('wger.gym.urls', namespace='gym', app_name='gym')),
     url(r'email/', include('wger.email.urls', namespace='email')),
-    url(r'^sitemap\.xml$',
-        sitemap,
-        {'sitemaps': sitemaps},
-        name='sitemap')
-)
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='sitemap'))
 
 #
 # URLs without language prefix
@@ -158,8 +203,10 @@ urlpatterns += [
     url(r'^robots\.txt$',
         TextTemplateView.as_view(template_name="robots.txt"),
         name='robots'),
-    url(r'^manifest\.webapp$', WebappManifestView.as_view(template_name="manifest.webapp")),
-    url(r'^amazon-manifest\.webapp$', WebappManifestView.as_view(template_name="amazon-manifest.webapp")),
+    url(r'^manifest\.webapp$',
+        WebappManifestView.as_view(template_name="manifest.webapp")),
+    url(r'^amazon-manifest\.webapp$',
+        WebappManifestView.as_view(template_name="amazon-manifest.webapp")),
 
     # API
     url(r'^api/', include(v1_api.urls)),
@@ -176,4 +223,5 @@ urlpatterns += [
 # URL for user uploaded files, served like this during development only
 #
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

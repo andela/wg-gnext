@@ -27,7 +27,6 @@ from reportlab.platypus import Paragraph
 from wger import get_version
 from wger.core.models import Language
 
-
 # ************************
 # Language functions
 # ************************
@@ -65,7 +64,7 @@ def load_ingredient_languages(request):
     '''
 
     language = load_language()
-    languages = (language.id,)
+    languages = (language.id, )
 
     # Only registered users have a profile
     if request.user.is_authenticated():
@@ -91,55 +90,67 @@ def render_footer(url, date=None):
                             <a href="{url}">{url}</a> -
                             wger Workout Manager
                             {version}
-                        </para>'''.format(date=date,
-                                          url=url,
-                                          version=get_version()),
-                      styleSheet["Normal"])
+                        </para>'''.format(
+            date=date, url=url, version=get_version()), styleSheet["Normal"])
     return p
 
 
 # register new truetype fonts for reportlab
-pdfmetrics.registerFont(TTFont(
-    'OpenSans', path_join(settings.SITE_ROOT, 'core/static/fonts/OpenSans-Light.ttf')))
-pdfmetrics.registerFont(TTFont(
-    'OpenSans-Bold', path_join(settings.SITE_ROOT, 'core/static/fonts/OpenSans-Bold.ttf')))
-pdfmetrics.registerFont(TTFont(
-    'OpenSans-Regular', path_join(settings.SITE_ROOT, 'core/static/fonts/OpenSans-Regular.ttf')))
-pdfmetrics.registerFont(TTFont(
-    'OpenSans-Italic', path_join(settings.SITE_ROOT, 'core/static/fonts/OpenSans-LightItalic.ttf')))
+pdfmetrics.registerFont(
+    TTFont('OpenSans',
+           path_join(settings.SITE_ROOT,
+                     'core/static/fonts/OpenSans-Light.ttf')))
+pdfmetrics.registerFont(
+    TTFont('OpenSans-Bold',
+           path_join(settings.SITE_ROOT,
+                     'core/static/fonts/OpenSans-Bold.ttf')))
+pdfmetrics.registerFont(
+    TTFont('OpenSans-Regular',
+           path_join(settings.SITE_ROOT,
+                     'core/static/fonts/OpenSans-Regular.ttf')))
+pdfmetrics.registerFont(
+    TTFont('OpenSans-Italic',
+           path_join(settings.SITE_ROOT,
+                     'core/static/fonts/OpenSans-LightItalic.ttf')))
 
 styleSheet = StyleSheet1()
-styleSheet.add(ParagraphStyle(
-               name='Normal',
-               fontName='OpenSans',
-               fontSize=10,
-               leading=12,
-               ))
-styleSheet.add(ParagraphStyle(
-               parent=styleSheet['Normal'],
-               fontSize=8,
-               name='Small',
-               ))
-styleSheet.add(ParagraphStyle(
-               parent=styleSheet['Normal'],
-               fontSize=7,
-               name='ExerciseComments',
-               fontName='OpenSans-Italic',
-               ))
-styleSheet.add(ParagraphStyle(
-               parent=styleSheet['Normal'],
-               name='HeaderBold',
-               fontSize=14,
-               fontName='OpenSans-Bold',
-               ))
-styleSheet.add(ParagraphStyle(
-               parent=styleSheet['Normal'],
-               name='SubHeader',
-               fontSize=12,
-               fontName='OpenSans',
-               ))
-styleSheet.add(ParagraphStyle(
-               parent=styleSheet['Normal'],
-               name='Bold',
-               fontName='OpenSans-Bold',
-               ))
+styleSheet.add(
+    ParagraphStyle(
+        name='Normal',
+        fontName='OpenSans',
+        fontSize=10,
+        leading=12,
+    ))
+styleSheet.add(
+    ParagraphStyle(
+        parent=styleSheet['Normal'],
+        fontSize=8,
+        name='Small',
+    ))
+styleSheet.add(
+    ParagraphStyle(
+        parent=styleSheet['Normal'],
+        fontSize=7,
+        name='ExerciseComments',
+        fontName='OpenSans-Italic',
+    ))
+styleSheet.add(
+    ParagraphStyle(
+        parent=styleSheet['Normal'],
+        name='HeaderBold',
+        fontSize=14,
+        fontName='OpenSans-Bold',
+    ))
+styleSheet.add(
+    ParagraphStyle(
+        parent=styleSheet['Normal'],
+        name='SubHeader',
+        fontSize=12,
+        fontName='OpenSans',
+    ))
+styleSheet.add(
+    ParagraphStyle(
+        parent=styleSheet['Normal'],
+        name='Bold',
+        fontName='OpenSans-Bold',
+    ))

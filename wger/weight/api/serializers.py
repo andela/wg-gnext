@@ -27,4 +27,4 @@ class WeightEntrySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = WeightEntry
-        exclude = ('user',)
+        exclude = ('user', )

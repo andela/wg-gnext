@@ -27,11 +27,7 @@ from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 
 from wger.utils.constants import (
-    HTML_TAG_WHITELIST,
-    HTML_ATTRIBUTES_WHITELIST,
-    HTML_STYLES_WHITELIST
-)
-
+    HTML_TAG_WHITELIST, HTML_ATTRIBUTES_WHITELIST, HTML_STYLES_WHITELIST)
 
 logger = logging.getLogger(__name__)
 
@@ -77,8 +73,9 @@ class WgerPermissionMixin(object):
 
         if self.login_required or self.permission_required:
             if not request.user.is_authenticated():
-                return HttpResponseRedirect(reverse_lazy('core:user:login')
-                                            + '?next={0}'.format(request.path))
+                return HttpResponseRedirect(
+                    reverse_lazy('core:user:login') +
+                    '?next={0}'.format(request.path))
 
             if self.permission_required:
                 has_permission = False
@@ -90,10 +87,12 @@ class WgerPermissionMixin(object):
                     has_permission = True
 
                 if not has_permission:
-                    return HttpResponseForbidden('You are not allowed to access this object')
+                    return HttpResponseForbidden(
+                        'You are not allowed to access this object')
 
         # Dispatch normally
-        return super(WgerPermissionMixin, self).dispatch(request, *args, **kwargs)
+        return super(WgerPermissionMixin, self).dispatch(
+            request, *args, **kwargs)
 
 
 # , PermissionRequiredMixin
@@ -160,8 +159,10 @@ class WgerFormMixin(ModelFormMixin):
         # opening it on a modal dialog, we need to make sure the POST request
         # reaches the correct controller
         if self.form_action_urlname:
-            context['form_action'] = reverse(self.form_action_urlname,
-                                             kwargs={'pk': self.object.id})
+            context['form_action'] = reverse(
+                self.form_action_urlname, kwargs={
+                    'pk': self.object.id
+                })
         elif self.form_action:
             context['form_action'] = self.form_action
 
@@ -204,7 +205,8 @@ class WgerFormMixin(ModelFormMixin):
 
         # Nothing to see, please move along
         if owner_object and owner_object.user != self.request.user:
-            return HttpResponseForbidden('You are not allowed to access this object')
+            return HttpResponseForbidden(
+                'You are not allowed to access this object')
 
         # Dispatch normally
         return super(WgerFormMixin, self).dispatch(request, *args, **kwargs)
@@ -233,11 +235,13 @@ class WgerFormMixin(ModelFormMixin):
         '''
 
         for field in self.clean_html:
-            setattr(form.instance, field, bleach.clean(getattr(form.instance, field),
-                                                       tags=HTML_TAG_WHITELIST,
-                                                       attributes=HTML_ATTRIBUTES_WHITELIST,
-                                                       styles=HTML_STYLES_WHITELIST,
-                                                       strip=True))
+            setattr(form.instance, field,
+                    bleach.clean(
+                        getattr(form.instance, field),
+                        tags=HTML_TAG_WHITELIST,
+                        attributes=HTML_ATTRIBUTES_WHITELIST,
+                        styles=HTML_STYLES_WHITELIST,
+                        strip=True))
 
         if self.get_messages():
             messages.success(self.request, self.get_messages())
@@ -268,8 +272,10 @@ class WgerDeleteMixin(ModelFormMixin):
         # opening it on a modal dialog, we need to make sure the POST request
         # reaches the correct controller
         if self.form_action_urlname:
-            context['form_action'] = reverse(self.form_action_urlname,
-                                             kwargs={'pk': self.object.id})
+            context['form_action'] = reverse(
+                self.form_action_urlname, kwargs={
+                    'pk': self.object.id
+                })
         elif self.form_action:
             context['form_action'] = self.form_action
 
@@ -330,7 +336,8 @@ class TextTemplateView(TemplateView):
 
     def render_to_response(self, context, **response_kwargs):
         response_kwargs['content_type'] = 'text/plain'
-        return super(TextTemplateView, self).render_to_response(context, **response_kwargs)
+        return super(TextTemplateView, self).render_to_response(
+            context, **response_kwargs)
 
 
 class WebappManifestView(TemplateView):
@@ -343,4 +350,5 @@ class WebappManifestView(TemplateView):
 
     def render_to_response(self, context, **response_kwargs):
         response_kwargs['content_type'] = 'application/x-web-app-manifest+json'
-        return super(WebappManifestView, self).render_to_response(context, **response_kwargs)
+        return super(WebappManifestView, self).render_to_response(
+            context, **response_kwargs)

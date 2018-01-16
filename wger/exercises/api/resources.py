@@ -22,29 +22,25 @@ from easy_thumbnails.files import get_thumbnailer
 
 from wger.core.api.resources import LanguageResource, LicenseResource
 
-from wger.exercises.models import (
-    Exercise,
-    ExerciseCategory,
-    ExerciseComment,
-    ExerciseImage,
-    Muscle,
-    Equipment
-)
+from wger.exercises.models import (Exercise, ExerciseCategory, ExerciseComment,
+                                   ExerciseImage, Muscle, Equipment)
 
 
 class ExerciseResource(ModelResource):
-    category = fields.ToOneField('wger.exercises.api.resources.ExerciseCategoryResource',
-                                 'category')
-    muscles = fields.ToManyField(
-        'wger.exercises.api.resources.MuscleResource', 'muscles')
-    muscles_secondary = fields.ToManyField('wger.exercises.api.resources.MuscleResource',
-                                           'muscles_secondary')
-    comments = fields.ToManyField('wger.exercises.api.resources.ExerciseCommentResource',
-                                  'exercisecomment_set')
-    images = fields.ToManyField('wger.exercises.api.resources.ExerciseImageResource',
-                                'exerciseimage_set')
-    equipment = fields.ToManyField('wger.exercises.api.resources.EquipmentResource',
-                                   'equipment')
+    category = fields.ToOneField(
+        'wger.exercises.api.resources.ExerciseCategoryResource', 'category')
+    muscles = fields.ToManyField('wger.exercises.api.resources.MuscleResource',
+                                 'muscles')
+    muscles_secondary = fields.ToManyField(
+        'wger.exercises.api.resources.MuscleResource', 'muscles_secondary')
+    comments = fields.ToManyField(
+        'wger.exercises.api.resources.ExerciseCommentResource',
+        'exercisecomment_set')
+    images = fields.ToManyField(
+        'wger.exercises.api.resources.ExerciseImageResource',
+        'exerciseimage_set')
+    equipment = fields.ToManyField(
+        'wger.exercises.api.resources.EquipmentResource', 'equipment')
     language = fields.ToOneField(LanguageResource, 'language')
     license = fields.ToOneField(LicenseResource, 'license')
 
@@ -52,34 +48,32 @@ class ExerciseResource(ModelResource):
 
     class Meta:
         queryset = Exercise.objects.all()
-        filtering = {'id': ALL,
-                     "uuid": ALL,
-                     "category": ALL_WITH_RELATIONS,
-                     "creation_date": ALL,
-                     "description": ALL,
-                     "images": ALL_WITH_RELATIONS,
-                     "language": ALL_WITH_RELATIONS,
-                     "muscles": ALL_WITH_RELATIONS,
-                     "status": ALL,
-                     "name": ALL,
-                     "license": ALL,
-                     "license_author": ALL}
+        filtering = {
+            'id': ALL,
+            "uuid": ALL,
+            "category": ALL_WITH_RELATIONS,
+            "creation_date": ALL,
+            "description": ALL,
+            "images": ALL_WITH_RELATIONS,
+            "language": ALL_WITH_RELATIONS,
+            "muscles": ALL_WITH_RELATIONS,
+            "status": ALL,
+            "name": ALL,
+            "license": ALL,
+            "license_author": ALL
+        }
 
 
 class EquipmentResource(ModelResource):
-
     class Meta:
         queryset = Equipment.objects.all()
-        filtering = {'id': ALL,
-                     "name": ALL}
+        filtering = {'id': ALL, "name": ALL}
 
 
 class ExerciseCategoryResource(ModelResource):
-
     class Meta:
         queryset = ExerciseCategory.objects.all()
-        filtering = {'id': ALL,
-                     "name": ALL}
+        filtering = {'id': ALL, "name": ALL}
 
 
 class ExerciseImageResource(ModelResource):
@@ -89,11 +83,13 @@ class ExerciseImageResource(ModelResource):
 
     class Meta:
         queryset = ExerciseImage.objects.all()
-        filtering = {'id': ALL,
-                     "image": ALL,
-                     "is_main": ALL,
-                     "license": ALL,
-                     "license_author": ALL}
+        filtering = {
+            'id': ALL,
+            "image": ALL,
+            "is_main": ALL,
+            "license": ALL,
+            "license_author": ALL
+        }
 
     def dehydrate(self, bundle):
         '''
@@ -102,8 +98,10 @@ class ExerciseImageResource(ModelResource):
         thumbnails = {}
         for alias in aliases.all():
             t = get_thumbnailer(bundle.obj.image)
-            thumbnails[alias] = {'url': t.get_thumbnail(aliases.get(alias)).url,
-                                 'settings': aliases.get(alias)}
+            thumbnails[alias] = {
+                'url': t.get_thumbnail(aliases.get(alias)).url,
+                'settings': aliases.get(alias)
+            }
 
         bundle.data['thumbnails'] = thumbnails
         return bundle
@@ -115,14 +113,10 @@ class ExerciseCommentResource(ModelResource):
 
     class Meta:
         queryset = ExerciseComment.objects.all()
-        filtering = {'id': ALL,
-                     "comment": ALL,
-                     "exercise": ALL_WITH_RELATIONS}
+        filtering = {'id': ALL, "comment": ALL, "exercise": ALL_WITH_RELATIONS}
 
 
 class MuscleResource(ModelResource):
     class Meta:
         queryset = Muscle.objects.all()
-        filtering = {'id': ALL,
-                     "name": ALL,
-                     "is_front": ALL}
+        filtering = {'id': ALL, "name": ALL, "is_front": ALL}

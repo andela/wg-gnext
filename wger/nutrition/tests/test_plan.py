@@ -137,7 +137,9 @@ class PlanDailyCaloriesTestCase(WorkoutManagerTestCase):
 
         # Can't find goal calories text
         response = self.client.get(
-            reverse('nutrition:plan:view', kwargs={'id': 1}))
+            reverse('nutrition:plan:view', kwargs={
+                'id': 1
+            }))
         self.assertFalse(response.context['plan'].has_goal_calories)
 
         self.assertEqual(response.status_code, 200)
@@ -156,7 +158,9 @@ class PlanDailyCaloriesTestCase(WorkoutManagerTestCase):
 
         # Can find goal calories text
         response = self.client.get(
-            reverse('nutrition:plan:view', kwargs={'id': 1}))
+            reverse('nutrition:plan:view', kwargs={
+                'id': 1
+            }))
         self.assertTrue(response.context['plan'].has_goal_calories)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'goal amount of calories')
@@ -169,6 +173,5 @@ class PlanApiTestCase(api_base_test.ApiBaseResourceTestCase):
     pk = 4
     resource = NutritionPlan
     private_resource = True
-    special_endpoints = ('nutritional_values',)
-    data = {'description': 'The description',
-            'language': 1}
+    special_endpoints = ('nutritional_values', )
+    data = {'description': 'The description', 'language': 1}

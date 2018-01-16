@@ -21,20 +21,11 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy
 
-from django.views.generic import (
-    ListView,
-    CreateView,
-    DetailView,
-    DeleteView,
-    UpdateView
-)
+from django.views.generic import (ListView, CreateView, DetailView, DeleteView,
+                                  UpdateView)
 
 from wger.core.models import Language
-from wger.utils.generic_views import (
-    WgerDeleteMixin,
-    WgerFormMixin
-)
-
+from wger.utils.generic_views import (WgerDeleteMixin, WgerFormMixin)
 
 logger = logging.getLogger(__name__)
 
@@ -49,14 +40,16 @@ class LanguageListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     permission_required = 'core.change_language'
 
 
-class LanguageDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+class LanguageDetailView(LoginRequiredMixin, PermissionRequiredMixin,
+                         DetailView):
     model = Language
     template_name = 'language/view.html'
     context_object_name = 'view_language'
     permission_required = 'core.change_language'
 
 
-class LanguageCreateView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class LanguageCreateView(WgerFormMixin, LoginRequiredMixin,
+                         PermissionRequiredMixin, CreateView):
     '''
     Generic view to add a new language
     '''
@@ -68,7 +61,8 @@ class LanguageCreateView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMi
     permission_required = 'core.add_language'
 
 
-class LanguageDeleteView(WgerDeleteMixin, LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class LanguageDeleteView(WgerDeleteMixin, LoginRequiredMixin,
+                         PermissionRequiredMixin, DeleteView):
     '''
     Generic view to delete an existing language
     '''
@@ -87,12 +81,15 @@ class LanguageDeleteView(WgerDeleteMixin, LoginRequiredMixin, PermissionRequired
 
         context['title'] = _(u'Delete {0}?').format(self.object.full_name)
         context['form_action'] = reverse(
-            'core:language:delete', kwargs={'pk': self.object.id})
+            'core:language:delete', kwargs={
+                'pk': self.object.id
+            })
 
         return context
 
 
-class LanguageEditView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class LanguageEditView(WgerFormMixin, LoginRequiredMixin,
+                       PermissionRequiredMixin, UpdateView):
     '''
     Generic view to update an existing language
     '''

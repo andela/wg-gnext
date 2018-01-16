@@ -20,13 +20,8 @@ from django import forms
 from django.utils.translation import ugettext as _
 from wger.core.models import UserProfile
 
-from wger.nutrition.models import (
-    IngredientWeightUnit,
-    Ingredient,
-    MealItem
-)
+from wger.nutrition.models import (IngredientWeightUnit, Ingredient, MealItem)
 from wger.utils.widgets import Html5NumberInput
-
 
 logger = logging.getLogger(__name__)
 
@@ -35,12 +30,11 @@ class UnitChooserForm(forms.Form):
     '''
     A small form to select an amount and a unit for an ingredient
     '''
-    amount = forms.DecimalField(decimal_places=2,
-                                max_digits=5,
-                                localize=True)
-    unit = forms.ModelChoiceField(queryset=IngredientWeightUnit.objects.none(),
-                                  empty_label="g",
-                                  required=False)
+    amount = forms.DecimalField(decimal_places=2, max_digits=5, localize=True)
+    unit = forms.ModelChoiceField(
+        queryset=IngredientWeightUnit.objects.none(),
+        empty_label="g",
+        required=False)
 
     def __init__(self, *args, **kwargs):
         super(UnitChooserForm, self).__init__(*args, **kwargs)
@@ -59,11 +53,9 @@ class UnitChooserForm(forms.Form):
 
 
 class BmiForm(forms.ModelForm):
-    height = forms.DecimalField(widget=Html5NumberInput(),
-                                max_value=999,
-                                label=_('Height (cm)'))
-    weight = forms.DecimalField(widget=Html5NumberInput(),
-                                max_value=999)
+    height = forms.DecimalField(
+        widget=Html5NumberInput(), max_value=999, label=_('Height (cm)'))
+    weight = forms.DecimalField(widget=Html5NumberInput(), max_value=999)
 
     class Meta:
         model = UserProfile
@@ -85,15 +77,11 @@ class PhysicalActivitiesForm(forms.ModelForm):
     '''
     Form for the additional physical activities
     '''
+
     class Meta:
         model = UserProfile
-        fields = ('sleep_hours',
-                  'work_hours',
-                  'work_intensity',
-                  'sport_hours',
-                  'sport_intensity',
-                  'freetime_hours',
-                  'freetime_intensity')
+        fields = ('sleep_hours', 'work_hours', 'work_intensity', 'sport_hours',
+                  'sport_intensity', 'freetime_hours', 'freetime_intensity')
 
 
 class DailyCaloriesForm(forms.ModelForm):
@@ -101,30 +89,33 @@ class DailyCaloriesForm(forms.ModelForm):
     Form for the total daily calories needed
     '''
 
-    base_calories = forms.IntegerField(label=_('Basic caloric intake'),
-                                       help_text=_('Your basic caloric intake as calculated for '
-                                                   'your data'),
-                                       required=False,
-                                       widget=Html5NumberInput())
-    additional_calories = forms.IntegerField(label=_('Additional calories'),
-                                             help_text=_('Additional calories to add to the base '
-                                                         'rate (to substract, enter a negative '
-                                                         'number)'),
-                                             initial=0,
-                                             required=False,
-                                             widget=Html5NumberInput())
+    base_calories = forms.IntegerField(
+        label=_('Basic caloric intake'),
+        help_text=_('Your basic caloric intake as calculated for '
+                    'your data'),
+        required=False,
+        widget=Html5NumberInput())
+    additional_calories = forms.IntegerField(
+        label=_('Additional calories'),
+        help_text=_('Additional calories to add to the base '
+                    'rate (to substract, enter a negative '
+                    'number)'),
+        initial=0,
+        required=False,
+        widget=Html5NumberInput())
 
     class Meta:
         model = UserProfile
-        fields = ('calories',)
+        fields = ('calories', )
 
 
 class MealItemForm(forms.ModelForm):
-    weight_unit = forms.ModelChoiceField(queryset=IngredientWeightUnit.objects.none(),
-                                         empty_label="g",
-                                         required=False)
-    ingredient = forms.ModelChoiceField(queryset=Ingredient.objects.all(),
-                                        widget=forms.HiddenInput)
+    weight_unit = forms.ModelChoiceField(
+        queryset=IngredientWeightUnit.objects.none(),
+        empty_label="g",
+        required=False)
+    ingredient = forms.ModelChoiceField(
+        queryset=Ingredient.objects.all(), widget=forms.HiddenInput)
 
     class Meta:
         model = MealItem

@@ -32,9 +32,9 @@ class Command(BaseCommand):
         '''
         if CronEntry.objects.count():
             for email in CronEntry.objects.all()[:100]:
-                mail.send_mail(email.log.subject,
-                               email.log.body,
-                               settings.DEFAULT_FROM_EMAIL,
-                               [email.email],
-                               fail_silently=True)
+                mail.send_mail(
+                    email.log.subject,
+                    email.log.body,
+                    settings.DEFAULT_FROM_EMAIL, [email.email],
+                    fail_silently=True)
                 email.delete()

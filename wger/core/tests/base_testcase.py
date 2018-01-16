@@ -26,7 +26,6 @@ from django.conf import settings
 from django.test import TestCase
 from wger.utils.constants import TWOPLACES
 
-
 STATUS_CODES_FAIL = (302, 403, 404)
 
 
@@ -66,15 +65,19 @@ def delete_testcase_add_methods(cls):
     '''
 
     for user in get_user_list(cls.user_fail):
+
         def test_unauthorized(self):
             self.user_login(user)
             self.delete_object(fail=False)
+
         setattr(cls, 'test_unauthorized_{0}'.format(user), test_unauthorized)
 
     for user in get_user_list(cls.user_success):
+
         def test_authorized(self):
             self.user_login(user)
             self.delete_object(fail=False)
+
         setattr(cls, 'test_authorized_{0}'.format(user), test_authorized)
 
 
@@ -86,32 +89,16 @@ class BaseTestCase(object):
     REST API tests
     '''
 
-    fixtures = ('days_of_week',
-                'gym_config',
-                'groups',
-                'setting_repetition_units',
-                'setting_weight_units',
-                'test-languages',
-                'test-licenses',
-                'test-gyms',
-                'test-gymsconfig',
-                'test-user-data',
-                'test-gym-adminconfig.json',
-                'test-gym-userconfig.json',
-                'test-admin-user-notes',
-                'test-gym-user-documents',
-                'test-contracts',
-                'test-apikeys',
-                'test-weight-data',
-                'test-equipment',
-                'test-exercises',
-                'test-exercise-images',
-                'test-weight-units',
-                'test-ingredients',
-                'test-nutrition-data',
-                'test-workout-data',
-                'test-workout-session',
-                'test-schedules')
+    fixtures = ('days_of_week', 'gym_config', 'groups',
+                'setting_repetition_units', 'setting_weight_units',
+                'test-languages', 'test-licenses', 'test-gyms',
+                'test-gymsconfig', 'test-user-data',
+                'test-gym-adminconfig.json', 'test-gym-userconfig.json',
+                'test-admin-user-notes', 'test-gym-user-documents',
+                'test-contracts', 'test-apikeys', 'test-weight-data',
+                'test-equipment', 'test-exercises', 'test-exercise-images',
+                'test-weight-units', 'test-ingredients', 'test-nutrition-data',
+                'test-workout-data', 'test-workout-session', 'test-schedules')
     current_user = 'anonymous'
     current_password = ''
     is_mobile = False
@@ -126,7 +113,7 @@ class BaseTestCase(object):
 
         # Test the mobile templates
         if os.environ.get('TEST_MOBILE') == 'True':
-            settings.FLAVOURS = ('mobile',)
+            settings.FLAVOURS = ('mobile', )
             self.is_mobile = True
 
         # Set logging level
@@ -184,7 +171,8 @@ class WorkoutManagerTestCase(BaseTestCase, TestCase):
         current_field_class = field.__class__.__name__
 
         # Standard types, simply compare
-        if current_field_class in ('unicode', 'str', 'int', 'float', 'time', 'date'):
+        if current_field_class in ('unicode', 'str', 'int', 'float', 'time',
+                                   'date'):
             self.assertEqual(field, value)
 
         # boolean, convert
@@ -194,18 +182,20 @@ class WorkoutManagerTestCase(BaseTestCase, TestCase):
         # decimal, convert
         elif current_field_class == 'Decimal':
             # TODO: use FOURPLACES when routine branch is merged
-            self.assertEqual(field.quantize(TWOPLACES),
-                             decimal.Decimal(value).quantize(TWOPLACES))
+            self.assertEqual(
+                field.quantize(TWOPLACES),
+                decimal.Decimal(value).quantize(TWOPLACES))
 
         # Related manager and SortedManyToMany, iterate
-        elif current_field_class in ('ManyRelatedManager', 'SortedRelatedManager'):
+        elif current_field_class in ('ManyRelatedManager',
+                                     'SortedRelatedManager'):
             for j in field.all():
                 self.assertIn(j.id, value)
 
         # Uploaded image or file, compare the filename
         elif current_field_class in ('ImageFieldFile', 'FieldFile'):
-            self.assertEqual(os.path.basename(field.name),
-                             os.path.basename(value.name))
+            self.assertEqual(
+                os.path.basename(field.name), os.path.basename(value.name))
 
         # Other objects (from foreign keys), check the ID
         else:
@@ -241,8 +231,10 @@ class WorkoutManagerDeleteTestCase(WorkoutManagerTestCase):
 
         # Fetch the delete page
         count_before = self.object_class.objects.count()
-        response = self.client.get(get_reverse(
-            self.url, kwargs={'pk': self.pk}))
+        response = self.client.get(
+            get_reverse(self.url, kwargs={
+                'pk': self.pk
+            }))
         count_after = self.object_class.objects.count()
         self.assertEqual(count_before, count_after)
 
@@ -253,7 +245,9 @@ class WorkoutManagerDeleteTestCase(WorkoutManagerTestCase):
 
         # Try deleting the object
         response = self.client.post(
-            get_reverse(self.url, kwargs={'pk': self.pk}))
+            get_reverse(self.url, kwargs={
+                'pk': self.pk
+            }))
 
         count_after = self.object_class.objects.count()
 
@@ -263,9 +257,10 @@ class WorkoutManagerDeleteTestCase(WorkoutManagerTestCase):
         else:
             self.assertEqual(response.status_code, 302)
             self.assertEqual(count_before - 1, count_after)
-            self.assertRaises(self.object_class.DoesNotExist,
-                              self.object_class.objects.get,
-                              pk=self.pk)
+            self.assertRaises(
+                self.object_class.DoesNotExist,
+                self.object_class.objects.get,
+                pk=self.pk)
 
             # TODO: the redirection page might not have a language prefix (e.g. /user/login
             #       instead of /en/user/login) so there is an additional redirect
@@ -327,8 +322,10 @@ class WorkoutManagerEditTestCase(WorkoutManagerTestCase):
             return
 
         # Fetch the edit page
-        response = self.client.get(get_reverse(
-            self.url, kwargs={'pk': self.pk}))
+        response = self.client.get(
+            get_reverse(self.url, kwargs={
+                'pk': self.pk
+            }))
         entry_before = self.object_class.objects.get(pk=self.pk)
 
         if fail:
@@ -348,8 +345,10 @@ class WorkoutManagerEditTestCase(WorkoutManagerTestCase):
                 url = get_reverse(self.url, kwargs={'pk': self.pk})
                 response = self.client.post(url, self.data)
         else:
-            response = self.client.post(get_reverse(
-                self.url, kwargs={'pk': self.pk}), self.data)
+            response = self.client.post(
+                get_reverse(self.url, kwargs={
+                    'pk': self.pk
+                }), self.data)
 
         entry_after = self.object_class.objects.get(pk=self.pk)
 
@@ -439,7 +438,8 @@ class WorkoutManagerAddTestCase(WorkoutManagerTestCase):
 
         # Enter the data
         count_before = self.object_class.objects.count()
-        self.pk_before = self.object_class.objects.all().order_by('id').last().pk
+        self.pk_before = self.object_class.objects.all().order_by(
+            'id').last().pk
 
         # Special care if there are any file uploads
         if self.fileupload:
@@ -451,7 +451,8 @@ class WorkoutManagerAddTestCase(WorkoutManagerTestCase):
         else:
             response = self.client.post(get_reverse(self.url), self.data)
         count_after = self.object_class.objects.count()
-        self.pk_after = self.object_class.objects.all().order_by('id').last().pk
+        self.pk_after = self.object_class.objects.all().order_by(
+            'id').last().pk
 
         if fail:
             self.assertIn(response.status_code, STATUS_CODES_FAIL)

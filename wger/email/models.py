@@ -26,23 +26,21 @@ class Log(models.Model):
     '''
 
     class Meta:
-        ordering = ["-date", ]
+        ordering = [
+            "-date",
+        ]
 
     date = models.DateField(auto_now=True)
     '''
     Date when the log was created
     '''
 
-    user = models.ForeignKey(User,
-                             editable=False)
+    user = models.ForeignKey(User, editable=False)
     '''
     The user that created the email
     '''
 
-    gym = models.ForeignKey(Gym,
-                            editable=False,
-                            related_name='email_log'
-                            )
+    gym = models.ForeignKey(Gym, editable=False, related_name='email_log')
     '''
     Gym this log belongs to
     '''
@@ -69,8 +67,7 @@ class CronEntry(models.Model):
     Simple list of emails to be sent by a cron job
     '''
 
-    log = models.ForeignKey(Log,
-                            editable=False)
+    log = models.ForeignKey(Log, editable=False)
     '''
     Foreign key to email log with subject and body
     '''

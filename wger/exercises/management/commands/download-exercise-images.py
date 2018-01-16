@@ -40,20 +40,21 @@ class Command(BaseCommand):
     Otherwise, the exercise is simply skipped
     '''
 
-    option_list = BaseCommand.option_list + (
-        make_option('--remote-url',
-                    action='store',
-                    dest='remote_url',
-                    default='https://wger.de',
-                    help='Remote URL to fetch the exercises from (default: https://wger.de)'),
-    )
+    option_list = BaseCommand.option_list + (make_option(
+        '--remote-url',
+        action='store',
+        dest='remote_url',
+        default='https://wger.de',
+        help='Remote URL to fetch the exercises from (default: https://wger.de)'
+    ), )
 
-    help = ('Download exercise images from wger.de and update the local database\n'
-            '\n'
-            'ATTENTION: The script will download the images from the server and add them\n'
-            '           to your local exercises. The exercises are identified by\n'
-            '           their UUID field, if you manually edited or changed it\n'
-            '           the script will not be able to match them.')
+    help = (
+        'Download exercise images from wger.de and update the local database\n'
+        '\n'
+        'ATTENTION: The script will download the images from the server and add them\n'
+        '           to your local exercises. The exercises are identified by\n'
+        '           their UUID field, if you manually edited or changed it\n'
+        '           the script will not be able to match them.')
 
     def handle(self, **options):
 
@@ -73,20 +74,22 @@ class Command(BaseCommand):
         thumbnail_api = "{0}/api/v2/exerciseimage/{1}/thumbnails/"
 
         headers = {
-            'User-agent': default_user_agent('wger/{} + requests'.format(get_version()))}
+            'User-agent':
+            default_user_agent('wger/{} + requests'.format(get_version()))
+        }
 
         # Get all exercises
-        result = requests.get(exercise_api.format(
-            remote_url), headers=headers).json()
+        result = requests.get(
+            exercise_api.format(remote_url), headers=headers).json()
         for exercise_json in result['results']:
             exercise_name = exercise_json['name'].encode('utf-8')
             exercise_uuid = exercise_json['uuid']
             exercise_id = exercise_json['id']
 
             self.stdout.write('')
-            self.stdout.write(u"*** Processing {0} (ID: {1}, UUID: {2})".format(exercise_name,
-                                                                                exercise_id,
-                                                                                exercise_uuid))
+            self.stdout.write(
+                u"*** Processing {0} (ID: {1}, UUID: {2})".format(
+                    exercise_name, exercise_id, exercise_uuid))
 
             try:
                 exercise = Exercise.objects.get(uuid=exercise_uuid)
@@ -96,28 +99,32 @@ class Command(BaseCommand):
                 continue
 
             # Get all images
-            images = requests.get(image_api.format(
-                remote_url, exercise_id), headers=headers).json()
+            images = requests.get(
+                image_api.format(remote_url, exercise_id),
+                headers=headers).json()
 
             if images['count']:
 
                 for image_json in images['results']:
                     image_id = image_json['id']
-                    result = requests.get(thumbnail_api.format(remote_url, image_id),
-                                          headers=headers).json()
+                    result = requests.get(
+                        thumbnail_api.format(remote_url, image_id),
+                        headers=headers).json()
 
                     image_name = os.path.basename(result['original'])
-                    self.stdout.write(
-                        '    Fetching image {0} - {1}'.format(image_id, image_name))
+                    self.stdout.write('    Fetching image {0} - {1}'.format(
+                        image_id, image_name))
 
                     try:
                         image = ExerciseImage.objects.get(pk=image_id)
                         self.stdout.write(
-                            '    --> Image already present locally, skipping...')
+                            '    --> Image already present locally, skipping...'
+                        )
                         continue
                     except ExerciseImage.DoesNotExist:
                         self.stdout.write(
-                            '    --> Image not found in local DB, creating now...')
+                            '    --> Image not found in local DB, creating now...'
+                        )
                         image = ExerciseImage()
                         image.pk = image_id
 

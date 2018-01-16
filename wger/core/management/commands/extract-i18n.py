@@ -17,11 +17,7 @@
 from django.core.management.base import BaseCommand
 
 from wger.core.models import RepetitionUnit
-from wger.exercises.models import (
-    ExerciseCategory,
-    Muscle,
-    Equipment
-)
+from wger.exercises.models import (ExerciseCategory, Muscle, Equipment)
 
 
 class Command(BaseCommand):
@@ -42,5 +38,4 @@ class Command(BaseCommand):
 
         # Print the result
         for i in out:
-            self.stdout.write('msgid "{0}"\n'
-                              'msgstr ""\n\n'.format(i))
+            self.stdout.write('msgid "{0}"\n' 'msgstr ""\n\n'.format(i))
