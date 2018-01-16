@@ -13,7 +13,6 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
-
 '''
 Simple script that filters the output of django's dumpdata command into more
 manageable chunks.
@@ -42,49 +41,54 @@ fixture.close()
 #
 # Ingredients
 #
-filter_dump(data, ('nutrition.ingredient',), 'ingredients.json')
-filter_dump(data, ('nutrition.weightunit',), 'weight_units.json')
-filter_dump(data, ('nutrition.ingredientweightunit',), 'ingredient_units.json')
+filter_dump(data, ('nutrition.ingredient', ), 'ingredients.json')
+filter_dump(data, ('nutrition.weightunit', ), 'weight_units.json')
+filter_dump(data, ('nutrition.ingredientweightunit', ),
+            'ingredient_units.json')
 
 #
 # Exercises
 #
-filter_dump(data, ('exercises.muscle',), 'muscles.json')
-filter_dump(data, ('exercises.exercisecategory',), 'categories.json')
-filter_dump(data, ('exercises.exerciseimage',), 'exercise-images.json')
+filter_dump(data, ('exercises.muscle', ), 'muscles.json')
+filter_dump(data, ('exercises.exercisecategory', ), 'categories.json')
+filter_dump(data, ('exercises.exerciseimage', ), 'exercise-images.json')
 filter_dump(data, ('exercises.exercisedetails',), 'exercisedetails.json')
-filter_dump(data, ('exercises.exercise',
-                   'exercises.exercisecomment',), 'exercises.json')
-filter_dump(data, ('exercises.equipment',
-                   'exercises.equipment',), 'equipment.json')
+filter_dump(data, (
+    'exercises.exercise',
+    'exercises.exercisecomment',
+), 'exercises.json')
+filter_dump(data, (
+    'exercises.equipment',
+    'exercises.equipment',
+), 'equipment.json')
 
 #
 # Gym
 #
-filter_dump(data, ('gym.gym',), 'gyms.json')
-filter_dump(data, ('gym.gymconfig',), 'gym_config.json')
-filter_dump(data, ('gym.gymadminconfig',), 'gym_adminconfig.json')
-filter_dump(data, ('gym.gymuserconfig',), 'gym_userconfig.json')
-filter_dump(data, ('gym.adminusernote',), 'gym_admin_user_notes.json')
-filter_dump(data, ('gym.userdocument',), 'gym_user_documents.json')
-filter_dump(data, ('gym.contract',), 'gym_contracts.json')
+filter_dump(data, ('gym.gym', ), 'gyms.json')
+filter_dump(data, ('gym.gymconfig', ), 'gym_config.json')
+filter_dump(data, ('gym.gymadminconfig', ), 'gym_adminconfig.json')
+filter_dump(data, ('gym.gymuserconfig', ), 'gym_userconfig.json')
+filter_dump(data, ('gym.adminusernote', ), 'gym_admin_user_notes.json')
+filter_dump(data, ('gym.userdocument', ), 'gym_user_documents.json')
+filter_dump(data, ('gym.contract', ), 'gym_contracts.json')
 
 #
 # Core
 #
-filter_dump(data, ('core.gym',), 'gyms.json')
-filter_dump(data, ('core.language',), 'languages.json')
-filter_dump(data, ('core.license',), 'licenses.json')
-filter_dump(data, ('core.repetitionunit',), 'repetition_units.json')
+filter_dump(data, ('core.gym', ), 'gyms.json')
+filter_dump(data, ('core.language', ), 'languages.json')
+filter_dump(data, ('core.license', ), 'licenses.json')
+filter_dump(data, ('core.repetitionunit', ), 'repetition_units.json')
 
 #
 # Configurations
 #
-filter_dump(data, ('config.languageconfig',), 'language_config.json')
-filter_dump(data, ('config.gymconfig',), 'gym_config.json')
+filter_dump(data, ('config.languageconfig', ), 'language_config.json')
+filter_dump(data, ('config.gymconfig', ), 'gym_config.json')
 
 #
 # Other
 #
-filter_dump(data, ('auth.group',), 'groups.json')
-filter_dump(data, ('auth.user',), 'users.json')
+filter_dump(data, ('auth.group', ), 'groups.json')
+filter_dump(data, ('auth.user', ), 'users.json')
