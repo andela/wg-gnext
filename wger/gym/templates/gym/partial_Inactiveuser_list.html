@@ -1,0 +1,27 @@
+{% load i18n staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'bower_components/datatables/media/css/dataTables.bootstrap.min.css' %}">
+<script src="{% static 'bower_components/datatables/media/js/jquery.dataTables.min.js' %}" ></script>
+<script src="{% static 'bower_components/datatables/media/js/dataTables.bootstrap.min.js' %}" ></script>
+
+<table class="table table-hover table-condensed">
+<thead>
+</thead>
+<tbody>
+{% for current_user in user_table.users %}
+  {% if not current_user.obj.is_active %}
+    <tr>
+        <td>
+            <a href="{% url 'core:user:overview' current_user.obj.pk %}">{{current_user.obj}}</a>
+        </td>
+        <td>
+            {{current_user.obj.get_full_name}}
+        </td>
+        <td>
+            <a class="btn btn-success btn-xs" href="{% url 'core:user:activate' current_user.obj.pk %}">Activate</a>
+        </td>
+    </tr>
+  {% endif %}
+{% endfor %}
+</tbody>
+</table>
