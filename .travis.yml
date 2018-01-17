@@ -69,3 +69,6 @@ script:
 notifications:
   # slack integrations
   slack: andela:RCxAz67YjwBcTXAdepVJkytl
+  email:
+    on_success: never
+    on_failure: never
