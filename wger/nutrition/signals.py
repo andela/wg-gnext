@@ -50,7 +50,6 @@ def reset_cache(sender, instance, **kwargs):
     if hasattr(instance, 'plan'):
         pid = getattr(instance, 'plan').pk
 
-
     elif hasattr(instance, 'meal'):
         pid = getattr(instance, 'meal').plan.pk
 
