@@ -14,17 +14,15 @@ sudo: false
 
 # Python versions to test
 python:
-  - "2.7"
-  - "3.4"
-  - "3.5"
+  - "3.6"
 
 # Manually define here the combinations environment variables to test
 # https://github.com/travis-ci/travis-ci/issues/1519
 env:
-  - TEST_MOBILE=True  DB=postgresql TRAVIS_NODE_VERSION="4"
+  # - TEST_MOBILE=True  DB=postgresql TRAVIS_NODE_VERSION="4"
   - TEST_MOBILE=True  DB=sqlite     TRAVIS_NODE_VERSION="4"
-  - TEST_MOBILE=False DB=postgresql TRAVIS_NODE_VERSION="4"
-  - TEST_MOBILE=False DB=sqlite     TRAVIS_NODE_VERSION="4"
+  # - TEST_MOBILE=False DB=postgresql TRAVIS_NODE_VERSION="4"
+  # - TEST_MOBILE=False DB=sqlite     TRAVIS_NODE_VERSION="4"
 
 # Install the application
 install:
@@ -53,8 +51,8 @@ before_script:
 
 # Do the tests
 script:
-  # Formatting
-  - pep8 wger
+  # Formatting: using pycodestyle instead of pep8 since pep8 is deprecated
+  - pycodestyle wger/
 
   # Javascript linting
   - gulp lint
