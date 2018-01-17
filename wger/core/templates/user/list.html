@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 {% load i18n staticfiles wger_extras django_bootstrap_breadcrumbs %}
 
-{% block title %}{% trans "User list" %}{% endblock %}
+{% block title %}
+{% trans "User list" %}
+{% endblock %}
 
 
 {% block content %}
     {% include 'gym/partial_user_list.html' %}
 {% endblock %}
 
-
 {% block sidebar %}
-
+    <h4>Inactive users</h4>
+    {% include 'gym/partial_Inactiveuser_list.html' %}
 {% endblock %}
