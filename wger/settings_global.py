@@ -231,7 +231,7 @@ LOCALE_PATHS = (os.path.join(SITE_ROOT, 'locale'), )
 
 FLAVOURS_STORAGE_BACKEND = 'session'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
