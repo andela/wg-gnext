@@ -40,6 +40,11 @@ NOCAPTCHA = True
 # properly served.
 SITE_URL = 'http://localhost:8000'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static-collected')
+STATIC_URL = '/static/'
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 # Path to uploaded files
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 MEDIA_ROOT = '/Users/geofreyasiimwe/.local/share/wger/media'
