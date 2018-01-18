@@ -23,6 +23,7 @@ whitenoise
 waitress
 dj-database-url
 psycopg2
+npm
 
 # REST API
 djangorestframework>=3.2,<3.3
