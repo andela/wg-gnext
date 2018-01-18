@@ -24,6 +24,7 @@ For a full list of options, visit:
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
 
@@ -229,8 +230,9 @@ LOCALE_PATHS = (os.path.join(SITE_ROOT, 'locale'), )
 
 FLAVOURS_STORAGE_BACKEND = 'session'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static-collected')
-STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+  os.path.join(SITE_ROOT, 'static/'),
+)
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -325,6 +327,7 @@ THUMBNAIL_ALIASES = {
 #
 # Django compressor
 #
+STATIC_ROOT = ''
 STATIC_URL = '/static/'
 
 # The default is not DEBUG, override if needed
