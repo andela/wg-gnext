@@ -17,7 +17,6 @@
 
 from wger import get_version
 
-VERSION = get_version()
+VERSION = get_version()s
 
 default_app_config = 'wger.nutrition.apps.NutritionConfig'
-
