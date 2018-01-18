@@ -61,7 +61,7 @@ target/
 virtualenv
 venv-django/
 
-# External Libraries 
+# External Libraries
 wger/core/static/bower_components
 node_modules
 venv-django
