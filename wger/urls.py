@@ -122,9 +122,9 @@ router.register(
 # Exercises app
 router.register(
     r'exercise', exercises_api_views.ExerciseViewSet, base_name='exercise')
-router.register
-    (r'exercisedetails', exercises_api_views.ExerciseDetailViewSet, 
-     base_name='exercisedetails')
+router.register(
+    r'exercisedetails', exercises_api_views.ExerciseDetailViewSet, 
+    base_name='exercisedetails')
 router.register(
     r'equipment', exercises_api_views.EquipmentViewSet, base_name='api')
 router.register(
