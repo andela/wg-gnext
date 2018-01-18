@@ -2,7 +2,10 @@
 # -*- coding: utf-8 -*-
 from wger.settings_global import *
 import dj_database_url
+<<<<<<< HEAD
 import os
+=======
+>>>>>>> [ch #154434695] Set database config to dj_database
 
 # Use 'DEBUG = True' to get more details for server errors
 DEBUG = True
