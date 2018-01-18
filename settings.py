@@ -66,8 +66,9 @@ WGER_SETTINGS['EMAIL_FROM'] = 'wger Workout Manager <wger@example.com>'
 #WGER_SETTINGS['TWITTER'] = ''
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, '/wger/core/static/'),
+    os.path.join(BASE_DIR, 'wger', 'core', 'static'),
 )
