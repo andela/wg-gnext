@@ -27,15 +27,16 @@ class ExerciseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Exercise
-    
+
+
 class ExerciseDetailSerializer(serializers.ModelSerializer):
     '''
     Exercise Details serializer
     '''
     class Meta:
         model = Exercise
-        field = ('category','creation_date','description','muscles','muscles_secondary',
-                     'name','equipment','license_author',)
+        field = ('category', 'creation_date', 'description', 'muscles', 'muscles_secondary',
+                 'name', 'equipment', 'license_author',)
 
 
 class EquipmentSerializer(serializers.ModelSerializer):
