@@ -55,7 +55,7 @@ script:
   - pep8 wger
 
   # Javascript linting
-  - gulp lint
+  # - gulp lint
 
   # Regular application
   - coverage run --source='.' ./manage.py test
