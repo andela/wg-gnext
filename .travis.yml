@@ -52,7 +52,7 @@ before_script:
 # Do the tests
 script:
   # Formatting: using pycodestyle instead of pep8 since pep8 is deprecated
-  - pycodestyle wger/
+  - pep8 wger
 
   # Javascript linting
   - gulp lint
