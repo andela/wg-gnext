@@ -231,6 +231,8 @@ LOCALE_PATHS = (os.path.join(SITE_ROOT, 'locale'), )
 
 FLAVOURS_STORAGE_BACKEND = 'session'
 
+STATIC_ROOT = ''
+
 #
 # Logging
 # See http://docs.python.org/library/logging.config.html
@@ -322,6 +324,7 @@ THUMBNAIL_ALIASES = {
 #
 # Django compressor
 #
+STATIC_URL = '/static/'
 
 # The default is not DEBUG, override if needed
 # COMPRESS_ENABLED = True
