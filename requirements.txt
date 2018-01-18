@@ -20,7 +20,8 @@ django-bower
 invoke
 requests
 whitenoise
-waitress 
+waitress
+dj-database-url
 
 # REST API
 djangorestframework>=3.2,<3.3
