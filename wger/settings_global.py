@@ -230,9 +230,6 @@ LANGUAGE_CODE = 'en'
 LOCALE_PATHS = (os.path.join(SITE_ROOT, 'locale'), )
 
 FLAVOURS_STORAGE_BACKEND = 'session'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'core', 'static')]
-
 
 #
 # Logging
@@ -325,7 +322,6 @@ THUMBNAIL_ALIASES = {
 #
 # Django compressor
 #
-STATIC_URL = '/static/'
 
 # The default is not DEBUG, override if needed
 # COMPRESS_ENABLED = True
