@@ -364,12 +364,10 @@ REST_FRAMEWORK = {
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_URLS_REGEX = r'^/api/.*$'
 
-#
 # Ignore these URLs if they cause 404
 #
 IGNORABLE_404_URLS = (re.compile(r'^/favicon\.ico$'), )
 
-#
 # Application specific configuration options
 #
 # Consult docs/settings.rst for more information
