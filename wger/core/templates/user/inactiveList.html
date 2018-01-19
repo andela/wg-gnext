@@ -2,15 +2,14 @@
 {% load i18n staticfiles wger_extras django_bootstrap_breadcrumbs %}
 
 {% block title %}
-{% trans "User list" %}
-
+{% trans "Inactive User list" %}
 {% endblock %}
 
 
 {% block content %}
-    {% include 'gym/partial_user_list.html' %}
+    {% include 'gym/partial_inactive_user_list.html' %}
 {% endblock %}
 
 {% block sidebar %}
-<a href="{% url 'core:user:inactiveList'%}"><span class="fa fa-share-square-o"></span> Inactive users</a>
+<a href="{% url 'core:user:list'%}"><span class="fa fa-share-square-o"></span> Active users</a>
 {% endblock %}
