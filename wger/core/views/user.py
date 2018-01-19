@@ -547,6 +547,7 @@ class UserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
         }
         return context
 
+
 class InactiveUserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     '''
     Overview of all users in the instance
