@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n staticfiles wger_extras django_bootstrap_breadcrumbs %}
+
+{% block title %}
+{% trans "Inactive User list" %}
+{% endblock %}
+
+
+{% block content %}
+    {% include 'gym/partial_inactive_user_list.html' %}
+{% endblock %}
+
+{% block sidebar %}
+<a href="{% url 'core:user:list'%}"><span class="fa fa-share-square-o"></span> Active users</a>
+{% endblock %}
