@@ -103,8 +103,9 @@ class ScheduleRepresentationTestCase(WorkoutManagerTestCase):
         '''
         Test that the representation of an object is correct
         '''
-        self.assertEqual("{0}".format(Schedule.objects.get(pk=1)),
-                         'my cool schedule that i found on the internet')
+        self.assertEqual(
+            "{0}".format(Schedule.objects.get(pk=1)),
+            'my cool schedule that i found on the internet')
 
 
 class CreateScheduleTestCase(WorkoutManagerAddTestCase):
@@ -116,10 +117,12 @@ class CreateScheduleTestCase(WorkoutManagerAddTestCase):
     url = 'manager:schedule:add'
     user_success = 'test'
     user_fail = False
-    data = {'name': 'My cool schedule',
-            'start_date': datetime.date.today(),
-            'is_active': True,
-            'is_loop': True}
+    data = {
+        'name': 'My cool schedule',
+        'start_date': datetime.date.today(),
+        'is_active': True,
+        'is_loop': True
+    }
 
 
 class DeleteScheduleTestCase(WorkoutManagerDeleteTestCase):
@@ -142,10 +145,12 @@ class EditScheduleTestCase(WorkoutManagerEditTestCase):
     object_class = Schedule
     url = 'manager:schedule:edit'
     pk = 3
-    data = {'name': 'An updated name',
-            'start_date': datetime.date.today(),
-            'is_active': True,
-            'is_loop': True}
+    data = {
+        'name': 'An updated name',
+        'start_date': datetime.date.today(),
+        'is_active': True,
+        'is_loop': True
+    }
 
 
 class ScheduleTestCase(WorkoutManagerTestCase):
@@ -158,7 +163,10 @@ class ScheduleTestCase(WorkoutManagerTestCase):
         Helper function
         '''
 
-        response = self.client.get(reverse('manager:schedule:view', kwargs={'pk': 2}))
+        response = self.client.get(
+            reverse('manager:schedule:view', kwargs={
+                'pk': 2
+            }))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'This schedule is a loop')
 
@@ -166,7 +174,10 @@ class ScheduleTestCase(WorkoutManagerTestCase):
         schedule.is_loop = False
         schedule.save()
 
-        response = self.client.get(reverse('manager:schedule:view', kwargs={'pk': 2}))
+        response = self.client.get(
+            reverse('manager:schedule:view', kwargs={
+                'pk': 2
+            }))
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, 'This schedule is a loop')
 
@@ -237,7 +248,10 @@ class ScheduleTestCase(WorkoutManagerTestCase):
         self.assertFalse(schedule.is_active)
         self.assertNotEqual(schedule.start_date, datetime.date.today())
 
-        response = self.client.get(reverse('manager:schedule:start', kwargs={'pk': 2}))
+        response = self.client.get(
+            reverse('manager:schedule:start', kwargs={
+                'pk': 2
+            }))
         schedule = Schedule.objects.get(pk=2)
         if fail:
             self.assertIn(response.status_code, STATUS_CODES_FAIL)
@@ -317,7 +331,10 @@ class ScheduleModelTestCase(WorkoutManagerTestCase):
         Workout.objects.filter(user=user).delete()
         Schedule.objects.filter(user=user).delete()
 
-    def create_schedule(self, user, start_date=datetime.date.today(), is_loop=False):
+    def create_schedule(self,
+                        user,
+                        start_date=datetime.date.today(),
+                        is_loop=False):
         '''
         Helper function
         '''
@@ -367,7 +384,8 @@ class ScheduleModelTestCase(WorkoutManagerTestCase):
         step.workout = workout
         step.duration = 3
         step.save()
-        self.assertEqual(schedule.get_current_scheduled_workout().workout, workout)
+        self.assertEqual(schedule.get_current_scheduled_workout().workout,
+                         workout)
 
     def test_get_workout_steps_test_3(self):
         '''
@@ -402,11 +420,13 @@ class ScheduleModelTestCase(WorkoutManagerTestCase):
         step3.duration = 2
         step3.order = 3
         step3.save()
-        self.assertEqual(schedule.get_current_scheduled_workout().workout, workout2)
+        self.assertEqual(schedule.get_current_scheduled_workout().workout,
+                         workout2)
 
     def test_get_workout_steps_test_4(self):
         '''
-        Test with 3 steps. Start is too far in the past, schedule ist not a loop
+        Test with 3 steps. Start is too far in the past, schedule ist not
+        a loop
         '''
         self.user_login('test')
         user = User.objects.get(pk=2)
@@ -448,7 +468,8 @@ class ScheduleModelTestCase(WorkoutManagerTestCase):
         self.delete_objects(user)
 
         start_date = datetime.date.today() - datetime.timedelta(weeks=7)
-        schedule = self.create_schedule(user, start_date=start_date, is_loop=True)
+        schedule = self.create_schedule(
+            user, start_date=start_date, is_loop=True)
         workout = self.create_workout(user)
         step = ScheduleStep()
         step.schedule = schedule
@@ -472,7 +493,8 @@ class ScheduleModelTestCase(WorkoutManagerTestCase):
         step3.duration = 2
         step3.order = 3
         step3.save()
-        self.assertTrue(schedule.get_current_scheduled_workout().workout, workout)
+        self.assertTrue(schedule.get_current_scheduled_workout().workout,
+                        workout)
 
 
 class SchedulePdfExportTestCase(WorkoutManagerTestCase):
@@ -487,15 +509,20 @@ class SchedulePdfExportTestCase(WorkoutManagerTestCase):
 
         user = User.objects.get(username='test')
         uid, token = make_token(user)
-        response = self.client.get(reverse('manager:schedule:pdf-{0}'.format(pdf_type),
-                                           kwargs={'pk': 1,
-                                                   'uidb64': uid,
-                                                   'token': token}))
+        response = self.client.get(
+            reverse(
+                'manager:schedule:pdf-{0}'.format(pdf_type),
+                kwargs={
+                    'pk': 1,
+                    'uidb64': uid,
+                    'token': token
+                }))
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response['Content-Type'], 'application/pdf')
-        self.assertEqual(response['Content-Disposition'],
-                         'attachment; filename=Schedule-1-{0}.pdf'.format(pdf_type))
+        self.assertEqual(
+            response['Content-Disposition'],
+            'attachment; filename=Schedule-1-{0}.pdf'.format(pdf_type))
 
         # Approximate size only
         self.assertGreater(int(response['Content-Length']), 29000)
@@ -504,10 +531,14 @@ class SchedulePdfExportTestCase(WorkoutManagerTestCase):
         # Wrong or expired token
         uid = 'MQ'
         token = '3xv-57ef74923091fe7f186e'
-        response = self.client.get(reverse('manager:schedule:pdf-{0}'.format(pdf_type),
-                                           kwargs={'pk': 1,
-                                                   'uidb64': uid,
-                                                   'token': token}))
+        response = self.client.get(
+            reverse(
+                'manager:schedule:pdf-{0}'.format(pdf_type),
+                kwargs={
+                    'pk': 1,
+                    'uidb64': uid,
+                    'token': token
+                }))
         self.assertEqual(response.status_code, 403)
 
     def export_pdf(self, fail=False, pdf_type="log"):
@@ -515,16 +546,20 @@ class SchedulePdfExportTestCase(WorkoutManagerTestCase):
         Helper function to test exporting a workout as a pdf
         '''
 
-        response = self.client.get(reverse('manager:schedule:pdf-{0}'.format(pdf_type),
-                                           kwargs={'pk': 1}))
+        response = self.client.get(
+            reverse(
+                'manager:schedule:pdf-{0}'.format(pdf_type), kwargs={
+                    'pk': 1
+                }))
 
         if fail:
             self.assertIn(response.status_code, (403, 404, 302))
         else:
             self.assertEqual(response.status_code, 200)
             self.assertEqual(response['Content-Type'], 'application/pdf')
-            self.assertEqual(response['Content-Disposition'],
-                             'attachment; filename=Schedule-1-{0}.pdf'.format(pdf_type))
+            self.assertEqual(
+                response['Content-Disposition'],
+                'attachment; filename=Schedule-1-{0}.pdf'.format(pdf_type))
 
             # Approximate size only
             self.assertGreater(int(response['Content-Length']), 29000)
@@ -532,25 +567,31 @@ class SchedulePdfExportTestCase(WorkoutManagerTestCase):
 
     def export_pdf_with_comments(self, fail=False, pdf_type="log"):
         '''
-        Helper function to test exporting a workout as a pdf, with exercise coments
+        Helper function to test exporting a workout as a pdf, with exercise
+         comments
         '''
 
         user = User.objects.get(username='test')
         uid, token = make_token(user)
-        response = self.client.get(reverse('manager:schedule:pdf-{0}'.format(pdf_type),
-                                           kwargs={'pk': 3,
-                                                   'images': 0,
-                                                   'comments': 1,
-                                                   'uidb64': uid,
-                                                   'token': token}))
+        response = self.client.get(
+            reverse(
+                'manager:schedule:pdf-{0}'.format(pdf_type),
+                kwargs={
+                    'pk': 3,
+                    'images': 0,
+                    'comments': 1,
+                    'uidb64': uid,
+                    'token': token
+                }))
 
         if fail:
             self.assertIn(response.status_code, (403, 404, 302))
         else:
             self.assertEqual(response.status_code, 200)
             self.assertEqual(response['Content-Type'], 'application/pdf')
-            self.assertEqual(response['Content-Disposition'],
-                             'attachment; filename=Schedule-3-{0}.pdf'.format(pdf_type))
+            self.assertEqual(
+                response['Content-Disposition'],
+                'attachment; filename=Schedule-3-{0}.pdf'.format(pdf_type))
 
             # Approximate size only
             self.assertGreater(int(response['Content-Length']), 29000)
@@ -558,24 +599,30 @@ class SchedulePdfExportTestCase(WorkoutManagerTestCase):
 
     def export_pdf_with_images(self, fail=False, pdf_type="log"):
         '''
-        Helper function to test exporting a workout as a pdf, with exercise images
+        Helper function to test exporting a workout as a pdf, with exercise
+         images
         '''
         user = User.objects.get(username='test')
         uid, token = make_token(user)
-        response = self.client.get(reverse('manager:schedule:pdf-{0}'.format(pdf_type),
-                                           kwargs={'pk': 3,
-                                                   'images': 1,
-                                                   'comments': 0,
-                                                   'uidb64': uid,
-                                                   'token': token}))
+        response = self.client.get(
+            reverse(
+                'manager:schedule:pdf-{0}'.format(pdf_type),
+                kwargs={
+                    'pk': 3,
+                    'images': 1,
+                    'comments': 0,
+                    'uidb64': uid,
+                    'token': token
+                }))
 
         if fail:
             self.assertIn(response.status_code, (403, 404, 302))
         else:
             self.assertEqual(response.status_code, 200)
             self.assertEqual(response['Content-Type'], 'application/pdf')
-            self.assertEqual(response['Content-Disposition'],
-                             'attachment; filename=Schedule-3-{0}.pdf'.format(pdf_type))
+            self.assertEqual(
+                response['Content-Disposition'],
+                'attachment; filename=Schedule-3-{0}.pdf'.format(pdf_type))
 
             # Approximate size only
             self.assertGreater(int(response['Content-Length']), 29000)
@@ -583,25 +630,31 @@ class SchedulePdfExportTestCase(WorkoutManagerTestCase):
 
     def export_pdf_with_images_and_comments(self, fail=False, pdf_type="log"):
         '''
-        Helper function to test exporting a workout as a pdf, with images and comments
+        Helper function to test exporting a workout as a pdf, with images and
+         comments
         '''
 
         user = User.objects.get(username='test')
         uid, token = make_token(user)
-        response = self.client.get(reverse('manager:schedule:pdf-{0}'.format(pdf_type),
-                                           kwargs={'pk': 3,
-                                                   'images': 1,
-                                                   'comments': 1,
-                                                   'uidb64': uid,
-                                                   'token': token}))
+        response = self.client.get(
+            reverse(
+                'manager:schedule:pdf-{0}'.format(pdf_type),
+                kwargs={
+                    'pk': 3,
+                    'images': 1,
+                    'comments': 1,
+                    'uidb64': uid,
+                    'token': token
+                }))
 
         if fail:
             self.assertIn(response.status_code, (403, 404, 302))
         else:
             self.assertEqual(response.status_code, 200)
             self.assertEqual(response['Content-Type'], 'application/pdf')
-            self.assertEqual(response['Content-Disposition'],
-                             'attachment; filename=Schedule-3-{0}.pdf'.format(pdf_type))
+            self.assertEqual(
+                response['Content-Disposition'],
+                'attachment; filename=Schedule-3-{0}.pdf'.format(pdf_type))
 
             # Approximate size only
             self.assertGreater(int(response['Content-Length']), 29000)
@@ -651,11 +704,13 @@ class SchedulePdfExportTestCase(WorkoutManagerTestCase):
 
     def test_export_pdf_log_with_images_and_comments(self, fail=False):
         '''
-        Tests exporting a workout as a pdf as the owner user with images andcomments
+        Tests exporting a workout as a pdf as the owner user with images
+         and comments
         '''
         self.user_login('test')
         self.export_pdf_with_images_and_comments(fail=False)
         self.export_pdf_token()
+
 
 #   #####TABLE#####
 
@@ -703,7 +758,8 @@ class SchedulePdfExportTestCase(WorkoutManagerTestCase):
 
     def test_export_pdf_table_with_images_and_comments(self, fail=False):
         '''
-        Tests exporting a workout as a pdf as the owner user with images andcomments
+        Tests exporting a workout as a pdf as the owner user with images
+         and comments
         '''
         self.user_login('test')
         self.export_pdf_with_images_and_comments(fail=False, pdf_type="table")
@@ -717,7 +773,9 @@ class ScheduleApiTestCase(api_base_test.ApiBaseResourceTestCase):
     pk = 1
     resource = Schedule
     private_resource = True
-    data = {'name': 'An updated name',
-            'start_date': datetime.date.today(),
-            'is_active': True,
-            'is_loop': True}
+    data = {
+        'name': 'An updated name',
+        'start_date': datetime.date.today(),
+        'is_active': True,
+        'is_loop': True
+    }

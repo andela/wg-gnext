@@ -34,21 +34,28 @@ class RegistrationTestCase(WorkoutManagerTestCase):
         Tests that the correct form is used depending on global
         configuration settings
         '''
-        with self.settings(WGER_SETTINGS={'USE_RECAPTCHA': True,
-                                          'REMOVE_WHITESPACE': False,
-                                          'ALLOW_REGISTRATION': True,
-                                          'ALLOW_GUEST_USERS': True,
-                                          'TWITTER': False}):
+        with self.settings(
+                WGER_SETTINGS={
+                    'USE_RECAPTCHA': True,
+                    'REMOVE_WHITESPACE': False,
+                    'ALLOW_REGISTRATION': True,
+                    'ALLOW_GUEST_USERS': True,
+                    'TWITTER': False
+                }):
             response = self.client.get(reverse('core:user:registration'))
             self.assertIsInstance(response.context['form'], RegistrationForm)
 
-        with self.settings(WGER_SETTINGS={'USE_RECAPTCHA': False,
-                                          'REMOVE_WHITESPACE': False,
-                                          'ALLOW_REGISTRATION': True,
-                                          'ALLOW_GUEST_USERS': True,
-                                          'TWITTER': False}):
+        with self.settings(
+                WGER_SETTINGS={
+                    'USE_RECAPTCHA': False,
+                    'REMOVE_WHITESPACE': False,
+                    'ALLOW_REGISTRATION': True,
+                    'ALLOW_GUEST_USERS': True,
+                    'TWITTER': False
+                }):
             response = self.client.get(reverse('core:user:registration'))
-            self.assertIsInstance(response.context['form'], RegistrationFormNoCaptcha)
+            self.assertIsInstance(response.context['form'],
+                                  RegistrationFormNoCaptcha)
 
     def test_register(self):
 
@@ -57,28 +64,33 @@ class RegistrationTestCase(WorkoutManagerTestCase):
         self.assertEqual(response.status_code, 200)
 
         # Fill in the registration form
-        registration_data = {'username': 'myusername',
-                             'password1': 'secret',
-                             'password2': 'secret',
-                             'email': 'not an email',
-                             'g-recaptcha-response': 'PASSED', }
+        registration_data = {
+            'username': 'myusername',
+            'password1': 'secret',
+            'password2': 'secret',
+            'email': 'not an email',
+            'g-recaptcha-response': 'PASSED',
+        }
         count_before = User.objects.count()
 
         # Wrong email
-        response = self.client.post(reverse('core:user:registration'), registration_data)
+        response = self.client.post(
+            reverse('core:user:registration'), registration_data)
         self.assertFalse(response.context['form'].is_valid())
         self.user_logout()
 
         # Correct email
         registration_data['email'] = 'my.email@example.com'
-        response = self.client.post(reverse('core:user:registration'), registration_data)
+        response = self.client.post(
+            reverse('core:user:registration'), registration_data)
         count_after = User.objects.count()
         self.assertEqual(response.status_code, 302)
         self.assertEqual(count_before + 1, count_after)
         self.user_logout()
 
         # Username already exists
-        response = self.client.post(reverse('core:user:registration'), registration_data)
+        response = self.client.post(
+            reverse('core:user:registration'), registration_data)
         count_after = User.objects.count()
         self.assertFalse(response.context['form'].is_valid())
         self.assertEqual(response.status_code, 200)
@@ -86,7 +98,8 @@ class RegistrationTestCase(WorkoutManagerTestCase):
 
         # Email already exists
         registration_data['username'] = 'my.other.username'
-        response = self.client.post(reverse('core:user:registration'), registration_data)
+        response = self.client.post(
+            reverse('core:user:registration'), registration_data)
         count_after = User.objects.count()
         self.assertFalse(response.context['form'].is_valid())
         self.assertEqual(response.status_code, 200)
@@ -97,24 +110,30 @@ class RegistrationTestCase(WorkoutManagerTestCase):
         Test that with deactivated registration no users can register
         '''
 
-        with self.settings(WGER_SETTINGS={'USE_RECAPTCHA': False,
-                                          'REMOVE_WHITESPACE': False,
-                                          'ALLOW_GUEST_USERS': True,
-                                          'ALLOW_REGISTRATION': False}):
+        with self.settings(
+                WGER_SETTINGS={
+                    'USE_RECAPTCHA': False,
+                    'REMOVE_WHITESPACE': False,
+                    'ALLOW_GUEST_USERS': True,
+                    'ALLOW_REGISTRATION': False
+                }):
 
             # Fetch the registration page
             response = self.client.get(reverse('core:user:registration'))
             self.assertEqual(response.status_code, 302)
 
             # Fill in the registration form
-            registration_data = {'username': 'myusername',
-                                 'password1': 'secret',
-                                 'password2': 'secret',
-                                 'email': 'my.email@example.com',
-                                 'g-recaptcha-response': 'PASSED', }
+            registration_data = {
+                'username': 'myusername',
+                'password1': 'secret',
+                'password2': 'secret',
+                'email': 'my.email@example.com',
+                'g-recaptcha-response': 'PASSED',
+            }
             count_before = User.objects.count()
 
-            response = self.client.post(reverse('core:user:registration'), registration_data)
+            response = self.client.post(
+                reverse('core:user:registration'), registration_data)
             count_after = User.objects.count()
             self.assertEqual(response.status_code, 302)
             self.assertEqual(count_before, count_after)

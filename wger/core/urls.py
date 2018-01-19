@@ -14,82 +14,49 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 
-
-from django.conf.urls import (
-    patterns,
-    url,
-    include
-)
+from django.conf.urls import url, include  # patterns,
 from django.views.generic import TemplateView
 from django.contrib.auth import views
 from django.core.urlresolvers import reverse_lazy
 
-from wger.core.views import (
-    user,
-    misc,
-    license,
-    languages,
-    repetition_units,
-    weight_units
-)
+from wger.core.views import (user, misc, license, languages, repetition_units,
+                             weight_units)
 
 # sub patterns for languages
 patterns_language = [
-   url(r'^list$',
-        languages.LanguageListView.as_view(),
-        name='overview'),
-   url(r'^(?P<pk>\d+)/view$',
+    url(r'^list$', languages.LanguageListView.as_view(), name='overview'),
+    url(r'^(?P<pk>\d+)/view$',
         languages.LanguageDetailView.as_view(),
         name='view'),
-   url(r'^(?P<pk>\d+)/delete$',
+    url(r'^(?P<pk>\d+)/delete$',
         languages.LanguageDeleteView.as_view(),
         name='delete'),
-   url(r'^(?P<pk>\d+)/edit',
+    url(r'^(?P<pk>\d+)/edit',
         languages.LanguageEditView.as_view(),
         name='edit'),
-   url(r'^add$',
-        languages.LanguageCreateView.as_view(),
-        name='add'),
+    url(r'^add$', languages.LanguageCreateView.as_view(), name='add'),
 ]
 
 # sub patterns for user
 patterns_user = [
-    url(r'^login$',
-        user.login,
-        name='login'),
-    url(r'^logout$',
-        user.logout,
-        name='logout'),
-    url(r'^delete$',
-        user.delete,
-        name='delete'),
-    url(r'^(?P<user_pk>\d+)/delete$',
-        user.delete,
-        name='delete'),
+    url(r'^login$', user.login, name='login'),
+    url(r'^logout$', user.logout, name='logout'),
+    url(r'^delete$', user.delete, name='delete'),
+    url(r'^(?P<user_pk>\d+)/delete$', user.delete, name='delete'),
     url(r'^(?P<user_pk>\d+)/trainer-login$',
         user.trainer_login,
         name='trainer-login'),
-    url(r'^registration$',
-        user.registration,
-        name='registration'),
-    url(r'^preferences$',
-        user.preferences,
-        name='preferences'),
-    url(r'^api-key$',
-        user.api_key,
-        name='api-key'),
-    url(r'^demo-entries$',
-        misc.demo_entries,
-        name='demo-entries'),
+    url(r'^registration$', user.registration, name='registration'),
+    url(r'^preferences$', user.preferences, name='preferences'),
+    url(r'^api-key$', user.api_key, name='api-key'),
+    url(r'^demo-entries$', misc.demo_entries, name='demo-entries'),
     url(r'^(?P<pk>\d+)/activate',
         user.UserActivateView.as_view(),
         name='activate'),
     url(r'^(?P<pk>\d+)/deactivate',
         user.UserDeactivateView.as_view(),
         name='deactivate'),
-    url(r'^(?P<pk>\d+)/edit',
-        user.UserEditView.as_view(),
-        name='edit'),
+    url(r'^(?P<pk>\d+)/edit', user.UserEditView.as_view(), name='edit'),
     url(r'^(?P<pk>\d+)/overview',
         user.UserDetailView.as_view(),
         name='overview'),
@@ -100,27 +67,33 @@ patterns_user = [
         user.InactiveUserListView.as_view(),
         name='inactiveList'),
 
-    # Password reset is implemented by Django, no need to cook our own soup here
-    # (besides the templates)
+    # Password reset is implemented by Django, no need to cook our
+    # own soup here (besides the templates)
     url(r'^password/change$',
-        views.password_change,
-        {'template_name': 'user/change_password.html',
-          'post_change_redirect': reverse_lazy('core:user:preferences')},
+        views.password_change, {
+            'template_name': 'user/change_password.html',
+            'post_change_redirect': reverse_lazy('core:user:preferences')
+        },
         name='change-password'),
     url(r'^password/reset/$',
-        views.password_reset,
-        {'template_name': 'user/password_reset_form.html',
-         'email_template_name': 'user/password_reset_email.html',
-         'post_reset_redirect': reverse_lazy('core:user:password_reset_done')},
+        views.password_reset, {
+            'template_name': 'user/password_reset_form.html',
+            'email_template_name': 'user/password_reset_email.html',
+            'post_reset_redirect':
+            reverse_lazy('core:user:password_reset_done')
+        },
         name='password_reset'),
     url(r'^password/reset/done/$',
         views.password_reset_done,
         {'template_name': 'user/password_reset_done.html'},
         name='password_reset_done'),
     url(r'^password/reset/check/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})$',
-        views.password_reset_confirm,
-        {'template_name': 'user/password_reset_confirm.html',
-         'post_reset_redirect': reverse_lazy('core:user:password_reset_complete')},
+        views.password_reset_confirm, {
+            'template_name':
+            'user/password_reset_confirm.html',
+            'post_reset_redirect':
+            reverse_lazy('core:user:password_reset_complete')
+        },
         name='password_reset_confirm'),
     url(r'^password/reset/complete/$',
         views.password_reset_complete,
@@ -128,15 +101,10 @@ patterns_user = [
         name='password_reset_complete'),
 ]
 
-
 # sub patterns for licenses
 patterns_license = [
-    url(r'^license/list$',
-        license.LicenseListView.as_view(),
-        name='list'),
-    url(r'^license/add$',
-        license.LicenseAddView.as_view(),
-        name='add'),
+    url(r'^license/list$', license.LicenseListView.as_view(), name='list'),
+    url(r'^license/add$', license.LicenseAddView.as_view(), name='add'),
     url(r'^license/(?P<pk>\d+)/edit',
         license.LicenseUpdateView.as_view(),
         name='edit'),
@@ -147,12 +115,8 @@ patterns_license = [
 
 # sub patterns for setting units
 patterns_repetition_units = [
-    url(r'^list$',
-        repetition_units.ListView.as_view(),
-        name='list'),
-    url(r'^add$',
-        repetition_units.AddView.as_view(),
-        name='add'),
+    url(r'^list$', repetition_units.ListView.as_view(), name='list'),
+    url(r'^add$', repetition_units.AddView.as_view(), name='add'),
     url(r'^(?P<pk>\d+)/edit',
         repetition_units.UpdateView.as_view(),
         name='edit'),
@@ -163,20 +127,13 @@ patterns_repetition_units = [
 
 # sub patterns for setting units
 patterns_weight_units = [
-    url(r'^list$',
-        weight_units.ListView.as_view(),
-        name='list'),
-    url(r'^add$',
-        weight_units.AddView.as_view(),
-        name='add'),
-    url(r'^(?P<pk>\d+)/edit',
-        weight_units.UpdateView.as_view(),
-        name='edit'),
+    url(r'^list$', weight_units.ListView.as_view(), name='list'),
+    url(r'^add$', weight_units.AddView.as_view(), name='add'),
+    url(r'^(?P<pk>\d+)/edit', weight_units.UpdateView.as_view(), name='edit'),
     url(r'^(?P<pk>\d+)/delete',
         weight_units.DeleteView.as_view(),
         name='delete'),
 ]
-
 
 #
 # Actual patterns
@@ -184,14 +141,10 @@ patterns_weight_units = [
 urlpatterns = [
 
     # The landing page
-    url(r'^$',
-        misc.index,
-        name='index'),
+    url(r'^$', misc.index, name='index'),
 
     # The dashboard
-    url(r'^dashboard$',
-        misc.dashboard,
-        name='dashboard'),
+    url(r'^dashboard$', misc.dashboard, name='dashboard'),
 
     # Others
     url(r'^about$',
@@ -200,13 +153,12 @@ urlpatterns = [
     url(r'^contact$',
         misc.ContactClassView.as_view(template_name="misc/contact.html"),
         name='contact'),
-    url(r'^feedback$',
-        misc.FeedbackClass.as_view(),
-        name='feedback'),
-
+    url(r'^feedback$', misc.FeedbackClass.as_view(), name='feedback'),
     url(r'^language/', include(patterns_language, namespace="language")),
     url(r'^user/', include(patterns_user, namespace="user")),
     url(r'^license/', include(patterns_license, namespace="license")),
-    url(r'^repetition-unit/', include(patterns_repetition_units, namespace="repetition-unit")),
-    url(r'^weight-unit/', include(patterns_weight_units, namespace="weight-unit")),
+    url(r'^repetition-unit/',
+        include(patterns_repetition_units, namespace="repetition-unit")),
+    url(r'^weight-unit/',
+        include(patterns_weight_units, namespace="weight-unit")),
 ]

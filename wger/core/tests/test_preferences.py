@@ -46,18 +46,20 @@ class PreferencesTestCase(WorkoutManagerTestCase):
         self.assertTemplateUsed('preferences.html')
 
         # Change some preferences
-        response = self.client.post(reverse('core:user:preferences'),
-                                    {'show_comments': True,
-                                     'show_english_ingredients': True,
-                                     'email': 'my-new-email@example.com',
-                                     'workout_reminder_active': True,
-                                     'workout_reminder': '30',
-                                     'workout_duration': 12,
-                                     'notification_language': 2,
-                                     'timer_active': False,
-                                     'timer_pause': 100,
-                                     'num_days_weight_reminder': 10,
-                                     'weight_unit': 'kg'})
+        response = self.client.post(
+            reverse('core:user:preferences'), {
+                'show_comments': True,
+                'show_english_ingredients': True,
+                'email': 'my-new-email@example.com',
+                'workout_reminder_active': True,
+                'workout_reminder': '30',
+                'workout_duration': 12,
+                'notification_language': 2,
+                'timer_active': False,
+                'timer_pause': 100,
+                'num_days_weight_reminder': 10,
+                'weight_unit': 'kg'
+            })
 
         self.assertEqual(response.status_code, 302)
         response = self.client.get(reverse('core:user:preferences'))
@@ -66,21 +68,25 @@ class PreferencesTestCase(WorkoutManagerTestCase):
         self.assertTrue(profile.workout_reminder_active)
         self.assertEqual(profile.workout_reminder, 30)
         self.assertEqual(profile.workout_duration, 12)
-        self.assertEqual(User.objects.get(username='test').email, 'my-new-email@example.com')
+        self.assertEqual(
+            User.objects.get(username='test').email,
+            'my-new-email@example.com')
 
         # Change some preferences
-        response = self.client.post(reverse('core:user:preferences'),
-                                    {'show_comments': False,
-                                     'show_english_ingredients': True,
-                                     'email': '',
-                                     'workout_reminder_active': True,
-                                     'workout_reminder': 22,
-                                     'workout_duration': 10,
-                                     'notification_language': 2,
-                                     'timer_active': True,
-                                     'timer_pause': 40,
-                                     'num_days_weight_reminder': 10,
-                                     'weight_unit': 'lb'})
+        response = self.client.post(
+            reverse('core:user:preferences'), {
+                'show_comments': False,
+                'show_english_ingredients': True,
+                'email': '',
+                'workout_reminder_active': True,
+                'workout_reminder': 22,
+                'workout_duration': 10,
+                'notification_language': 2,
+                'timer_active': True,
+                'timer_pause': 40,
+                'num_days_weight_reminder': 10,
+                'weight_unit': 'lb'
+            })
 
         self.assertEqual(response.status_code, 302)
         response = self.client.get(reverse('core:user:preferences'))
@@ -96,19 +102,22 @@ class PreferencesTestCase(WorkoutManagerTestCase):
 
         # Member2 has a contract
         user = User.objects.get(username='member2')
-        self.assertEqual(user.userprofile.address,
-                         {'phone': '01234-567890',
-                          'zip_code': '00000',
-                          'street': 'Gassenstr. 14',
-                          'city': 'The City'})
+        self.assertEqual(
+            user.userprofile.address, {
+                'phone': '01234-567890',
+                'zip_code': '00000',
+                'street': 'Gassenstr. 14',
+                'city': 'The City'
+            })
 
         # Test has no contracts
         user = User.objects.get(username='test')
-        self.assertEqual(user.userprofile.address,
-                         {'phone': '',
-                          'zip_code': '',
-                          'street': '',
-                          'city': ''})
+        self.assertEqual(user.userprofile.address, {
+            'phone': '',
+            'zip_code': '',
+            'street': '',
+            'city': ''
+        })
 
 
 class UserBodyweightTestCase(WorkoutManagerTestCase):
@@ -195,6 +204,7 @@ class PreferencesCalculationsTestCase(WorkoutManagerTestCase):
     '''
     Tests the different calculation method in the user profile
     '''
+
     def test_last_weight_entry(self):
         '''
         Tests that the last weight entry is correctly returned

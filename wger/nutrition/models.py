@@ -20,7 +20,8 @@ from decimal import Decimal
 from django.db import models
 
 from django.template.loader import render_to_string
-from django.template.defaultfilters import slugify  # django.utils.text.slugify in django 1.5!
+# django.utils.text.slugify in django 1.5!
+from django.template.defaultfilters import slugify
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
@@ -44,16 +45,23 @@ from wger.weight.models import WeightEntry
 MEALITEM_WEIGHT_GRAM = '1'
 MEALITEM_WEIGHT_UNIT = '2'
 
-ENERGY_FACTOR = {'protein': {'kg': 4,
-                             'lb': 113},
-                 'carbohydrates': {'kg': 4,
-                                   'lb': 113},
-                 'fat': {'kg': 9,
-                         'lb': 225}}
+ENERGY_FACTOR = {
+    'protein': {
+        'kg': 4,
+        'lb': 113
+    },
+    'carbohydrates': {
+        'kg': 4,
+        'lb': 113
+    },
+    'fat': {
+        'kg': 9,
+        'lb': 225
+    }
+}
 '''
 Simple approximation of energy (kcal) provided per gram or ounce
 '''
-
 
 logger = logging.getLogger(__name__)
 
@@ -68,26 +76,27 @@ class NutritionPlan(models.Model):
     class Meta:
 
         # Order by creation_date, descending (oldest first)
-        ordering = ["-creation_date", ]
+        ordering = [
+            "-creation_date",
+        ]
 
-    user = models.ForeignKey(User,
-                             verbose_name=_('User'),
-                             editable=False)
-    language = models.ForeignKey(Language,
-                                 verbose_name=_('Language'),
-                                 editable=False)
+    user = models.ForeignKey(User, verbose_name=_('User'), editable=False)
+    language = models.ForeignKey(
+        Language, verbose_name=_('Language'), editable=False)
     creation_date = models.DateField(_('Creation date'), auto_now_add=True)
-    description = models.TextField(max_length=2000,
-                                   blank=True,
-                                   verbose_name=_('Description'),
-                                   help_text=_('A description of the goal of the plan, e.g. '
-                                               '"Gain mass" or "Prepare for summer"'))
-    has_goal_calories = models.BooleanField(verbose_name=_('Use daily calories'),
-                                            default=False,
-                                            help_text=_("Tick the box if you want to mark this "
-                                                        "plan as having a goal amount of calories. "
-                                                        "You can use the calculator or enter the "
-                                                        "value yourself."))
+    description = models.TextField(
+        max_length=2000,
+        blank=True,
+        verbose_name=_('Description'),
+        help_text=_('A description of the goal of the plan, e.g. '
+                    '"Gain mass" or "Prepare for summer"'))
+    has_goal_calories = models.BooleanField(
+        verbose_name=_('Use daily calories'),
+        default=False,
+        help_text=_("Tick the box if you want to mark this "
+                    "plan as having a goal amount of calories. "
+                    "You can use the calculator or enter the "
+                    "value yourself."))
     '''A flag indicating whether the plan has a goal amount of calories'''
 
     def __str__(self):
@@ -109,7 +118,6 @@ class NutritionPlan(models.Model):
         '''
         Sums the nutritional info of all items in the plan
         '''
-
         # check if object exists in cache
         result = cache.get(cache_mapper.get_nutritional_key(self.pk))
 
@@ -175,7 +183,8 @@ class NutritionPlan(models.Model):
             .filter(date__lte=target).order_by('-date').first()
         if closest_entry_gte is None or closest_entry_lte is None:
             return closest_entry_gte or closest_entry_lte
-        if abs(closest_entry_gte.date - target) < abs(closest_entry_lte.date - target):
+        if abs(closest_entry_gte.date - target) < abs(
+                closest_entry_lte.date - target):
             return closest_entry_gte
         else:
             return closest_entry_lte
@@ -196,13 +205,16 @@ class NutritionPlan(models.Model):
         actual_calories = self.get_nutritional_values()['total']['energy']
 
         # Within 3%
-        if (actual_calories < goal_calories * 1.03) and (actual_calories > goal_calories * 0.97):
+        if (actual_calories < goal_calories * 1.03) and (actual_calories >
+                                                         goal_calories * 0.97):
             return 1
         # within 7%
-        elif (actual_calories < goal_calories * 1.07) and (actual_calories > goal_calories * 0.93):
+        elif (actual_calories < goal_calories * 1.07) and (
+                actual_calories > goal_calories * 0.93):
             return 2
         # within 10%
-        elif (actual_calories < goal_calories * 1.10) and (actual_calories > goal_calories * 0.9):
+        elif (actual_calories < goal_calories * 1.10) and (
+                actual_calories > goal_calories * 0.9):
             return 3
         # even more
         else:
@@ -228,8 +240,7 @@ class Ingredient(AbstractLicenseModel, models.Model):
     INGREDIENT_STATUS_SYSTEM = '5'
 
     INGREDIENT_STATUS_OK = (INGREDIENT_STATUS_ACCEPTED,
-                            INGREDIENT_STATUS_ADMIN,
-                            INGREDIENT_STATUS_SYSTEM)
+                            INGREDIENT_STATUS_ADMIN, INGREDIENT_STATUS_SYSTEM)
 
     INGREDIENT_STATUS = (
         (INGREDIENT_STATUS_PENDING, _('Pending')),
@@ -241,93 +252,99 @@ class Ingredient(AbstractLicenseModel, models.Model):
 
     # Metaclass to set some other properties
     class Meta:
-        ordering = ["name", ]
+        ordering = [
+            "name",
+        ]
 
-    language = models.ForeignKey(Language,
-                                 verbose_name=_('Language'),
-                                 editable=False)
+    language = models.ForeignKey(
+        Language, verbose_name=_('Language'), editable=False)
 
-    user = models.ForeignKey(User,
-                             verbose_name=_('User'),
-                             null=True,
-                             blank=True,
-                             editable=False)
+    user = models.ForeignKey(
+        User, verbose_name=_('User'), null=True, blank=True, editable=False)
     '''The user that submitted the exercise'''
 
-    status = models.CharField(max_length=2,
-                              choices=INGREDIENT_STATUS,
-                              default=INGREDIENT_STATUS_PENDING,
-                              editable=False)
+    status = models.CharField(
+        max_length=2,
+        choices=INGREDIENT_STATUS,
+        default=INGREDIENT_STATUS_PENDING,
+        editable=False)
     '''The status of an ingredient'''
 
     creation_date = models.DateField(_('Date'), auto_now_add=True)
-    update_date = models.DateField(_('Date'),
-                                   auto_now=True,
-                                   blank=True,
-                                   editable=False)
+    update_date = models.DateField(
+        _('Date'), auto_now=True, blank=True, editable=False)
 
-    name = models.CharField(max_length=200,
-                            verbose_name=_('Name'),)
+    name = models.CharField(
+        max_length=200,
+        verbose_name=_('Name'),
+    )
 
-    energy = models.IntegerField(verbose_name=_('Energy'),
-                                 help_text=_('In kcal per 100g'))
+    energy = models.IntegerField(
+        verbose_name=_('Energy'), help_text=_('In kcal per 100g'))
 
-    protein = models.DecimalField(decimal_places=3,
-                                  max_digits=6,
-                                  verbose_name=_('Protein'),
-                                  help_text=_('In g per 100g of product'),
-                                  validators=[MinValueValidator(0),
-                                              MaxValueValidator(100)])
+    protein = models.DecimalField(
+        decimal_places=3,
+        max_digits=6,
+        verbose_name=_('Protein'),
+        help_text=_('In g per 100g of product'),
+        validators=[MinValueValidator(0),
+                    MaxValueValidator(100)])
 
-    carbohydrates = models.DecimalField(decimal_places=3,
-                                        max_digits=6,
-                                        verbose_name=_('Carbohydrates'),
-                                        help_text=_('In g per 100g of product'),
-                                        validators=[MinValueValidator(0),
-                                                    MaxValueValidator(100)])
+    carbohydrates = models.DecimalField(
+        decimal_places=3,
+        max_digits=6,
+        verbose_name=_('Carbohydrates'),
+        help_text=_('In g per 100g of product'),
+        validators=[MinValueValidator(0),
+                    MaxValueValidator(100)])
 
-    carbohydrates_sugar = models.DecimalField(decimal_places=3,
-                                              max_digits=6,
-                                              blank=True,
-                                              null=True,
-                                              verbose_name=_('Sugar content in carbohydrates'),
-                                              help_text=_('In g per 100g of product'),
-                                              validators=[MinValueValidator(0),
-                                                          MaxValueValidator(100)])
+    carbohydrates_sugar = models.DecimalField(
+        decimal_places=3,
+        max_digits=6,
+        blank=True,
+        null=True,
+        verbose_name=_('Sugar content in carbohydrates'),
+        help_text=_('In g per 100g of product'),
+        validators=[MinValueValidator(0),
+                    MaxValueValidator(100)])
 
-    fat = models.DecimalField(decimal_places=3,
-                              max_digits=6,
-                              verbose_name=_('Fat'),
-                              help_text=_('In g per 100g of product'),
-                              validators=[MinValueValidator(0),
-                                          MaxValueValidator(100)])
+    fat = models.DecimalField(
+        decimal_places=3,
+        max_digits=6,
+        verbose_name=_('Fat'),
+        help_text=_('In g per 100g of product'),
+        validators=[MinValueValidator(0),
+                    MaxValueValidator(100)])
 
-    fat_saturated = models.DecimalField(decimal_places=3,
-                                        max_digits=6,
-                                        blank=True,
-                                        null=True,
-                                        verbose_name=_('Saturated fat content in fats'),
-                                        help_text=_('In g per 100g of product'),
-                                        validators=[MinValueValidator(0),
-                                                    MaxValueValidator(100)])
+    fat_saturated = models.DecimalField(
+        decimal_places=3,
+        max_digits=6,
+        blank=True,
+        null=True,
+        verbose_name=_('Saturated fat content in fats'),
+        help_text=_('In g per 100g of product'),
+        validators=[MinValueValidator(0),
+                    MaxValueValidator(100)])
 
-    fibres = models.DecimalField(decimal_places=3,
-                                 max_digits=6,
-                                 blank=True,
-                                 null=True,
-                                 verbose_name=_('Fibres'),
-                                 help_text=_('In g per 100g of product'),
-                                 validators=[MinValueValidator(0),
-                                             MaxValueValidator(100)])
+    fibres = models.DecimalField(
+        decimal_places=3,
+        max_digits=6,
+        blank=True,
+        null=True,
+        verbose_name=_('Fibres'),
+        help_text=_('In g per 100g of product'),
+        validators=[MinValueValidator(0),
+                    MaxValueValidator(100)])
 
-    sodium = models.DecimalField(decimal_places=3,
-                                 max_digits=6,
-                                 blank=True,
-                                 null=True,
-                                 verbose_name=_('Sodium'),
-                                 help_text=_('In g per 100g of product'),
-                                 validators=[MinValueValidator(0),
-                                             MaxValueValidator(100)])
+    sodium = models.DecimalField(
+        decimal_places=3,
+        max_digits=6,
+        blank=True,
+        null=True,
+        verbose_name=_('Sodium'),
+        help_text=_('In g per 100g of product'),
+        validators=[MinValueValidator(0),
+                    MaxValueValidator(100)])
 
     #
     # Django methods
@@ -337,8 +354,12 @@ class Ingredient(AbstractLicenseModel, models.Model):
         '''
         Returns the canonical URL to view this object
         '''
-        return reverse('nutrition:ingredient:view',
-                       kwargs={'id': self.id, 'slug': slugify(self.name)})
+        return reverse(
+            'nutrition:ingredient:view',
+            kwargs={
+                'id': self.id,
+                'slug': slugify(self.name)
+            })
 
     def clean(self):
         '''
@@ -348,8 +369,8 @@ class Ingredient(AbstractLicenseModel, models.Model):
         - 1g of carbohydrates: 4kcal
         - 1g of fat: 9kcal
 
-        The sum is then compared to the given total energy, with ENERGY_APPROXIMATION
-        percent tolerance.
+        The sum is then compared to the given total energy, with
+        ENERGY_APPROXIMATION percent tolerance.
         '''
 
         # Note: calculations in 100 grams, to save us the '/100' everywhere
@@ -359,7 +380,8 @@ class Ingredient(AbstractLicenseModel, models.Model):
 
         energy_carbohydrates = 0
         if self.carbohydrates:
-            energy_carbohydrates = self.carbohydrates * ENERGY_FACTOR['carbohydrates']['kg']
+            energy_carbohydrates = self.carbohydrates * \
+                ENERGY_FACTOR['carbohydrates']['kg']
 
         energy_fat = 0
         if self.fat:
@@ -371,12 +393,16 @@ class Ingredient(AbstractLicenseModel, models.Model):
 
         # Compare the values, but be generous
         if self.energy:
-            energy_upper = self.energy * (1 + (self.ENERGY_APPROXIMATION / Decimal(100.0)))
-            energy_lower = self.energy * (1 - (self.ENERGY_APPROXIMATION / Decimal(100.0)))
+            energy_upper = self.energy * \
+                (1 + (self.ENERGY_APPROXIMATION / Decimal(100.0)))
+            energy_lower = self.energy * \
+                (1 - (self.ENERGY_APPROXIMATION / Decimal(100.0)))
 
-            if not ((energy_upper > energy_calculated) and (energy_calculated > energy_lower)):
-                raise ValidationError(_('Total energy is not the approximate sum of the energy '
-                                        'provided by protein, carbohydrates and fat.'))
+            if not ((energy_upper > energy_calculated) and
+                    (energy_calculated > energy_lower)):
+                raise ValidationError(
+                    _('Total energy is not the approximate sum of the energy '
+                      'provided by protein, carbohydrates and fat.'))
 
     def save(self, *args, **kwargs):
         '''
@@ -397,13 +423,15 @@ class Ingredient(AbstractLicenseModel, models.Model):
         Compare ingredients based on their values, not like django on their PKs
         '''
 
-        logger.debug('Overwritten behaviour: comparing ingredients on values, not PK.')
+        logger.debug(
+            'Overwritten behaviour: comparing ingredients on values, not PK.')
         equal = True
         if isinstance(other, self.__class__):
             for i in self._meta.fields:
-                if (hasattr(self, i.name) and hasattr(other, i.name) and
-                   (getattr(self, i.name, None) != getattr(other, i.name, None))):
-                        equal = False
+                if (hasattr(self, i.name) and hasattr(other, i.name)
+                        and (getattr(self, i.name, None) != getattr(
+                            other, i.name, None))):
+                    equal = False
         else:
             equal = False
         return equal
@@ -432,20 +460,22 @@ class Ingredient(AbstractLicenseModel, models.Model):
         submitted ingredients only)
         '''
         if self.user and self.user.email:
-            translation.activate(self.user.userprofile.notification_language.short_name)
+            translation.activate(
+                self.user.userprofile.notification_language.short_name)
             url = request.build_absolute_uri(self.get_absolute_url())
-            subject = _('Ingredient was successfully added to the general database')
+            subject = _(
+                'Ingredient was successfully added to the general database')
             context = {
                 'ingredient': self.name,
                 'url': url,
                 'site': Site.objects.get_current().domain
             }
             message = render_to_string('ingredient/email_new.tpl', context)
-            mail.send_mail(subject,
-                           message,
-                           settings.WGER_SETTINGS['EMAIL_FROM'],
-                           [self.user.email],
-                           fail_silently=True)
+            mail.send_mail(
+                subject,
+                message,
+                settings.WGER_SETTINGS['EMAIL_FROM'], [self.user.email],
+                fail_silently=True)
 
     def get_owner_object(self):
         '''
@@ -460,15 +490,18 @@ class WeightUnit(models.Model):
     A more human usable weight unit (spoon, table, slice...)
     '''
 
-    language = models.ForeignKey(Language,
-                                 verbose_name=_('Language'),
-                                 editable=False)
-    name = models.CharField(max_length=200,
-                            verbose_name=_('Name'),)
+    language = models.ForeignKey(
+        Language, verbose_name=_('Language'), editable=False)
+    name = models.CharField(
+        max_length=200,
+        verbose_name=_('Name'),
+    )
 
     # Metaclass to set some other properties
     class Meta:
-        ordering = ["name", ]
+        ordering = [
+            "name",
+        ]
 
     def __str__(self):
         '''
@@ -489,17 +522,17 @@ class IngredientWeightUnit(models.Model):
     A specific human usable weight unit for an ingredient
     '''
 
-    ingredient = models.ForeignKey(Ingredient,
-                                   verbose_name=_('Ingredient'),
-                                   editable=False)
+    ingredient = models.ForeignKey(
+        Ingredient, verbose_name=_('Ingredient'), editable=False)
     unit = models.ForeignKey(WeightUnit, verbose_name=_('Weight unit'))
 
     gram = models.IntegerField(verbose_name=_('Amount in grams'))
-    amount = models.DecimalField(decimal_places=2,
-                                 max_digits=5,
-                                 default=1,
-                                 verbose_name=_('Amount'),
-                                 help_text=_('Unit amount, e.g. "1 Cup" or "1/2 spoon"'))
+    amount = models.DecimalField(
+        decimal_places=2,
+        max_digits=5,
+        default=1,
+        verbose_name=_('Amount'),
+        help_text=_('Unit amount, e.g. "1 Cup" or "1/2 spoon"'))
 
     def get_owner_object(self):
         '''
@@ -513,8 +546,7 @@ class IngredientWeightUnit(models.Model):
         '''
 
         return u"{0}{1} ({2}g)".format(self.amount if self.amount > 1 else '',
-                                       self.unit.name,
-                                       self.gram)
+                                       self.unit.name, self.gram)
 
 
 @python_2_unicode_compatible
@@ -525,17 +557,16 @@ class Meal(models.Model):
 
     # Metaclass to set some other properties
     class Meta:
-        ordering = ["time", ]
+        ordering = [
+            "time",
+        ]
 
-    plan = models.ForeignKey(NutritionPlan,
-                             verbose_name=_('Nutrition plan'),
-                             editable=False)
-    order = models.IntegerField(verbose_name=_('Order'),
-                                blank=True,
-                                editable=False)
-    time = Html5TimeField(null=True,
-                          blank=True,
-                          verbose_name=_('Time (approx)'))
+    plan = models.ForeignKey(
+        NutritionPlan, verbose_name=_('Nutrition plan'), editable=False)
+    order = models.IntegerField(
+        verbose_name=_('Order'), blank=True, editable=False)
+    time = Html5TimeField(
+        null=True, blank=True, verbose_name=_('Time (approx)'))
 
     def __str__(self):
         '''
@@ -555,14 +586,16 @@ class Meal(models.Model):
 
         :param use_metric Flag that controls the units used
         '''
-        nutritional_info = {'energy': 0,
-                            'protein': 0,
-                            'carbohydrates': 0,
-                            'carbohydrates_sugar': 0,
-                            'fat': 0,
-                            'fat_saturated': 0,
-                            'fibres': 0,
-                            'sodium': 0}
+        nutritional_info = {
+            'energy': 0,
+            'protein': 0,
+            'carbohydrates': 0,
+            'carbohydrates_sugar': 0,
+            'fat': 0,
+            'fat_saturated': 0,
+            'fibres': 0,
+            'sodium': 0
+        }
 
         # Get the calculated values from the meal item and add them
         for item in self.mealitem_set.select_related():
@@ -573,7 +606,8 @@ class Meal(models.Model):
 
         # Only 2 decimal places, anything else doesn't make sense
         for i in nutritional_info:
-            nutritional_info[i] = Decimal(nutritional_info[i]).quantize(TWOPLACES)
+            nutritional_info[i] = Decimal(
+                nutritional_info[i]).quantize(TWOPLACES)
 
         return nutritional_info
 
@@ -584,24 +618,24 @@ class MealItem(models.Model):
     An item (component) of a meal
     '''
 
-    meal = models.ForeignKey(Meal,
-                             verbose_name=_('Nutrition plan'),
-                             editable=False)
+    meal = models.ForeignKey(
+        Meal, verbose_name=_('Nutrition plan'), editable=False)
     ingredient = models.ForeignKey(Ingredient, verbose_name=_('Ingredient'))
-    weight_unit = models.ForeignKey(IngredientWeightUnit,
-                                    verbose_name=_('Weight unit'),
-                                    null=True,
-                                    blank=True,
-                                    )
+    weight_unit = models.ForeignKey(
+        IngredientWeightUnit,
+        verbose_name=_('Weight unit'),
+        null=True,
+        blank=True,
+    )
 
-    order = models.IntegerField(verbose_name=_('Order'),
-                                blank=True,
-                                editable=False)
-    amount = models.DecimalField(decimal_places=2,
-                                 max_digits=6,
-                                 verbose_name=_('Amount'),
-                                 validators=[MinValueValidator(1),
-                                             MaxValueValidator(1000)])
+    order = models.IntegerField(
+        verbose_name=_('Order'), blank=True, editable=False)
+    amount = models.DecimalField(
+        decimal_places=2,
+        max_digits=6,
+        verbose_name=_('Amount'),
+        validators=[MinValueValidator(1),
+                    MaxValueValidator(1000)])
 
     def __str__(self):
         '''
@@ -633,25 +667,29 @@ class MealItem(models.Model):
 
         :param use_metric Flag that controls the units used
         '''
-        nutritional_info = {'energy': 0,
-                            'protein': 0,
-                            'carbohydrates': 0,
-                            'carbohydrates_sugar': 0,
-                            'fat': 0,
-                            'fat_saturated': 0,
-                            'fibres': 0,
-                            'sodium': 0}
+        nutritional_info = {
+            'energy': 0,
+            'protein': 0,
+            'carbohydrates': 0,
+            'carbohydrates_sugar': 0,
+            'fat': 0,
+            'fat_saturated': 0,
+            'fibres': 0,
+            'sodium': 0
+        }
         # Calculate the base weight of the item
         if self.get_unit_type() == MEALITEM_WEIGHT_GRAM:
             item_weight = self.amount
         else:
-            item_weight = (self.amount *
-                           self.weight_unit.amount *
-                           self.weight_unit.gram)
+            item_weight = (
+                self.amount * self.weight_unit.amount * self.weight_unit.gram)
 
-        nutritional_info['energy'] += self.ingredient.energy * item_weight / 100
-        nutritional_info['protein'] += self.ingredient.protein * item_weight / 100
-        nutritional_info['carbohydrates'] += self.ingredient.carbohydrates * item_weight / 100
+        nutritional_info['energy'] += self.ingredient.energy * \
+            item_weight / 100
+        nutritional_info['protein'] += self.ingredient.protein * \
+            item_weight / 100
+        nutritional_info['carbohydrates'] += self.ingredient.carbohydrates * \
+            item_weight / 100
 
         if self.ingredient.carbohydrates_sugar:
             nutritional_info['carbohydrates_sugar'] += self.ingredient.carbohydrates_sugar \
@@ -660,13 +698,16 @@ class MealItem(models.Model):
         nutritional_info['fat'] += self.ingredient.fat * item_weight / 100
 
         if self.ingredient.fat_saturated:
-            nutritional_info['fat_saturated'] += self.ingredient.fat_saturated * item_weight / 100
+            nutritional_info['fat_saturated'] += self.ingredient.fat_saturated * \
+                item_weight / 100
 
         if self.ingredient.fibres:
-            nutritional_info['fibres'] += self.ingredient.fibres * item_weight / 100
+            nutritional_info['fibres'] += self.ingredient.fibres * \
+                item_weight / 100
 
         if self.ingredient.sodium:
-            nutritional_info['sodium'] += self.ingredient.sodium * item_weight / 100
+            nutritional_info['sodium'] += self.ingredient.sodium * \
+                item_weight / 100
 
         # If necessary, convert weight units
         if not use_metric:
@@ -681,6 +722,7 @@ class MealItem(models.Model):
 
         # Only 2 decimal places, anything else doesn't make sense
         for i in nutritional_info:
-            nutritional_info[i] = Decimal(nutritional_info[i]).quantize(TWOPLACES)
+            nutritional_info[i] = Decimal(
+                nutritional_info[i]).quantize(TWOPLACES)
 
         return nutritional_info

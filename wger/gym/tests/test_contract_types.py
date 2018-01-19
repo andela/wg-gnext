@@ -15,10 +15,8 @@
 from django.core.urlresolvers import reverse
 
 from wger.core.tests.base_testcase import (
-    WorkoutManagerEditTestCase,
-    WorkoutManagerAddTestCase,
-    WorkoutManagerDeleteTestCase,
-    WorkoutManagerAccessTestCase,
+    WorkoutManagerEditTestCase, WorkoutManagerAddTestCase,
+    WorkoutManagerDeleteTestCase, WorkoutManagerAccessTestCase,
     delete_testcase_add_methods)
 from wger.gym.models import ContractType
 
@@ -31,18 +29,9 @@ class AddContractTypeTestCase(WorkoutManagerAddTestCase):
     object_class = ContractType
     url = reverse('gym:contract_type:add', kwargs={'gym_pk': 1})
     data = {'name': 'Some name'}
-    user_success = ('manager1',
-                    'manager2')
-    user_fail = ('admin',
-                 'general_manager1',
-                 'manager3',
-                 'manager4',
-                 'test',
-                 'member1',
-                 'member2',
-                 'member3',
-                 'member4',
-                 'member5')
+    user_success = ('manager1', 'manager2')
+    user_fail = ('admin', 'general_manager1', 'manager3', 'manager4', 'test',
+                 'member1', 'member2', 'member3', 'member4', 'member5')
 
 
 class EditContractTypeTestCase(WorkoutManagerEditTestCase):
@@ -53,18 +42,9 @@ class EditContractTypeTestCase(WorkoutManagerEditTestCase):
     pk = 1
     object_class = ContractType
     url = 'gym:contract_type:edit'
-    user_success = ('manager1',
-                    'manager2')
-    user_fail = ('admin',
-                 'general_manager1',
-                 'manager3',
-                 'manager4',
-                 'test',
-                 'member1',
-                 'member2',
-                 'member3',
-                 'member4',
-                 'member5')
+    user_success = ('manager1', 'manager2')
+    user_fail = ('admin', 'general_manager1', 'manager3', 'manager4', 'test',
+                 'member1', 'member2', 'member3', 'member4', 'member5')
     data = {'name': 'Standard contract 16-Gj'}
 
 
@@ -76,18 +56,10 @@ class DeleteContractTypeTestCase(WorkoutManagerDeleteTestCase):
     pk = 1
     object_class = ContractType
     url = 'gym:contract_type:delete'
-    user_success = ('manager1',
-                    'manager2')
-    user_fail = ('admin',
-                 'general_manager1',
-                 'manager3',
-                 'manager4',
-                 'test',
-                 'member1',
-                 'member2',
-                 'member3',
-                 'member4',
-                 'member5')
+    user_success = ('manager1', 'manager2')
+    user_fail = ('admin', 'general_manager1', 'manager3', 'manager4', 'test',
+                 'member1', 'member2', 'member3', 'member4', 'member5')
+
 
 delete_testcase_add_methods(DeleteContractTypeTestCase)
 
@@ -97,15 +69,6 @@ class AccessContractTypeOverviewTestCase(WorkoutManagerAccessTestCase):
     Test accessing the contract list page
     '''
     url = reverse('gym:contract_type:list', kwargs={'gym_pk': 1})
-    user_success = ('manager1',
-                    'manager2')
-    user_fail = ('admin',
-                 'general_manager1',
-                 'manager3',
-                 'manager4',
-                 'test',
-                 'member1',
-                 'member2',
-                 'member3',
-                 'member4',
-                 'member5')
+    user_success = ('manager1', 'manager2')
+    user_fail = ('admin', 'general_manager1', 'manager3', 'manager4', 'test',
+                 'member1', 'member2', 'member3', 'member4', 'member5')

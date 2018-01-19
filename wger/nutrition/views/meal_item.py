@@ -26,7 +26,6 @@ from wger.nutrition.forms import MealItemForm
 from wger.nutrition.models import Meal, MealItem
 from wger.utils.generic_views import WgerFormMixin
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -43,7 +42,10 @@ def delete_meal_item(request, item_id):
     # Only delete if the user is the owner
     if plan.user == request.user:
         item.delete()
-        return HttpResponseRedirect(reverse('nutrition:plan:view', kwargs={'id': plan.id}))
+        return HttpResponseRedirect(
+            reverse('nutrition:plan:view', kwargs={
+                'id': plan.id
+            }))
     else:
         return HttpResponseForbidden()
 
@@ -64,7 +66,8 @@ class MealItemCreateView(WgerFormMixin, CreateView):
         meal = get_object_or_404(Meal, pk=kwargs['meal_id'])
         if meal.plan.user == request.user:
             self.meal = meal
-            return super(MealItemCreateView, self).dispatch(request, *args, **kwargs)
+            return super(MealItemCreateView, self).dispatch(
+                request, *args, **kwargs)
         else:
             return HttpResponseForbidden()
 
@@ -76,9 +79,12 @@ class MealItemCreateView(WgerFormMixin, CreateView):
         Send some additional data to the template
         '''
         context = super(MealItemCreateView, self).get_context_data(**kwargs)
-        context['form_action'] = reverse('nutrition:meal_item:add',
-                                         kwargs={'meal_id': self.meal.id})
-        context['ingredient_searchfield'] = self.request.POST.get('ingredient_searchfield', '')
+        context['form_action'] = reverse(
+            'nutrition:meal_item:add', kwargs={
+                'meal_id': self.meal.id
+            })
+        context['ingredient_searchfield'] = self.request.POST.get(
+            'ingredient_searchfield', '')
         return context
 
     def form_valid(self, form):
@@ -102,7 +108,10 @@ class MealItemEditView(WgerFormMixin, UpdateView):
     template_name = 'meal_item/edit.html'
 
     def get_success_url(self):
-        return reverse('nutrition:plan:view', kwargs={'id': self.object.meal.plan.id})
+        return reverse(
+            'nutrition:plan:view', kwargs={
+                'id': self.object.meal.plan.id
+            })
 
     def get_context_data(self, **kwargs):
         '''

@@ -19,13 +19,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django import forms
-from django.forms import (
-    EmailField,
-    Form,
-    CharField,
-    widgets,
-    PasswordInput
-)
+from django.forms import (EmailField, Form, CharField, widgets, PasswordInput)
 from django.utils.translation import ugettext as _
 from wger.core.models import UserProfile
 
@@ -42,23 +36,19 @@ class UserLoginForm(AuthenticationForm):
 class UserPreferencesForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ('show_comments',
-                  'show_english_ingredients',
-                  'workout_reminder_active',
-                  'workout_reminder',
-                  'workout_duration',
-                  'notification_language',
-                  'weight_unit',
-                  'timer_active',
-                  'timer_pause',
-                  'ro_access',
+        fields = ('show_comments', 'show_english_ingredients',
+                  'workout_reminder_active', 'workout_reminder',
+                  'workout_duration', 'notification_language', 'weight_unit',
+                  'timer_active', 'timer_pause', 'ro_access',
                   'num_days_weight_reminder')
 
 
 class UserEmailForm(forms.ModelForm):
-    email = EmailField(label=_("Email"),
-                       help_text=_("Used for password resets and, optionally, email reminders."),
-                       required=False)
+    email = EmailField(
+        label=_("Email"),
+        help_text=_(
+            "Used for password resets and, optionally, email reminders."),
+        required=False)
 
     class Meta:
         model = User
@@ -69,9 +59,9 @@ class UserEmailForm(forms.ModelForm):
         Email must be unique system wide
 
         However, this check should only be performed when the user changes his
-        email, otherwise the uniqueness check will because it will find one user
-        (the current one) using the same email. Only when the user changes it, do
-        we want to check that nobody else has that email
+        email, otherwise the uniqueness check will because it will find one
+        user (the current one) using the same email. Only when the user
+        changes it, do we want to check that nobody else has that email
         '''
 
         email = self.cleaned_data["email"]
@@ -88,10 +78,8 @@ class UserEmailForm(forms.ModelForm):
 
 
 class UserPersonalInformationForm(UserEmailForm):
-    first_name = forms.CharField(label=_('First name'),
-                                 required=False)
-    last_name = forms.CharField(label=_('Last name'),
-                                required=False)
+    first_name = forms.CharField(label=_('First name'), required=False)
+    last_name = forms.CharField(label=_('Last name'), required=False)
 
     class Meta:
         model = User
@@ -105,9 +93,10 @@ class PasswordConfirmationForm(Form):
     This can be used to make sure the user really wants to perform a dangerous
     action. The form must be initialised with a user object.
     '''
-    password = CharField(label=_("Password"),
-                         widget=PasswordInput,
-                         help_text=_('Please enter your current password.'))
+    password = CharField(
+        label=_("Password"),
+        widget=PasswordInput,
+        help_text=_('Please enter your current password.'))
 
     def __init__(self, user, data=None):
         self.user = user
@@ -130,11 +119,13 @@ class RegistrationForm(UserCreationForm, UserEmailForm):
 
     # Manually set the language to 'en', otherwise the language used seems to
     # randomly one of the application languages. This also appears to happen
-    # only on wger.de, perhaps because there the application is behind a reverse
-    # proxy. See  #281.
-    captcha = ReCaptchaField(attrs={'theme': 'clean', 'lang': 'en'},
-                             label=_('Confirmation text'),
-                             help_text=_('As a security measure, please enter the previous words'))
+    # only on wger.de, perhaps because there the application is behind a
+    #  reverse proxy. See  #281.
+    captcha = ReCaptchaField(
+        attrs={'theme': 'clean',
+               'lang': 'en'},
+        label=_('Confirmation text'),
+        help_text=_('As a security measure, please enter the previous words'))
 
 
 class RegistrationFormNoCaptcha(UserCreationForm, UserEmailForm):
@@ -152,24 +143,28 @@ class FeedbackRegisteredForm(forms.Form):
     '''
     Feedback form used for logged in users
     '''
-    contact = forms.CharField(max_length=50,
-                              min_length=10,
-                              label=_('Contact'),
-                              help_text=_('Some way of answering you (email, etc.)'),
-                              required=False)
+    contact = forms.CharField(
+        max_length=50,
+        min_length=10,
+        label=_('Contact'),
+        help_text=_('Some way of answering you (email, etc.)'),
+        required=False)
 
-    comment = forms.CharField(max_length=500,
-                              min_length=10,
-                              widget=widgets.Textarea,
-                              label=_('Comment'),
-                              help_text=_('What do you want to say?'),
-                              required=True)
+    comment = forms.CharField(
+        max_length=500,
+        min_length=10,
+        widget=widgets.Textarea,
+        label=_('Comment'),
+        help_text=_('What do you want to say?'),
+        required=True)
 
 
 class FeedbackAnonymousForm(FeedbackRegisteredForm):
     '''
     Feedback form used for anonymous users (has additionally a reCaptcha field)
     '''
-    captcha = ReCaptchaField(attrs={'theme': 'clean'},
-                             label=_('Confirmation text'),
-                             help_text=_('As a security measure, please enter the previous words'),)
+    captcha = ReCaptchaField(
+        attrs={'theme': 'clean'},
+        label=_('Confirmation text'),
+        help_text=_('As a security measure, please enter the previous words'),
+    )

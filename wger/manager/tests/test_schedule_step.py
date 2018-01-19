@@ -32,7 +32,8 @@ class ScheduleStepRepresentationTestCase(WorkoutManagerTestCase):
         '''
         Test that the representation of an object is correct
         '''
-        self.assertEqual("{0}".format(ScheduleStep.objects.get(pk=1)), 'A test workout')
+        self.assertEqual(
+            "{0}".format(ScheduleStep.objects.get(pk=1)), 'A test workout')
 
 
 class ScheduleStepTestCase(WorkoutManagerTestCase):
@@ -48,9 +49,15 @@ class ScheduleStepTestCase(WorkoutManagerTestCase):
         s2 = ScheduleStep.objects.get(pk=2)
         s3 = ScheduleStep.objects.get(pk=3)
 
-        self.assertEqual(s1.get_dates(), (datetime.date(2013, 4, 21), datetime.date(2013, 5, 12)))
-        self.assertEqual(s2.get_dates(), (datetime.date(2013, 5, 12), datetime.date(2013, 6, 16)))
-        self.assertEqual(s3.get_dates(), (datetime.date(2013, 6, 16), datetime.date(2013, 6, 30)))
+        self.assertEqual(
+            s1.get_dates(),
+            (datetime.date(2013, 4, 21), datetime.date(2013, 5, 12)))
+        self.assertEqual(
+            s2.get_dates(),
+            (datetime.date(2013, 5, 12), datetime.date(2013, 6, 16)))
+        self.assertEqual(
+            s3.get_dates(),
+            (datetime.date(2013, 6, 16), datetime.date(2013, 6, 30)))
 
 
 class CreateScheduleStepTestCase(WorkoutManagerAddTestCase):
@@ -62,8 +69,7 @@ class CreateScheduleStepTestCase(WorkoutManagerAddTestCase):
     url = reverse_lazy('manager:step:add', kwargs={'schedule_pk': 1})
     user_success = 'test'
     user_fail = False
-    data = {'workout': 3,
-            'duration': 4}
+    data = {'workout': 3, 'duration': 4}
 
 
 class EditScheduleStepTestCase(WorkoutManagerEditTestCase):
@@ -74,8 +80,7 @@ class EditScheduleStepTestCase(WorkoutManagerEditTestCase):
     object_class = ScheduleStep
     url = 'manager:step:edit'
     pk = 2
-    data = {'workout': 1,
-            'duration': 8}
+    data = {'workout': 1, 'duration': 8}
 
 
 class DeleteScheduleStepTestCase(WorkoutManagerDeleteTestCase):
@@ -95,6 +100,4 @@ class ScheduleStepApiTestCase(api_base_test.ApiBaseResourceTestCase):
     pk = 4
     resource = ScheduleStep
     private_resource = True
-    data = {'workout': '3',
-            'schedule': '1',
-            'duration': '8'}
+    data = {'workout': '3', 'schedule': '1', 'duration': '8'}

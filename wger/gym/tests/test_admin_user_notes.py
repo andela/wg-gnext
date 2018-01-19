@@ -28,15 +28,9 @@ class AdminNoteOverviewTest(WorkoutManagerAccessTestCase):
     '''
     url = reverse_lazy('gym:admin_note:list', kwargs={'user_pk': 14})
     anonymous_fail = True
-    user_success = ('trainer1',
-                    'trainer2',
-                    'trainer3')
-    user_fail = ('member1',
-                 'manager1',
-                 'manager2',
-                 'trainer4',
-                 'general_manager1',
-                 'general_manager2')
+    user_success = ('trainer1', 'trainer2', 'trainer3')
+    user_fail = ('member1', 'manager1', 'manager2', 'trainer4',
+                 'general_manager1', 'general_manager2')
 
 
 class AddAdminNoteTestCase(WorkoutManagerAddTestCase):
@@ -46,15 +40,9 @@ class AddAdminNoteTestCase(WorkoutManagerAddTestCase):
     object_class = AdminUserNote
     url = reverse_lazy('gym:admin_note:add', kwargs={'user_pk': 14})
     data = {'note': 'The note text goes here'}
-    user_success = ('trainer1',
-                    'trainer2',
-                    'trainer3')
-    user_fail = ('member1',
-                 'manager1',
-                 'manager2',
-                 'trainer4',
-                 'general_manager1',
-                 'general_manager2')
+    user_success = ('trainer1', 'trainer2', 'trainer3')
+    user_fail = ('member1', 'manager1', 'manager2', 'trainer4',
+                 'general_manager1', 'general_manager2')
 
 
 class EditAdminNoteTestCase(WorkoutManagerEditTestCase):
@@ -65,15 +53,9 @@ class EditAdminNoteTestCase(WorkoutManagerEditTestCase):
     object_class = AdminUserNote
     url = 'gym:admin_note:edit'
     pk = 1
-    user_success = ('trainer1',
-                    'trainer2',
-                    'trainer3')
-    user_fail = ('member1',
-                 'manager1',
-                 'manager2',
-                 'trainer4',
-                 'general_manager1',
-                 'general_manager2')
+    user_success = ('trainer1', 'trainer2', 'trainer3')
+    user_fail = ('member1', 'manager1', 'manager2', 'trainer4',
+                 'general_manager1', 'general_manager2')
     data = {'note': 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr'}
 
 
@@ -85,14 +67,9 @@ class DeleteAdminNoteTestCase(WorkoutManagerDeleteTestCase):
     pk = 2
     object_class = AdminUserNote
     url = 'gym:admin_note:delete'
-    user_success = ('trainer1',
-                    'trainer2',
-                    'trainer3')
-    user_fail = ('member1',
-                 'manager1',
-                 'manager2',
-                 'trainer4',
-                 'general_manager1',
-                 'general_manager2')
+    user_success = ('trainer1', 'trainer2', 'trainer3')
+    user_fail = ('member1', 'manager1', 'manager2', 'trainer4',
+                 'general_manager1', 'general_manager2')
+
 
 delete_testcase_add_methods(DeleteAdminNoteTestCase)

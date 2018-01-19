@@ -14,7 +14,8 @@
 
 from django.core.urlresolvers import reverse
 
-from wger.core.tests.base_testcase import WorkoutManagerAccessTestCase, delete_testcase_add_methods
+from wger.core.tests.base_testcase import (WorkoutManagerAccessTestCase,
+                                           delete_testcase_add_methods)
 from wger.core.tests.base_testcase import WorkoutManagerAddTestCase
 from wger.core.tests.base_testcase import WorkoutManagerDeleteTestCase
 from wger.core.tests.base_testcase import WorkoutManagerEditTestCase
@@ -27,14 +28,8 @@ class UserDocumentOverviewTest(WorkoutManagerAccessTestCase):
     '''
     url = reverse('gym:document:list', kwargs={'user_pk': 14})
     anonymous_fail = True
-    user_success = ('trainer1',
-                    'trainer2',
-                    'trainer3')
-    user_fail = ('admin',
-                 'member1',
-                 'member2',
-                 'trainer4',
-                 'manager3',
+    user_success = ('trainer1', 'trainer2', 'trainer3')
+    user_fail = ('admin', 'member1', 'member2', 'trainer4', 'manager3',
                  'general_manager1')
 
 
@@ -48,13 +43,8 @@ class AddDocumentTestCase(WorkoutManagerAddTestCase):
     fileupload = ['document', 'wger/gym/tests/Wurzelpetersilie.pdf']
     data = {'name': 'Petersilie'}
     data_ignore = ['document']
-    user_success = ('trainer1',
-                    'trainer2',
-                    'trainer3')
-    user_fail = ('member1',
-                 'member2',
-                 'trainer4',
-                 'manager3',
+    user_success = ('trainer1', 'trainer2', 'trainer3')
+    user_fail = ('member1', 'member2', 'trainer4', 'manager3',
                  'general_manager1')
 
 
@@ -67,13 +57,8 @@ class EditDocumentTestCase(WorkoutManagerEditTestCase):
     object_class = UserDocument
     url = 'gym:document:edit'
     data = {'name': 'Petersilie'}
-    user_success = ('trainer1',
-                    'trainer2',
-                    'trainer3')
-    user_fail = ('member1',
-                 'member2',
-                 'trainer4',
-                 'manager3',
+    user_success = ('trainer1', 'trainer2', 'trainer3')
+    user_fail = ('member1', 'member2', 'trainer4', 'manager3',
                  'general_manager1')
 
 
@@ -85,14 +70,9 @@ class DeleteDocumentTestCase(WorkoutManagerDeleteTestCase):
     pk = 1
     object_class = UserDocument
     url = 'gym:document:delete'
-    user_success = ('admin',
-                    'trainer1',
-                    'trainer2',
-                    'trainer3')
-    user_fail = ('member1',
-                 'member2',
-                 'trainer4',
-                 'manager3',
+    user_success = ('admin', 'trainer1', 'trainer2', 'trainer3')
+    user_fail = ('member1', 'member2', 'trainer4', 'manager3',
                  'general_manager1')
+
 
 delete_testcase_add_methods(DeleteDocumentTestCase)

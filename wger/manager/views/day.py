@@ -32,7 +32,6 @@ from wger.manager.models import Workout, Day
 from wger.manager.forms import DayForm
 from wger.utils.generic_views import WgerFormMixin
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -48,7 +47,10 @@ class DayView(WgerFormMixin, LoginRequiredMixin):
     fields = ('description', 'day')
 
     def get_success_url(self):
-        return reverse('manager:workout:view', kwargs={'pk': self.object.training_id})
+        return reverse(
+            'manager:workout:view', kwargs={
+                'pk': self.object.training_id
+            })
 
     def get_form(self, form_class=DayForm):
         '''
@@ -72,7 +74,8 @@ class DayView(WgerFormMixin, LoginRequiredMixin):
         used_days.sort()
 
         # Set the queryset for day
-        form.fields['day'].queryset = DaysOfWeek.objects.exclude(id__in=used_days)
+        form.fields['day'].queryset = DaysOfWeek.objects.exclude(
+            id__in=used_days)
 
         return form
 
@@ -103,14 +106,18 @@ class DayCreateView(DayView, CreateView):
         '''
         Set the workout this day belongs to
         '''
-        form.instance.training = Workout.objects.get(pk=self.kwargs['workout_pk'])
+        form.instance.training = Workout.objects.get(
+            pk=self.kwargs['workout_pk'])
         return super(DayCreateView, self).form_valid(form)
 
     # Send some additional data to the template
     def get_context_data(self, **kwargs):
         context = super(DayCreateView, self).get_context_data(**kwargs)
-        context['form_action'] = reverse('manager:day:add',
-                                         kwargs={'workout_pk': self.kwargs['workout_pk']})
+        context['form_action'] = reverse(
+            'manager:day:add',
+            kwargs={
+                'workout_pk': self.kwargs['workout_pk']
+            })
         return context
 
 
@@ -121,7 +128,10 @@ def delete(request, pk):
     '''
     day = get_object_or_404(Day, training__user=request.user, pk=pk)
     day.delete()
-    return HttpResponseRedirect(reverse('manager:workout:view', kwargs={'pk': day.training_id}))
+    return HttpResponseRedirect(
+        reverse('manager:workout:view', kwargs={
+            'pk': day.training_id
+        }))
 
 
 @login_required

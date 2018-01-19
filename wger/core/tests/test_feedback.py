@@ -29,8 +29,10 @@ class FeedbackTestCase(WorkoutManagerTestCase):
         '''
         response = self.client.get(reverse('core:feedback'))
         self.assertEqual(response.status_code, 200)
-        response = self.client.post(reverse('core:feedback'),
-                                    {'comment': 'A very long and interesting comment'})
+        response = self.client.post(
+            reverse('core:feedback'), {
+                'comment': 'A very long and interesting comment'
+            })
         if logged_in:
             self.assertEqual(response.status_code, 302)
             self.assertEqual(len(mail.outbox), 1)
@@ -38,7 +40,10 @@ class FeedbackTestCase(WorkoutManagerTestCase):
             self.assertEqual(response.status_code, 200)
 
             # Short comment
-            response = self.client.post(reverse('core:feedback'), {'comment': '12345'})
+            response = self.client.post(
+                reverse('core:feedback'), {
+                    'comment': '12345'
+                })
             self.assertEqual(response.status_code, 200)
             self.assertEqual(len(response.context['form'].errors), 1)
         else:
@@ -47,9 +52,11 @@ class FeedbackTestCase(WorkoutManagerTestCase):
             self.assertEqual(len(mail.outbox), 0)
 
             # Correctly filled in reCaptcha
-            response = self.client.post(reverse('core:feedback'),
-                                        {'comment': 'A very long and interesting comment',
-                                         'g-recaptcha-response': 'PASSED'})
+            response = self.client.post(
+                reverse('core:feedback'), {
+                    'comment': 'A very long and interesting comment',
+                    'g-recaptcha-response': 'PASSED'
+                })
             self.assertEqual(response.status_code, 302)
             self.assertEqual(len(mail.outbox), 1)
             response = self.client.get(response['Location'])

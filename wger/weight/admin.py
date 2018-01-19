@@ -16,5 +16,4 @@ from wger.weight.models import WeightEntry
 
 from django.contrib import admin
 
-
 admin.site.register(WeightEntry)

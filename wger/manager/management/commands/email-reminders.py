@@ -48,29 +48,30 @@ class Command(BaseCommand):
             if not profile.user.email:
                 continue
 
-            # Check if we already notified the user and update the profile otherwise
+            # Check if we already notified the user and update the
+            #  profile otherwise
             if profile.last_workout_notification and \
                (datetime.date.today()
                     - profile.last_workout_notification
                     < datetime.timedelta(weeks=1)):
                 continue
 
-            (current_workout, schedule) = Schedule.objects.get_current_workout(profile.user)
+            (current_workout, schedule) = Schedule.objects.get_current_workout(
+                profile.user)
 
             # No schedules, use the default workout length in user profile
             if not schedule and current_workout:
-                delta = (current_workout.creation_date
-                         + datetime.timedelta(weeks=profile.workout_duration)
-                         - datetime.date.today())
+                delta = (current_workout.creation_date +
+                         datetime.timedelta(weeks=profile.workout_duration) -
+                         datetime.date.today())
 
                 if datetime.timedelta(days=profile.workout_reminder) > delta:
                     if int(options['verbosity']) >= 3:
-                        self.stdout.write("* Workout '{0}' overdue".format(current_workout))
+                        self.stdout.write(
+                            "* Workout '{0}' overdue".format(current_workout))
                     counter += 1
 
-                    self.send_email(profile.user,
-                                    current_workout,
-                                    delta)
+                    self.send_email(profile.user, current_workout, delta)
 
             # non-loop schedule, take the step's duration
             elif schedule and not schedule.is_loop:
@@ -81,15 +82,15 @@ class Command(BaseCommand):
                 if schedule_step == schedule.schedulestep_set.last():
 
                     delta = schedule.get_end_date() - datetime.date.today()
-                    if datetime.timedelta(days=profile.workout_reminder) > delta:
+                    if datetime.timedelta(
+                            days=profile.workout_reminder) > delta:
                         if int(options['verbosity']) >= 3:
-                            self.stdout.write("* Workout '{0}' overdue - schedule".
-                                              format(schedule_step.workout))
+                            self.stdout.write(
+                                "* Workout '{0}' overdue - schedule".format(
+                                    schedule_step.workout))
 
                         counter += 1
-                        self.send_email(profile.user,
-                                        current_workout,
-                                        delta)
+                        self.send_email(profile.user, current_workout, delta)
 
         if counter and int(options['verbosity']) >= 2:
             self.stdout.write("Sent {0} email reminders".format(counter))
@@ -110,15 +111,18 @@ class Command(BaseCommand):
 
         # Compose and send the email
         translation.activate(user.userprofile.notification_language.short_name)
-        context = {'site': Site.objects.get_current(),
-                   'workout': workout,
-                   'expired': True if delta.days < 0 else False,
-                   'days': abs(delta.days)}
+        context = {
+            'site': Site.objects.get_current(),
+            'workout': workout,
+            'expired': True if delta.days < 0 else False,
+            'days': abs(delta.days)
+        }
 
         subject = _('Workout will expire soon')
-        message = loader.render_to_string('workout/email_reminder.tpl', context)
-        mail.send_mail(subject,
-                       message,
-                       settings.WGER_SETTINGS['EMAIL_FROM'],
-                       [user.email],
-                       fail_silently=True)
+        message = loader.render_to_string('workout/email_reminder.tpl',
+                                          context)
+        mail.send_mail(
+            subject,
+            message,
+            settings.WGER_SETTINGS['EMAIL_FROM'], [user.email],
+            fail_silently=True)

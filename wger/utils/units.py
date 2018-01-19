@@ -17,10 +17,7 @@ from decimal import Decimal
 
 from wger.utils.constants import FOURPLACES
 
-
 logger = logging.getLogger(__name__)
-
-
 '''
 Weight unit classes
 '''
@@ -44,7 +41,8 @@ class AbstractWeight(object):
     def __init__(self, weight, mode='kg'):
         '''
         :param weight: the numerical weight
-        :param mode: the mode, values 'kg' (default), 'g', 'lb' and 'oz' are supported
+        :param mode: the mode, values 'kg' (default), 'g', 'lb' and 'oz' are
+                     supported
         '''
         weight = self.normalize(weight)
 

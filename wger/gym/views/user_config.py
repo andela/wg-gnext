@@ -15,7 +15,8 @@
 # You should have received a copy of the GNU Affero General Public License
 import logging
 
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import (LoginRequiredMixin,
+                                        PermissionRequiredMixin)
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseForbidden
 from django.utils.translation import ugettext as _
@@ -24,11 +25,11 @@ from django.views.generic import UpdateView
 from wger.gym.models import GymUserConfig
 from wger.utils.generic_views import WgerFormMixin
 
-
 logger = logging.getLogger(__name__)
 
 
-class ConfigUpdateView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class ConfigUpdateView(WgerFormMixin, LoginRequiredMixin,
+                       PermissionRequiredMixin, UpdateView):
     '''
     View to update an existing user gym configuration
     '''
@@ -62,6 +63,9 @@ class ConfigUpdateView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixi
         Send some additional data to the template
         '''
         context = super(ConfigUpdateView, self).get_context_data(**kwargs)
-        context['form_action'] = reverse('gym:user_config:edit', kwargs={'pk': self.object.id})
+        context['form_action'] = reverse(
+            'gym:user_config:edit', kwargs={
+                'pk': self.object.id
+            })
         context['title'] = _('Configuration')
         return context

@@ -26,22 +26,10 @@ from django.utils.translation import ugettext as _
 from wger.weight.models import WeightEntry
 from wger.exercises.models import Exercise
 from wger.core.models import DaysOfWeek
-from wger.manager.models import (
-    Workout,
-    Day,
-    Set,
-    Setting,
-    WorkoutLog,
-    Schedule,
-    ScheduleStep
-)
-from wger.nutrition.models import (
-    NutritionPlan,
-    Meal,
-    MealItem,
-    Ingredient,
-    IngredientWeightUnit
-)
+from wger.manager.models import (Workout, Day, Set, Setting, WorkoutLog,
+                                 Schedule, ScheduleStep)
+from wger.nutrition.models import (NutritionPlan, Meal, MealItem, Ingredient,
+                                   IngredientWeightUnit)
 
 from wger.utils.language import load_language
 
@@ -107,12 +95,13 @@ def create_demo_entries(user):
     # Weight log entries
     for reps in (8, 10, 12):
         for i in range(1, 8):
-            log = WorkoutLog(user=user,
-                             exercise=exercise,
-                             workout=workout,
-                             reps=reps,
-                             weight=18 - reps + random.randint(1, 4),
-                             date=datetime.date.today() - datetime.timedelta(weeks=i))
+            log = WorkoutLog(
+                user=user,
+                exercise=exercise,
+                workout=workout,
+                reps=reps,
+                weight=18 - reps + random.randint(1, 4),
+                date=datetime.date.today() - datetime.timedelta(weeks=i))
             weight_log.append(log)
 
     # French press
@@ -124,17 +113,19 @@ def create_demo_entries(user):
     day_set.save()
     day_set.exercises.add(exercise)
 
-    setting_list.append(Setting(set=day_set, exercise=exercise, reps=8, order=1))
+    setting_list.append(
+        Setting(set=day_set, exercise=exercise, reps=8, order=1))
 
     # Weight log entries
     for reps in (7, 10):
         for i in range(1, 8):
-            log = WorkoutLog(user=user,
-                             exercise=exercise,
-                             workout=workout,
-                             reps=reps,
-                             weight=30 - reps + random.randint(1, 4),
-                             date=datetime.date.today() - datetime.timedelta(weeks=i))
+            log = WorkoutLog(
+                user=user,
+                exercise=exercise,
+                workout=workout,
+                reps=reps,
+                weight=30 - reps + random.randint(1, 4),
+                date=datetime.date.today() - datetime.timedelta(weeks=i))
             weight_log.append(log)
 
     # Squats
@@ -146,17 +137,19 @@ def create_demo_entries(user):
     day_set.save()
     day_set.exercises.add(exercise)
 
-    setting_list.append(Setting(set=day_set, exercise=exercise, reps=10, order=1))
+    setting_list.append(
+        Setting(set=day_set, exercise=exercise, reps=10, order=1))
 
     # Weight log entries
     for reps in (5, 10, 12):
         for i in range(1, 8):
-            log = WorkoutLog(user=user,
-                             exercise=exercise,
-                             workout=workout,
-                             reps=reps,
-                             weight=110 - reps + random.randint(1, 10),
-                             date=datetime.date.today() - datetime.timedelta(weeks=i))
+            log = WorkoutLog(
+                user=user,
+                exercise=exercise,
+                workout=workout,
+                reps=reps,
+                weight=110 - reps + random.randint(1, 10),
+                date=datetime.date.today() - datetime.timedelta(weeks=i))
             weight_log.append(log)
 
     # Crunches
@@ -168,9 +161,12 @@ def create_demo_entries(user):
     day_set.save()
     day_set.exercises.add(exercise)
 
-    setting_list.append(Setting(set=day_set, exercise=exercise, reps=30, order=1))
-    setting_list.append(Setting(set=day_set, exercise=exercise, reps=99, order=2))
-    setting_list.append(Setting(set=day_set, exercise=exercise, reps=35, order=3))
+    setting_list.append(
+        Setting(set=day_set, exercise=exercise, reps=30, order=1))
+    setting_list.append(
+        Setting(set=day_set, exercise=exercise, reps=99, order=2))
+    setting_list.append(
+        Setting(set=day_set, exercise=exercise, reps=35, order=3))
 
     # Leg raises, supersets with crunches
     if language.short_name == 'de':
@@ -179,9 +175,12 @@ def create_demo_entries(user):
         exercise = Exercise.objects.get(pk=126)
     day_set.exercises.add(exercise)
 
-    setting_list.append(Setting(set=day_set, exercise=exercise, reps=30, order=1))
-    setting_list.append(Setting(set=day_set, exercise=exercise, reps=40, order=2))
-    setting_list.append(Setting(set=day_set, exercise=exercise, reps=99, order=3))
+    setting_list.append(
+        Setting(set=day_set, exercise=exercise, reps=30, order=1))
+    setting_list.append(
+        Setting(set=day_set, exercise=exercise, reps=40, order=2))
+    setting_list.append(
+        Setting(set=day_set, exercise=exercise, reps=99, order=3))
 
     Setting.objects.bulk_create(setting_list)
 
@@ -196,9 +195,10 @@ def create_demo_entries(user):
     for i in range(1, 20):
         creation_date = datetime.date.today() - datetime.timedelta(days=i)
         if creation_date not in existing_entries:
-            entry = WeightEntry(user=user,
-                                weight=80 + 0.5 * i + random.randint(1, 3),
-                                date=creation_date)
+            entry = WeightEntry(
+                user=user,
+                weight=80 + 0.5 * i + random.randint(1, 3),
+                date=creation_date)
             temp.append(entry)
     WeightEntry.objects.bulk_create(temp)
 
@@ -340,11 +340,17 @@ def create_demo_entries(user):
     #
 
     # create some empty workouts to fill the list
-    workout2 = Workout(user=user, comment=_('Placeholder workout nr {0} for schedule').format(1))
+    workout2 = Workout(
+        user=user,
+        comment=_('Placeholder workout nr {0} for schedule').format(1))
     workout2.save()
-    workout3 = Workout(user=user, comment=_('Placeholder workout nr {0} for schedule').format(2))
+    workout3 = Workout(
+        user=user,
+        comment=_('Placeholder workout nr {0} for schedule').format(2))
     workout3.save()
-    workout4 = Workout(user=user, comment=_('Placeholder workout nr {0} for schedule').format(3))
+    workout4 = Workout(
+        user=user,
+        comment=_('Placeholder workout nr {0} for schedule').format(3))
     workout4.save()
 
     schedule = Schedule()

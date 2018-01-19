@@ -34,10 +34,14 @@ class NutritionalPlanPdfExportTestCase(WorkoutManagerTestCase):
 
         user = User.objects.get(pk=2)
         uid, token = make_token(user)
-        response = self.client.get(reverse('nutrition:plan:export-pdf',
-                                   kwargs={'id': 4,
-                                           'uidb64': uid,
-                                           'token': token}))
+        response = self.client.get(
+            reverse(
+                'nutrition:plan:export-pdf',
+                kwargs={
+                    'id': 4,
+                    'uidb64': uid,
+                    'token': token
+                }))
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response['Content-Type'], 'application/pdf')
@@ -54,8 +58,10 @@ class NutritionalPlanPdfExportTestCase(WorkoutManagerTestCase):
         '''
 
         # Get a plan
-        response = self.client.get(reverse('nutrition:plan:export-pdf',
-                                   kwargs={'id': 4}))
+        response = self.client.get(
+            reverse('nutrition:plan:export-pdf', kwargs={
+                'id': 4
+            }))
 
         if fail:
             self.assertIn(response.status_code, (404, 403))
@@ -76,8 +82,10 @@ class NutritionalPlanPdfExportTestCase(WorkoutManagerTestCase):
         plan.user = user
         plan.language = language
         plan.save()
-        response = self.client.get(reverse('nutrition:plan:export-pdf',
-                                   kwargs={'id': plan.id}))
+        response = self.client.get(
+            reverse('nutrition:plan:export-pdf', kwargs={
+                'id': plan.id
+            }))
 
         if fail:
             self.assertIn(response.status_code, (404, 403))
@@ -110,7 +118,8 @@ class NutritionalPlanPdfExportTestCase(WorkoutManagerTestCase):
 
     def test_export_pdf_other(self):
         '''
-        Tests exporting a nutritional plan as a pdf as a logged user not owning the data
+        Tests exporting a nutritional plan as a pdf as a logged user
+         not owning the data
         '''
 
         self.user_login('admin')

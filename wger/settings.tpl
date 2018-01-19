@@ -7,16 +7,13 @@ from wger.settings_global import *
 DEBUG = True
 TEMPLATES[0]['OPTIONS']['debug'] = True
 
-ADMINS = (
-    ('Your name', 'your_email@example.com'),
-)
+ADMINS = (('Your name', 'your_email@example.com'), )
 MANAGERS = ADMINS
-
 
 DATABASES = {{
     'default': {{
         'ENGINE': 'django.db.backends.{dbengine}',
-        'NAME': {dbname},
+        'NAME': '{dbname}',
         'USER': '{dbuser}',
         'PASSWORD': '{dbpassword}',
         'HOST': '{dbhost}',

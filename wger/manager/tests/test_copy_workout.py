@@ -34,7 +34,10 @@ class CopyWorkoutTestCase(WorkoutManagerTestCase):
         '''
 
         # Open the copy workout form
-        response = self.client.get(reverse('manager:workout:copy', kwargs={'pk': '3'}))
+        response = self.client.get(
+            reverse('manager:workout:copy', kwargs={
+                'pk': '3'
+            }))
         if not owner:
             self.assertEqual(response.status_code, 404)
         else:
@@ -42,8 +45,12 @@ class CopyWorkoutTestCase(WorkoutManagerTestCase):
 
         # Copy the workout
         count_before = Workout.objects.count()
-        response = self.client.post(reverse('manager:workout:copy', kwargs={'pk': '3'}),
-                                    {'comment': 'A copied workout'})
+        response = self.client.post(
+            reverse('manager:workout:copy', kwargs={
+                'pk': '3'
+            }), {
+                'comment': 'A copied workout'
+            })
         count_after = Workout.objects.count()
 
         if not owner:
@@ -55,7 +62,10 @@ class CopyWorkoutTestCase(WorkoutManagerTestCase):
             self.assertTemplateUsed('workout/view.html')
 
         # Test accessing the copied workout
-        response = self.client.get(reverse('manager:workout:view', kwargs={'pk': 4}))
+        response = self.client.get(
+            reverse('manager:workout:view', kwargs={
+                'pk': 4
+            }))
 
         if not owner:
             self.assertEqual(response.status_code, 404)
@@ -68,12 +78,15 @@ class CopyWorkoutTestCase(WorkoutManagerTestCase):
             days_original = original.day_set.all()
             days_copy = copy.day_set.all()
 
-            # Test that the different attributes and objects are correctly copied over
+            # Test that the different attributes and objects are correctly
+            # copied over
             for i in range(0, original.day_set.count()):
-                self.assertEqual(days_original[i].description, days_copy[i].description)
+                self.assertEqual(days_original[i].description,
+                                 days_copy[i].description)
 
                 for j in range(0, days_original[i].day.count()):
-                    self.assertEqual(days_original[i].day.all()[j], days_copy[i].day.all()[j])
+                    self.assertEqual(days_original[i].day.all()[j],
+                                     days_copy[i].day.all()[j])
 
                 sets_original = days_original[i].set_set.all()
                 sets_copy = days_copy[i].set_set.all()
@@ -81,13 +94,15 @@ class CopyWorkoutTestCase(WorkoutManagerTestCase):
                 for j in range(days_original[i].set_set.count()):
 
                     self.assertEqual(sets_original[j].sets, sets_copy[j].sets)
-                    self.assertEqual(sets_original[j].order, sets_copy[j].order)
+                    self.assertEqual(sets_original[j].order,
+                                     sets_copy[j].order)
 
                     exercises_original = sets_original[j].exercises.all()
                     exercises_copy = sets_copy[j].exercises.all()
 
                     for k in range(sets_original[j].exercises.count()):
-                        self.assertEqual(exercises_original[k], exercises_copy[k])
+                        self.assertEqual(exercises_original[k],
+                                         exercises_copy[k])
 
     def test_copy_workout_owner(self):
         '''
@@ -99,24 +114,32 @@ class CopyWorkoutTestCase(WorkoutManagerTestCase):
 
     def test_copy_shared_not_allowed(self):
         '''
-        Test copying a workout from another shared user where user does not share workouts
+        Test copying a workout from another shared user where user does
+        not share workouts
         '''
         profile = UserProfile.objects.get(user__username='test')
         profile.ro_access = False
         profile.save()
 
         self.user_login('admin')
-        response = self.client.get(reverse('manager:workout:copy', kwargs={'pk': '3'}))
+        response = self.client.get(
+            reverse('manager:workout:copy', kwargs={
+                'pk': '3'
+            }))
         self.assertEqual(response.status_code, 403)
 
     def test_copy_shared_allowed(self):
         '''
-        Test copying a workout from another shared user where user does share workouts
+        Test copying a workout from another shared user where user
+        does share workouts
         '''
         profile = UserProfile.objects.get(user__username='test')
         profile.ro_access = True
         profile.save()
 
         self.user_login('admin')
-        response = self.client.get(reverse('manager:workout:copy', kwargs={'pk': '3'}))
+        response = self.client.get(
+            reverse('manager:workout:copy', kwargs={
+                'pk': '3'
+            }))
         self.assertEqual(response.status_code, 200)

@@ -18,11 +18,8 @@ from django.core.urlresolvers import reverse
 
 from wger.core.tests import api_base_test
 from wger.core.tests.base_testcase import (
-    WorkoutManagerTestCase,
-    WorkoutManagerDeleteTestCase,
-    WorkoutManagerEditTestCase,
-    WorkoutManagerAddTestCase
-)
+    WorkoutManagerTestCase, WorkoutManagerDeleteTestCase,
+    WorkoutManagerEditTestCase, WorkoutManagerAddTestCase)
 from wger.exercises.models import Equipment, Exercise
 from wger.utils.cache import get_template_cache_name
 from wger.utils.constants import PAGINATION_OBJECTS_PER_PAGE
@@ -37,7 +34,8 @@ class EquipmentRepresentationTestCase(WorkoutManagerTestCase):
         '''
         Test that the representation of an object is correct
         '''
-        self.assertEqual("{0}".format(Equipment.objects.get(pk=1)), 'Dumbbells')
+        self.assertEqual(
+            "{0}".format(Equipment.objects.get(pk=1)), 'Dumbbells')
 
 
 class EquipmentShareButtonTestCase(WorkoutManagerTestCase):
@@ -107,26 +105,45 @@ class EquipmentListTestCase(WorkoutManagerTestCase):
         # Page exists and the pagination works
         response = self.client.get(reverse('exercise:equipment:list'))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context['equipment_list']), PAGINATION_OBJECTS_PER_PAGE)
+        self.assertEqual(
+            len(response.context['equipment_list']),
+            PAGINATION_OBJECTS_PER_PAGE)
 
-        response = self.client.get(reverse('exercise:equipment:list'), {'page': 2})
+        response = self.client.get(
+            reverse('exercise:equipment:list'), {
+                'page': 2
+            })
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context['equipment_list']), PAGINATION_OBJECTS_PER_PAGE)
+        self.assertEqual(
+            len(response.context['equipment_list']),
+            PAGINATION_OBJECTS_PER_PAGE)
 
-        response = self.client.get(reverse('exercise:equipment:list'), {'page': 3})
+        response = self.client.get(
+            reverse('exercise:equipment:list'), {
+                'page': 3
+            })
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context['equipment_list']), 3)
 
         # 'last' is a special case
-        response = self.client.get(reverse('exercise:equipment:list'), {'page': 'last'})
+        response = self.client.get(
+            reverse('exercise:equipment:list'), {
+                'page': 'last'
+            })
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context['equipment_list']), 3)
 
         # Page does not exist
-        response = self.client.get(reverse('exercise:equipment:list'), {'page': 100})
+        response = self.client.get(
+            reverse('exercise:equipment:list'), {
+                'page': 100
+            })
         self.assertEqual(response.status_code, 404)
 
-        response = self.client.get(reverse('exercise:equipment:list'), {'page': 'foobar'})
+        response = self.client.get(
+            reverse('exercise:equipment:list'), {
+                'page': 'foobar'
+            })
         self.assertEqual(response.status_code, 404)
 
 
@@ -142,9 +159,11 @@ class EquipmentCacheTestCase(WorkoutManagerTestCase):
         if self.is_mobile:
             self.client.get(reverse('exercise:equipment:overview'))
         else:
-            self.assertFalse(cache.get(get_template_cache_name('equipment-overview', 2)))
+            self.assertFalse(
+                cache.get(get_template_cache_name('equipment-overview', 2)))
             self.client.get(reverse('exercise:equipment:overview'))
-            self.assertTrue(cache.get(get_template_cache_name('equipment-overview', 2)))
+            self.assertTrue(
+                cache.get(get_template_cache_name('equipment-overview', 2)))
 
     def test_equipmet_cache_update(self):
         '''
@@ -152,12 +171,14 @@ class EquipmentCacheTestCase(WorkoutManagerTestCase):
         performing certain operations
         '''
 
-        self.assertFalse(cache.get(get_template_cache_name('equipment-overview', 2)))
+        self.assertFalse(
+            cache.get(get_template_cache_name('equipment-overview', 2)))
 
         self.client.get(reverse('exercise:equipment:overview'))
         self.client.get(reverse('exercise:exercise:view', kwargs={'id': 2}))
 
-        old_overview = cache.get(get_template_cache_name('equipment-overview', 2))
+        old_overview = cache.get(
+            get_template_cache_name('equipment-overview', 2))
 
         exercise = Exercise.objects.get(pk=2)
         exercise.name = 'Very cool exercise 2'
@@ -165,12 +186,14 @@ class EquipmentCacheTestCase(WorkoutManagerTestCase):
         exercise.equipment.add(Equipment.objects.get(pk=2))
         exercise.save()
 
-        self.assertFalse(cache.get(get_template_cache_name('equipment-overview', 2)))
+        self.assertFalse(
+            cache.get(get_template_cache_name('equipment-overview', 2)))
 
         self.client.get(reverse('exercise:equipment:overview'))
         self.client.get(reverse('exercise:exercise:view', kwargs={'id': 2}))
 
-        new_overview = cache.get(get_template_cache_name('equipment-overview', 2))
+        new_overview = cache.get(
+            get_template_cache_name('equipment-overview', 2))
 
         self.assertNotEqual(old_overview, new_overview)
 

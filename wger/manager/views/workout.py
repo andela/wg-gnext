@@ -23,32 +23,17 @@ from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.template.context_processors import csrf
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.utils.translation import ugettext_lazy, ugettext as _
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic import DeleteView, UpdateView
 
-from wger.core.models import (
-    RepetitionUnit,
-    WeightUnit
-)
-from wger.manager.models import (
-    Workout,
-    WorkoutSession,
-    WorkoutLog,
-    Schedule,
-    Day
-)
-from wger.manager.forms import (
-    WorkoutForm,
-    WorkoutSessionHiddenFieldsForm,
-    WorkoutCopyForm
-)
-from wger.utils.generic_views import (
-    WgerFormMixin,
-    WgerDeleteMixin
-)
+from wger.core.models import (RepetitionUnit, WeightUnit)
+from wger.manager.models import (Workout, WorkoutSession, WorkoutLog, Schedule,
+                                 Day)
+from wger.manager.forms import (WorkoutForm, WorkoutSessionHiddenFieldsForm,
+                                WorkoutCopyForm)
+from wger.utils.generic_views import (WgerFormMixin, WgerDeleteMixin)
 from wger.utils.helpers import make_token
-
 
 logger = logging.getLogger(__name__)
 
@@ -65,7 +50,8 @@ def overview(request):
     template_data = {}
 
     workouts = Workout.objects.filter(user=request.user)
-    (current_workout, schedule) = Schedule.objects.get_current_workout(request.user)
+    (current_workout, schedule) = Schedule.objects.get_current_workout(
+        request.user)
     template_data['workouts'] = workouts
     template_data['current_workout'] = current_workout
 
@@ -92,17 +78,20 @@ def view(request, pk):
     muscles_back = []
     for i in canonical['muscles']['front']:
         if i not in muscles_front:
-            muscles_front.append('images/muscles/main/muscle-{0}.svg'.format(i))
+            muscles_front.append(
+                'images/muscles/main/muscle-{0}.svg'.format(i))
     for i in canonical['muscles']['back']:
         if i not in muscles_back:
             muscles_back.append('images/muscles/main/muscle-{0}.svg'.format(i))
 
     for i in canonical['muscles']['frontsecondary']:
         if i not in muscles_front and i not in canonical['muscles']['front']:
-            muscles_front.append('images/muscles/secondary/muscle-{0}.svg'.format(i))
+            muscles_front.append(
+                'images/muscles/secondary/muscle-{0}.svg'.format(i))
     for i in canonical['muscles']['backsecondary']:
         if i not in muscles_back and i not in canonical['muscles']['back']:
-            muscles_back.append('images/muscles/secondary/muscle-{0}.svg'.format(i))
+            muscles_back.append(
+                'images/muscles/secondary/muscle-{0}.svg'.format(i))
 
     # Append the silhouette of the human body as the last entry so the browser
     # renders it in the background
@@ -177,7 +166,8 @@ def copy_workout(request, pk):
 
                     # Go through the exercises
                     for exercise in exercises:
-                        settings = exercise.setting_set.filter(set_id=current_set_id)
+                        settings = exercise.setting_set.filter(
+                            set_id=current_set_id)
 
                         # Copy the settings
                         for setting in settings:
@@ -186,8 +176,10 @@ def copy_workout(request, pk):
                             setting_copy.set = current_set_copy
                             setting_copy.save()
 
-            return HttpResponseRedirect(reverse('manager:workout:view',
-                                                kwargs={'pk': workout.id}))
+            return HttpResponseRedirect(
+                reverse('manager:workout:view', kwargs={
+                    'pk': workout.id
+                }))
     else:
         workout_form = WorkoutCopyForm({'comment': workout.comment})
 
@@ -195,10 +187,15 @@ def copy_workout(request, pk):
         template_data.update(csrf(request))
         template_data['title'] = _('Copy workout')
         template_data['form'] = workout_form
-        template_data['form_action'] = reverse('manager:workout:copy', kwargs={'pk': workout.id})
+        template_data['form_action'] = reverse(
+            'manager:workout:copy', kwargs={
+                'pk': workout.id
+            })
         template_data['form_fields'] = [workout_form['comment']]
         template_data['submit_text'] = _('Copy')
-        template_data['extend_template'] = 'base_empty.html' if request.is_ajax() else 'base.html'
+        template_data[
+            'extend_template'] = 'base_empty.html' if request.is_ajax(
+        ) else 'base.html'
 
         return render(request, 'form.html', template_data)
 
@@ -221,13 +218,16 @@ class WorkoutDeleteView(WgerDeleteMixin, LoginRequiredMixin, DeleteView):
     '''
 
     model = Workout
-    fields = ('comment',)
+    fields = ('comment', )
     success_url = reverse_lazy('manager:workout:overview')
     messages = ugettext_lazy('Successfully deleted')
 
     def get_context_data(self, **kwargs):
         context = super(WorkoutDeleteView, self).get_context_data(**kwargs)
-        context['form_action'] = reverse('manager:workout:delete', kwargs={'pk': self.object.id})
+        context['form_action'] = reverse(
+            'manager:workout:delete', kwargs={
+                'pk': self.object.id
+            })
         context['title'] = _(u'Delete {0}?').format(self.object)
 
         return context
@@ -271,11 +271,11 @@ class LastWeightHelper:
         '''
         key = (self.user.pk, exercise.pk, reps, default_weight)
         if self.last_weight_list.get(key) is None:
-            last_log = WorkoutLog.objects.filter(user=self.user,
-                                                 exercise=exercise,
-                                                 reps=reps).order_by('-date')
+            last_log = WorkoutLog.objects.filter(
+                user=self.user, exercise=exercise, reps=reps).order_by('-date')
             default_weight = '' if default_weight is None else default_weight
-            weight = last_log[0].weight if last_log.exists() else default_weight
+            weight = last_log[
+                0].weight if last_log.exists() else default_weight
             self.last_weight_list[key] = weight
 
         return self.last_weight_list.get(key)
@@ -303,25 +303,33 @@ def timer(request, day_pk):
                     reps = exercise_dict['reps_list'][key]
                     rep_unit = exercise_dict['repetition_units'][key]
                     weight_unit = exercise_dict['weight_units'][key]
-                    default_weight = last_log.get_last_weight(exercise,
-                                                              reps,
-                                                              exercise_dict['weight_list'][key])
+                    default_weight = last_log.get_last_weight(
+                        exercise, reps, exercise_dict['weight_list'][key])
 
-                    step_list.append({'current_step': uuid.uuid4().hex,
-                                      'step_percent': 0,
-                                      'step_nr': len(step_list) + 1,
-                                      'exercise': exercise,
-                                      'type': 'exercise',
-                                      'reps': reps,
-                                      'rep_unit': rep_unit,
-                                      'weight': default_weight,
-                                      'weight_unit': weight_unit})
+                    step_list.append({
+                        'current_step': uuid.uuid4().hex,
+                        'step_percent': 0,
+                        'step_nr': len(step_list) + 1,
+                        'exercise': exercise,
+                        'type': 'exercise',
+                        'reps': reps,
+                        'rep_unit': rep_unit,
+                        'weight': default_weight,
+                        'weight_unit': weight_unit
+                    })
                     if request.user.userprofile.timer_active:
-                        step_list.append({'current_step': uuid.uuid4().hex,
-                                          'step_percent': 0,
-                                          'step_nr': len(step_list) + 1,
-                                          'type': 'pause',
-                                          'time': request.user.userprofile.timer_pause})
+                        step_list.append({
+                            'current_step':
+                            uuid.uuid4().hex,
+                            'step_percent':
+                            0,
+                            'step_nr':
+                            len(step_list) + 1,
+                            'type':
+                            'pause',
+                            'time':
+                            request.user.userprofile.timer_pause
+                        })
 
         # Supersets need extra work to group the exercises and reps together
         else:
@@ -334,24 +342,36 @@ def timer(request, day_pk):
                     default_weight = exercise_dict['weight_list'][i]
                     exercise = exercise_dict['obj']
 
-                    step_list.append({'current_step': uuid.uuid4().hex,
-                                      'step_percent': 0,
-                                      'step_nr': len(step_list) + 1,
-                                      'exercise': exercise,
-                                      'type': 'exercise',
-                                      'reps': reps,
-                                      'rep_unit': rep_unit,
-                                      'weight_unit': weight_unit,
-                                      'weight': last_log.get_last_weight(exercise,
-                                                                         reps,
-                                                                         default_weight)})
+                    step_list.append({
+                        'current_step':
+                        uuid.uuid4().hex,
+                        'step_percent':
+                        0,
+                        'step_nr':
+                        len(step_list) + 1,
+                        'exercise':
+                        exercise,
+                        'type':
+                        'exercise',
+                        'reps':
+                        reps,
+                        'rep_unit':
+                        rep_unit,
+                        'weight_unit':
+                        weight_unit,
+                        'weight':
+                        last_log.get_last_weight(exercise, reps,
+                                                 default_weight)
+                    })
 
                 if request.user.userprofile.timer_active:
-                    step_list.append({'current_step': uuid.uuid4().hex,
-                                      'step_percent': 0,
-                                      'step_nr': len(step_list) + 1,
-                                      'type': 'pause',
-                                      'time': 90})
+                    step_list.append({
+                        'current_step': uuid.uuid4().hex,
+                        'step_percent': 0,
+                        'step_nr': len(step_list) + 1,
+                        'type': 'pause',
+                        'time': 90
+                    })
 
     # Remove the last pause step as it is not needed. If the list is empty,
     # because the user didn't add any repetitions to any exercise, do nothing
@@ -366,16 +386,22 @@ def timer(request, day_pk):
 
     # Depending on whether there is already a workout session for today, update
     # the current one or create a new one (this will be the most usual case)
-    if WorkoutSession.objects.filter(user=request.user, date=datetime.date.today()).exists():
-        session = WorkoutSession.objects.get(user=request.user, date=datetime.date.today())
+    if WorkoutSession.objects.filter(
+            user=request.user, date=datetime.date.today()).exists():
+        session = WorkoutSession.objects.get(
+            user=request.user, date=datetime.date.today())
         url = reverse('manager:session:edit', kwargs={'pk': session.pk})
         session_form = WorkoutSessionHiddenFieldsForm(instance=session)
     else:
         today = datetime.date.today()
-        url = reverse('manager:session:add', kwargs={'workout_pk': day.training_id,
-                                                     'year': today.year,
-                                                     'month': today.month,
-                                                     'day': today.day})
+        url = reverse(
+            'manager:session:add',
+            kwargs={
+                'workout_pk': day.training_id,
+                'year': today.year,
+                'month': today.month,
+                'day': today.day
+            })
         session_form = WorkoutSessionHiddenFieldsForm()
 
     # Render template

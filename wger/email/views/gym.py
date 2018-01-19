@@ -93,8 +93,10 @@ class EmailListFormPreview(FormPreview):
 
         context = super(EmailListFormPreview, self).get_context(request, form)
         context['gym'] = self.gym
-        context['form_action'] = reverse('email:email:add-gym',
-                                         kwargs={'gym_pk': self.gym.pk})
+        context['form_action'] = reverse(
+            'email:email:add-gym', kwargs={
+                'gym_pk': self.gym.pk
+            })
 
         return context
 
@@ -104,11 +106,11 @@ class EmailListFormPreview(FormPreview):
         '''
         for admin in Gym.objects.get_admins(self.gym.pk):
             if admin.email:
-                mail.send_mail(form.cleaned_data['subject'],
-                               form.cleaned_data['body'],
-                               settings.DEFAULT_FROM_EMAIL,
-                               [admin.email],
-                               fail_silently=False)
+                mail.send_mail(
+                    form.cleaned_data['subject'],
+                    form.cleaned_data['body'],
+                    settings.DEFAULT_FROM_EMAIL, [admin.email],
+                    fail_silently=False)
         return context
 
     def done(self, request, cleaned_data):
@@ -134,6 +136,10 @@ class EmailListFormPreview(FormPreview):
         email_log.save()
 
         # ...and bulk create cron entries
-        CronEntry.objects.bulk_create([CronEntry(log=email_log, email=email) for email in emails])
+        CronEntry.objects.bulk_create(
+            [CronEntry(log=email_log, email=email) for email in emails])
 
-        return HttpResponseRedirect(reverse('gym:gym:user-list', kwargs={'pk': self.gym.pk}))
+        return HttpResponseRedirect(
+            reverse('gym:gym:user-list', kwargs={
+                'pk': self.gym.pk
+            }))

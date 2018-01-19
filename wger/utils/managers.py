@@ -16,8 +16,6 @@
 from django.db import models
 from django.db.models.query import QuerySet
 from wger.utils.models import AbstractSubmissionModel
-
-
 '''
 Custom managers and querysets
 '''

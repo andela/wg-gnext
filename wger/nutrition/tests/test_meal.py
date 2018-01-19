@@ -18,11 +18,9 @@ import datetime
 from django.core.urlresolvers import reverse
 
 from wger.core.tests import api_base_test
-from wger.core.tests.base_testcase import (
-    WorkoutManagerTestCase,
-    WorkoutManagerEditTestCase,
-    WorkoutManagerAddTestCase
-)
+from wger.core.tests.base_testcase import (WorkoutManagerTestCase,
+                                           WorkoutManagerEditTestCase,
+                                           WorkoutManagerAddTestCase)
 from wger.nutrition.models import Meal
 from wger.nutrition.models import NutritionPlan
 
@@ -96,7 +94,10 @@ class PlanDetailTestCase(WorkoutManagerTestCase):
         Helper function to test the plan detail view
         '''
 
-        response = self.client.get(reverse('nutrition:plan:view', kwargs={'id': 1}))
+        response = self.client.get(
+            reverse('nutrition:plan:view', kwargs={
+                'id': 1
+            }))
 
         # Page exists
         if fail:
@@ -128,7 +129,5 @@ class MealApiTestCase(api_base_test.ApiBaseResourceTestCase):
     pk = 2
     resource = Meal
     private_resource = True
-    special_endpoints = ('nutritional_values',)
-    data = {'time': datetime.time(9, 2),
-            'plan': 4,
-            'order': 1}
+    special_endpoints = ('nutritional_values', )
+    data = {'time': datetime.time(9, 2), 'plan': 4, 'order': 1}

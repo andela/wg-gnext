@@ -15,11 +15,9 @@
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 
-from wger.core.tests.base_testcase import (
-    WorkoutManagerTestCase,
-    WorkoutManagerEditTestCase,
-    WorkoutManagerAccessTestCase
-)
+from wger.core.tests.base_testcase import (WorkoutManagerTestCase,
+                                           WorkoutManagerEditTestCase,
+                                           WorkoutManagerAccessTestCase)
 
 
 class StatusUserTestCase(WorkoutManagerTestCase):
@@ -27,19 +25,10 @@ class StatusUserTestCase(WorkoutManagerTestCase):
     Test activating and deactivating users
     '''
 
-    user_success = ('general_manager1',
-                    'general_manager2',
-                    'manager1',
-                    'manager2',
-                    'trainer1',
-                    'trainer2',
-                    'trainer3')
+    user_success = ('general_manager1', 'general_manager2', 'manager1',
+                    'manager2', 'trainer1', 'trainer2', 'trainer3')
 
-    user_fail = ('member1',
-                 'member2',
-                 'member3',
-                 'member4',
-                 'manager3',
+    user_fail = ('member1', 'member2', 'member3', 'member4', 'manager3',
                  'trainer4')
 
     def activate(self, fail=False):
@@ -51,7 +40,10 @@ class StatusUserTestCase(WorkoutManagerTestCase):
         user.save()
         self.assertFalse(user.is_active)
 
-        response = self.client.get(reverse('core:user:activate', kwargs={'pk': user.pk}))
+        response = self.client.get(
+            reverse('core:user:activate', kwargs={
+                'pk': user.pk
+            }))
         user = User.objects.get(pk=2)
 
         self.assertIn(response.status_code, (302, 403))
@@ -93,7 +85,10 @@ class StatusUserTestCase(WorkoutManagerTestCase):
         user.save()
         self.assertTrue(user.is_active)
 
-        response = self.client.get(reverse('core:user:deactivate', kwargs={'pk': user.pk}))
+        response = self.client.get(
+            reverse('core:user:deactivate', kwargs={
+                'pk': user.pk
+            }))
         user = User.objects.get(pk=2)
 
         self.assertIn(response.status_code, (302, 403))
@@ -135,19 +130,14 @@ class EditUserTestCase(WorkoutManagerEditTestCase):
     object_class = User
     url = 'core:user:edit'
     pk = 2
-    data = {'email': 'another.email@example.com',
-            'first_name': 'Name',
-            'last_name': 'Last name'}
-    user_success = ('admin',
-                    'general_manager1',
-                    'general_manager2',
-                    'manager1',
-                    'manager2')
-    user_fail = ('member1',
-                 'member2',
-                 'manager3',
-                 'trainer2',
-                 'trainer3',
+    data = {
+        'email': 'another.email@example.com',
+        'first_name': 'Name',
+        'last_name': 'Last name'
+    }
+    user_success = ('admin', 'general_manager1', 'general_manager2',
+                    'manager1', 'manager2')
+    user_fail = ('member1', 'member2', 'manager3', 'trainer2', 'trainer3',
                  'trainer4')
 
 
@@ -159,18 +149,14 @@ class EditUserTestCase2(WorkoutManagerEditTestCase):
     object_class = User
     url = 'core:user:edit'
     pk = 19
-    data = {'email': 'another.email@example.com',
-            'first_name': 'Name',
-            'last_name': 'Last name'}
-    user_success = ('admin',
-                    'general_manager1',
-                    'general_manager2',
+    data = {
+        'email': 'another.email@example.com',
+        'first_name': 'Name',
+        'last_name': 'Last name'
+    }
+    user_success = ('admin', 'general_manager1', 'general_manager2',
                     'manager3')
-    user_fail = ('member1',
-                 'member2',
-                 'trainer2',
-                 'trainer3',
-                 'trainer4')
+    user_fail = ('member1', 'member2', 'trainer2', 'trainer3', 'trainer4')
 
 
 class UserListTestCase(WorkoutManagerAccessTestCase):
@@ -179,17 +165,9 @@ class UserListTestCase(WorkoutManagerAccessTestCase):
     '''
 
     url = 'core:user:list'
-    user_success = ('admin',
-                    'general_manager1',
-                    'general_manager2')
-    user_fail = ('member1',
-                 'member2',
-                 'manager1',
-                 'manager2',
-                 'manager3',
-                 'trainer2',
-                 'trainer3',
-                 'trainer4')
+    user_success = ('admin', 'general_manager1', 'general_manager2')
+    user_fail = ('member1', 'member2', 'manager1', 'manager2', 'manager3',
+                 'trainer2', 'trainer3', 'trainer4')
 
 
 class UserDetailPageTestCase(WorkoutManagerAccessTestCase):
@@ -198,16 +176,9 @@ class UserDetailPageTestCase(WorkoutManagerAccessTestCase):
     '''
 
     url = reverse_lazy('core:user:overview', kwargs={'pk': 2})
-    user_success = ('trainer1',
-                    'trainer2',
-                    'manager1',
-                    'general_manager1',
+    user_success = ('trainer1', 'trainer2', 'manager1', 'general_manager1',
                     'general_manager2')
-    user_fail = ('trainer4',
-                 'trainer5',
-                 'manager3',
-                 'member1',
-                 'member2')
+    user_fail = ('trainer4', 'trainer5', 'manager3', 'member1', 'member2')
 
 
 class UserDetailPageTestCase2(WorkoutManagerAccessTestCase):
@@ -216,13 +187,6 @@ class UserDetailPageTestCase2(WorkoutManagerAccessTestCase):
     '''
 
     url = reverse_lazy('core:user:overview', kwargs={'pk': 19})
-    user_success = ('trainer4',
-                    'trainer5',
-                    'manager3',
-                    'general_manager1',
+    user_success = ('trainer4', 'trainer5', 'manager3', 'general_manager1',
                     'general_manager2')
-    user_fail = ('trainer1',
-                 'trainer2',
-                 'manager1',
-                 'member1',
-                 'member2')
+    user_fail = ('trainer1', 'trainer2', 'manager1', 'member1', 'member2')

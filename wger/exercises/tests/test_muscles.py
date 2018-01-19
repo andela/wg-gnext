@@ -12,16 +12,13 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 
-
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 
 from wger.core.tests import api_base_test
 from wger.core.tests.base_testcase import (
-    WorkoutManagerTestCase,
-    WorkoutManagerDeleteTestCase,
-    WorkoutManagerEditTestCase,
-    WorkoutManagerAddTestCase,
+    WorkoutManagerTestCase, WorkoutManagerDeleteTestCase,
+    WorkoutManagerEditTestCase, WorkoutManagerAddTestCase,
     WorkoutManagerAccessTestCase)
 from wger.exercises.models import Muscle
 from wger.utils.cache import get_template_cache_name
@@ -36,7 +33,8 @@ class MuscleRepresentationTestCase(WorkoutManagerTestCase):
         '''
         Test that the representation of an object is correct
         '''
-        self.assertEqual("{0}".format(Muscle.objects.get(pk=1)), 'Anterior testoid')
+        self.assertEqual(
+            "{0}".format(Muscle.objects.get(pk=1)), 'Anterior testoid')
 
 
 class MuscleAdminOverviewTest(WorkoutManagerAccessTestCase):
@@ -46,17 +44,9 @@ class MuscleAdminOverviewTest(WorkoutManagerAccessTestCase):
     url = 'exercise:muscle:admin-list'
     anonymous_fail = True
     user_success = 'admin'
-    user_fail = ('manager1',
-                 'manager2'
-                 'general_manager1',
-                 'manager3',
-                 'manager4',
-                 'test',
-                 'member1',
-                 'member2',
-                 'member3',
-                 'member4',
-                 'member5')
+    user_fail = ('manager1', 'manager2'
+                 'general_manager1', 'manager3', 'manager4', 'test', 'member1',
+                 'member2', 'member3', 'member4', 'member5')
 
 
 class MusclesShareButtonTestCase(WorkoutManagerTestCase):
@@ -86,8 +76,7 @@ class AddMuscleTestCase(WorkoutManagerAddTestCase):
 
     object_class = Muscle
     url = 'exercise:muscle:add'
-    data = {'name': 'A new muscle',
-            'is_front': True}
+    data = {'name': 'A new muscle', 'is_front': True}
 
 
 class EditMuscleTestCase(WorkoutManagerEditTestCase):
@@ -98,8 +87,7 @@ class EditMuscleTestCase(WorkoutManagerEditTestCase):
     object_class = Muscle
     url = 'exercise:muscle:edit'
     pk = 1
-    data = {'name': 'The new name',
-            'is_front': True}
+    data = {'name': 'The new name', 'is_front': True}
 
 
 class DeleteMuscleTestCase(WorkoutManagerDeleteTestCase):
@@ -123,9 +111,11 @@ class MuscleCacheTestCase(WorkoutManagerTestCase):
         '''
 
         if not self.is_mobile:
-            self.assertFalse(cache.get(get_template_cache_name('muscle-overview', 2)))
+            self.assertFalse(
+                cache.get(get_template_cache_name('muscle-overview', 2)))
             self.client.get(reverse('exercise:muscle:overview'))
-            self.assertTrue(cache.get(get_template_cache_name('muscle-overview', 2)))
+            self.assertTrue(
+                cache.get(get_template_cache_name('muscle-overview', 2)))
 
 
 class MuscleOverviewTestCase(WorkoutManagerAccessTestCase):
@@ -144,5 +134,4 @@ class MuscleApiTestCase(api_base_test.ApiBaseResourceTestCase):
     pk = 1
     resource = Muscle
     private_resource = False
-    data = {'name': 'The name',
-            'is_front': True}
+    data = {'name': 'The name', 'is_front': True}

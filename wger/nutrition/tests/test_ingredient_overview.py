@@ -49,27 +49,48 @@ class OverviewPlanTestCase(WorkoutManagerTestCase):
         self.user_logout()
         response = self.client.get(reverse('nutrition:ingredient:list'))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context['ingredients_list']), PAGINATION_OBJECTS_PER_PAGE)
+        self.assertEqual(
+            len(response.context['ingredients_list']),
+            PAGINATION_OBJECTS_PER_PAGE)
 
-        response = self.client.get(reverse('nutrition:ingredient:list'), {'page': 2})
+        response = self.client.get(
+            reverse('nutrition:ingredient:list'), {
+                'page': 2
+            })
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context['ingredients_list']), PAGINATION_OBJECTS_PER_PAGE)
+        self.assertEqual(
+            len(response.context['ingredients_list']),
+            PAGINATION_OBJECTS_PER_PAGE)
 
         rest_ingredients = 13
-        response = self.client.get(reverse('nutrition:ingredient:list'), {'page': 3})
+        response = self.client.get(
+            reverse('nutrition:ingredient:list'), {
+                'page': 3
+            })
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context['ingredients_list']), rest_ingredients)
+        self.assertEqual(
+            len(response.context['ingredients_list']), rest_ingredients)
 
         # 'last' is a special case
-        response = self.client.get(reverse('nutrition:ingredient:list'), {'page': 'last'})
+        response = self.client.get(
+            reverse('nutrition:ingredient:list'), {
+                'page': 'last'
+            })
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context['ingredients_list']), rest_ingredients)
+        self.assertEqual(
+            len(response.context['ingredients_list']), rest_ingredients)
 
         # Page does not exist
-        response = self.client.get(reverse('nutrition:ingredient:list'), {'page': 100})
+        response = self.client.get(
+            reverse('nutrition:ingredient:list'), {
+                'page': 100
+            })
         self.assertEqual(response.status_code, 404)
 
-        response = self.client.get(reverse('nutrition:ingredient:list'), {'page': 'foobar'})
+        response = self.client.get(
+            reverse('nutrition:ingredient:list'), {
+                'page': 'foobar'
+            })
         self.assertEqual(response.status_code, 404)
 
     def ingredient_overview(self, logged_in=True, demo=False, admin=False):
@@ -89,14 +110,16 @@ class OverviewPlanTestCase(WorkoutManagerTestCase):
 
         # Only authorized users see the edit links
         if logged_in and not demo:
-            self.assertNotContains(response, 'Only registered users can do this')
+            self.assertNotContains(response,
+                                   'Only registered users can do this')
 
         if logged_in and demo:
             self.assertContains(response, 'Only registered users can do this')
 
     def test_ingredient_index_editor(self):
         '''
-        Tests the ingredient overview page as a logged in user with editor rights
+        Tests the ingredient overview page as a logged in user with
+         editor rights
         '''
 
         self.user_login('admin')
@@ -104,7 +127,8 @@ class OverviewPlanTestCase(WorkoutManagerTestCase):
 
     def test_ingredient_index_non_editor(self):
         '''
-        Tests the overview overview page as a logged in user without editor rights
+        Tests the overview overview page as a logged in user without
+         editor rights
         '''
 
         self.user_login('test')

@@ -49,7 +49,10 @@ class CheckAccessTestCase(WorkoutManagerTestCase):
         self.assertEqual(check_access(user_share), (True, user_share))
         self.assertRaises(Http404, check_access, user_share, 'not_a_username')
 
-        self.assertEqual(check_access(user_no_share, 'admin'), (False, user_share))
-        self.assertEqual(check_access(user_no_share, 'test'), (True, user_no_share))
+        self.assertEqual(
+            check_access(user_no_share, 'admin'), (False, user_share))
+        self.assertEqual(
+            check_access(user_no_share, 'test'), (True, user_no_share))
         self.assertEqual(check_access(user_no_share), (True, user_no_share))
-        self.assertRaises(Http404, check_access, user_no_share, 'not_a_username')
+        self.assertRaises(Http404, check_access, user_no_share,
+                          'not_a_username')

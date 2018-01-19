@@ -29,7 +29,10 @@ class GymMembersCsvExportTestCase(WorkoutManagerTestCase):
         '''
         Helper function to test the CSV export
         '''
-        response = self.client.get(reverse('gym:export:users', kwargs={'gym_pk': 1}))
+        response = self.client.get(
+            reverse('gym:export:users', kwargs={
+                'gym_pk': 1
+            }))
         gym = Gym.objects.get(pk=1)
 
         if fail:
@@ -60,14 +63,8 @@ class GymMembersCsvExportTestCase(WorkoutManagerTestCase):
         Test the CSV export by unauthorized users
         '''
 
-        for username in ('manager3',
-                         'manager4',
-                         'test',
-                         'member1',
-                         'member2',
-                         'member3',
-                         'member4',
-                         'member5'):
+        for username in ('manager3', 'manager4', 'test', 'member1', 'member2',
+                         'member3', 'member4', 'member5'):
             self.user_login(username)
             self.export_csv(fail=True)
 

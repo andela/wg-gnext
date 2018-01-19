@@ -30,7 +30,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as django_login
 from django.template.loader import render_to_string
 
-
 from wger.core.forms import FeedbackRegisteredForm, FeedbackAnonymousForm
 from wger.core.demo import create_demo_entries, create_temporary_user
 from wger.core.models import DaysOfWeek
@@ -38,7 +37,6 @@ from wger.manager.models import Schedule
 from wger.nutrition.models import NutritionPlan
 from wger.weight.models import WeightEntry
 from wger.weight.helpers import get_last_entries
-
 
 logger = logging.getLogger(__name__)
 
@@ -63,7 +61,8 @@ def demo_entries(request):
     if not settings.WGER_SETTINGS['ALLOW_GUEST_USERS']:
         return HttpResponseRedirect(reverse('software:features'))
 
-    if (((not request.user.is_authenticated() or request.user.userprofile.is_temporary)
+    if (((not request.user.is_authenticated()
+          or request.user.userprofile.is_temporary)
          and not request.session['has_demo_data'])):
         # If we reach this from a page that has no user created by the
         # middleware, do that now
@@ -74,10 +73,12 @@ def demo_entries(request):
         # OK, continue
         create_demo_entries(request.user)
         request.session['has_demo_data'] = True
-        messages.success(request, _('We have created sample workout, workout schedules, weight '
-                                    'logs, (body) weight and nutrition plan entries so you can '
-                                    'better see what  this site can do. Feel free to edit or '
-                                    'delete them!'))
+        messages.success(
+            request,
+            _('We have created sample workout, workout schedules, weight '
+              'logs, (body) weight and nutrition plan entries so you can '
+              'better see what  this site can do. Feel free to edit or '
+              'delete them!'))
     return HttpResponseRedirect(reverse('core:dashboard'))
 
 
@@ -91,14 +92,16 @@ def dashboard(request):
     template_data = {}
 
     # Load the last workout, either from a schedule or a 'regular' one
-    (current_workout, schedule) = Schedule.objects.get_current_workout(request.user)
+    (current_workout, schedule) = Schedule.objects.get_current_workout(
+        request.user)
 
     template_data['current_workout'] = current_workout
     template_data['schedule'] = schedule
 
     # Load the last nutritional plan, if one exists
     try:
-        plan = NutritionPlan.objects.filter(user=request.user).latest('creation_date')
+        plan = NutritionPlan.objects.filter(
+            user=request.user).latest('creation_date')
     except ObjectDoesNotExist:
         plan = False
     template_data['plan'] = plan
@@ -124,7 +127,8 @@ def dashboard(request):
 
         if week.id in used_days:
             day_has_workout = True
-            week_day_result.append((_(week.day_of_week), used_days[week.id], True))
+            week_day_result.append((_(week.day_of_week), used_days[week.id],
+                                    True))
 
         if not day_has_workout:
             week_day_result.append((_(week.day_of_week), _('Rest day'), False))
@@ -142,9 +146,11 @@ def dashboard(request):
 class ContactClassView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(ContactClassView, self).get_context_data(**kwargs)
-        context.update({'contribute': reverse('software:contribute'),
-                        'issues': reverse('software:issues'),
-                        'feedback': reverse('core:feedback')})
+        context.update({
+            'contribute': reverse('software:contribute'),
+            'issues': reverse('software:issues'),
+            'feedback': reverse('core:feedback')
+        })
         return context
 
 
@@ -171,7 +177,8 @@ class FeedbackClass(FormView):
         context['form_action'] = reverse('core:feedback')
         context['submit_text'] = _('Send')
         context['contribute_url'] = reverse('software:contribute')
-        context['extend_template'] = 'base_empty.html' if self.request.is_ajax() else 'base.html'
+        context['extend_template'] = 'base_empty.html' if self.request.is_ajax(
+        ) else 'base.html'
         return context
 
     def get_form_class(self):
@@ -179,7 +186,8 @@ class FeedbackClass(FormView):
         Load the correct feedback form depending on the user
         (either with reCaptcha field or not)
         '''
-        if self.request.user.is_anonymous() or self.request.user.userprofile.is_temporary:
+        if self.request.user.is_anonymous(
+        ) or self.request.user.userprofile.is_temporary:
             return FeedbackAnonymousForm
         else:
             return FeedbackRegisteredForm
@@ -188,7 +196,8 @@ class FeedbackClass(FormView):
         '''
         Send the feedback to the administrators
         '''
-        messages.success(self.request, _('Your feedback was successfully sent. Thank you!'))
+        messages.success(self.request,
+                         _('Your feedback was successfully sent. Thank you!'))
 
         context = {}
         context['user'] = self.request.user

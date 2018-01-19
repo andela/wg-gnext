@@ -43,23 +43,25 @@ class BmiTestCase(WorkoutManagerTestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_calculator(self):
-
         '''
         Tests the calculator itself
         '''
 
         self.user_login('test')
-        response = self.client.post(reverse('nutrition:bmi:calculate'),
-                                    {'height': 180,
-                                     'weight': 80})
+        response = self.client.post(
+            reverse('nutrition:bmi:calculate'), {
+                'height': 180,
+                'weight': 80
+            })
         self.assertEqual(response.status_code, 200)
         bmi = json.loads(response.content.decode('utf8'))
-        self.assertEqual(Decimal(bmi['bmi']), Decimal(24.69).quantize(TWOPLACES))
+        self.assertEqual(
+            Decimal(bmi['bmi']),
+            Decimal(24.69).quantize(TWOPLACES))
         self.assertEqual(Decimal(bmi['weight']), Decimal(80))
         self.assertEqual(Decimal(bmi['height']), Decimal(180))
 
     def test_calculator_imperial(self):
-
         '''
         Tests the calculator using imperial units
         '''
@@ -68,13 +70,19 @@ class BmiTestCase(WorkoutManagerTestCase):
         profile = UserProfile.objects.get(user__username='test')
         profile.weight_unit = 'lb'
         profile.save()
-        response = self.client.post(reverse('nutrition:bmi:calculate'),
-                                    {'height': 180,
-                                     'weight': 176.36})
+        response = self.client.post(
+            reverse('nutrition:bmi:calculate'), {
+                'height': 180,
+                'weight': 176.36
+            })
         self.assertEqual(response.status_code, 200)
         bmi = json.loads(response.content.decode('utf8'))
-        self.assertEqual(Decimal(bmi['bmi']), Decimal(24.69).quantize(TWOPLACES))
-        self.assertEqual(Decimal(bmi['weight']), Decimal(176.36).quantize(TWOPLACES))
+        self.assertEqual(
+            Decimal(bmi['bmi']),
+            Decimal(24.69).quantize(TWOPLACES))
+        self.assertEqual(
+            Decimal(bmi['weight']),
+            Decimal(176.36).quantize(TWOPLACES))
         self.assertEqual(Decimal(bmi['height']), Decimal(180))
 
     def test_automatic_weight_entry(self):
@@ -87,9 +95,11 @@ class BmiTestCase(WorkoutManagerTestCase):
 
         # Existing weight entry is old, a new one is created
         entry1 = WeightEntry.objects.filter(user=user).latest()
-        response = self.client.post(reverse('nutrition:bmi:calculate'),
-                                    {'height': 180,
-                                     'weight': 80})
+        response = self.client.post(
+            reverse('nutrition:bmi:calculate'), {
+                'height': 180,
+                'weight': 80
+            })
         self.assertEqual(response.status_code, 200)
         entry2 = WeightEntry.objects.filter(user=user).latest()
         self.assertEqual(entry1.weight, 83)
@@ -99,9 +109,11 @@ class BmiTestCase(WorkoutManagerTestCase):
         entry2.delete()
         entry1.date = datetime.date.today()
         entry1.save()
-        response = self.client.post(reverse('nutrition:bmi:calculate'),
-                                    {'height': 180,
-                                     'weight': 80})
+        response = self.client.post(
+            reverse('nutrition:bmi:calculate'), {
+                'height': 180,
+                'weight': 80
+            })
         self.assertEqual(response.status_code, 200)
         entry2 = WeightEntry.objects.filter(user=user).latest()
         self.assertEqual(entry1.pk, entry2.pk)
@@ -109,9 +121,11 @@ class BmiTestCase(WorkoutManagerTestCase):
 
         # No existing entries
         WeightEntry.objects.filter(user=user).delete()
-        response = self.client.post(reverse('nutrition:bmi:calculate'),
-                                    {'height': 180,
-                                     'weight': 80})
+        response = self.client.post(
+            reverse('nutrition:bmi:calculate'), {
+                'height': 180,
+                'weight': 80
+            })
         self.assertEqual(response.status_code, 200)
         entry = WeightEntry.objects.filter(user=user).latest()
         self.assertEqual(entry.weight, 80)

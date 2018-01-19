@@ -15,7 +15,8 @@
 from django.core import mail
 from django.core.urlresolvers import reverse
 
-from wger.core.tests.base_testcase import STATUS_CODES_FAIL, WorkoutManagerTestCase
+from wger.core.tests.base_testcase import (STATUS_CODES_FAIL,
+                                           WorkoutManagerTestCase)
 from wger.exercises.models import Exercise
 
 
@@ -68,16 +69,21 @@ class ExercisesPendingDetailTestCase(WorkoutManagerTestCase):
         '''
         Helper function
         '''
-        response = self.client.get(reverse('exercise:exercise:view', kwargs={'id': 4}))
+        response = self.client.get(
+            reverse('exercise:exercise:view', kwargs={
+                'id': 4
+            }))
         self.assertContains(response, 'Exercise is pending review')
 
         if not fail:
             self.assertEqual(response.status_code, 200)
-            self.assertContains(response, 'Please select one of the options below')
+            self.assertContains(response,
+                                'Please select one of the options below')
             self.assertContains(response, 'Accept')
             self.assertContains(response, 'Decline')
         else:
-            self.assertNotContains(response, 'Please select one of the options below')
+            self.assertNotContains(response,
+                                   'Please select one of the options below')
             self.assertNotContains(response, 'Accept')
             self.assertNotContains(response, 'Decline')
 
@@ -116,7 +122,10 @@ class ExerciseAcceptTestCase(WorkoutManagerTestCase):
         '''
         exercise = Exercise.objects.get(pk=4)
         self.assertEqual(exercise.status, Exercise.STATUS_PENDING)
-        response = self.client.get(reverse('exercise:exercise:accept', kwargs={'pk': 4}))
+        response = self.client.get(
+            reverse('exercise:exercise:accept', kwargs={
+                'pk': 4
+            }))
         exercise = Exercise.objects.get(pk=4)
 
         self.assertEqual(response.status_code, 302)
@@ -165,7 +174,10 @@ class ExerciseRejectTestCase(WorkoutManagerTestCase):
         '''
         exercise = Exercise.objects.get(pk=4)
         self.assertEqual(exercise.status, Exercise.STATUS_PENDING)
-        response = self.client.get(reverse('exercise:exercise:decline', kwargs={'pk': 4}))
+        response = self.client.get(
+            reverse('exercise:exercise:decline', kwargs={
+                'pk': 4
+            }))
         exercise = Exercise.objects.get(pk=4)
         self.assertEqual(response.status_code, 302)
 

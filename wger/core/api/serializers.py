@@ -17,19 +17,15 @@
 
 from rest_framework import serializers
 
-from wger.core.models import (
-    UserProfile,
-    Language,
-    DaysOfWeek,
-    License,
-    RepetitionUnit,
-    WeightUnit)
+from wger.core.models import (UserProfile, Language, DaysOfWeek, License,
+                              RepetitionUnit, WeightUnit)
 
 
 class UserprofileSerializer(serializers.ModelSerializer):
     '''
     Workout session serializer
     '''
+
     class Meta:
         model = UserProfile
 
@@ -45,6 +41,7 @@ class LanguageSerializer(serializers.ModelSerializer):
     '''
     Language serializer
     '''
+
     class Meta:
         model = Language
 
@@ -53,6 +50,7 @@ class DaysOfWeekSerializer(serializers.ModelSerializer):
     '''
     DaysOfWeek serializer
     '''
+
     class Meta:
         model = DaysOfWeek
 
@@ -61,6 +59,7 @@ class LicenseSerializer(serializers.ModelSerializer):
     '''
     License serializer
     '''
+
     class Meta:
         model = License
 
@@ -69,6 +68,7 @@ class RepetitionUnitSerializer(serializers.ModelSerializer):
     '''
     Repetition unit serializer
     '''
+
     class Meta:
         model = RepetitionUnit
 
@@ -77,5 +77,6 @@ class WeightUnitSerializer(serializers.ModelSerializer):
     '''
     Weight unit serializer
     '''
+
     class Meta:
         model = WeightUnit

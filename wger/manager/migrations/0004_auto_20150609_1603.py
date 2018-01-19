@@ -15,7 +15,16 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='setting',
             name='weight',
-            field=models.DecimalField(decimal_places=2, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(1500)], max_digits=6, blank=True, null=True, verbose_name='Weight'),
+            field=models.DecimalField(
+                decimal_places=2,
+                validators=[
+                    django.core.validators.MinValueValidator(0),
+                    django.core.validators.MaxValueValidator(1500)
+                ],
+                max_digits=6,
+                blank=True,
+                null=True,
+                verbose_name='Weight'),
             preserve_default=True,
         ),
     ]

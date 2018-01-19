@@ -13,7 +13,6 @@ from setuptools import (
 )
 from wger import get_version
 
-
 with open('README.rst') as readme:
     long_description = readme.read()
 
@@ -22,7 +21,8 @@ with open('requirements.txt') as requirements_production:
 
 setup(
     name='wger',
-    description='FLOSS workout, fitness and weight manager/tracker written with Django',
+    description='FLOSS workout, fitness and weight manager/tracker '
+                'written with Django',
     long_description=long_description,
     version=get_version(),
     url='https://github.com/wger-project',
@@ -37,7 +37,8 @@ setup(
         'Environment :: Web Environment',
         'Intended Audience :: Other Audience',
         'Framework :: Django',
-        'License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)',
+        'License :: OSI Approved :: GNU Affero General Public License'
+        ' v3 or later (AGPLv3+)',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',

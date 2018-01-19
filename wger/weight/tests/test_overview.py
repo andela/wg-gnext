@@ -30,8 +30,10 @@ class WeightOverviewTestCase(WorkoutManagerTestCase):
         '''
         Helper function to test the weight overview page
         '''
-        response = self.client.get(reverse('weight:overview',
-                                           kwargs={'username': self.current_user}))
+        response = self.client.get(
+            reverse('weight:overview', kwargs={
+                'username': self.current_user
+            }))
         self.assertEqual(response.status_code, 200)
 
     def test_weight_overview_loged_in(self):
@@ -49,7 +51,8 @@ class WeightExportCsvTestCase(WorkoutManagerTestCase):
 
     def csv_export(self):
         '''
-        Helper function to test exporting the saved weight entries as a CSV file
+        Helper function to test exporting the saved weight entries
+        as a CSV file
         '''
         response = self.client.get(reverse('weight:export-csv'))
 
@@ -60,7 +63,8 @@ class WeightExportCsvTestCase(WorkoutManagerTestCase):
 
     def test_csv_export_loged_in(self):
         '''
-        Test exporting the saved weight entries as a CSV file by a logged in user
+        Test exporting the saved weight entries as a CSV file by
+        a logged in user
         '''
         self.user_login('test')
         self.csv_export()

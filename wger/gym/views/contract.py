@@ -16,26 +16,23 @@
 import logging
 
 from django.core.urlresolvers import reverse
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import (PermissionRequiredMixin,
+                                        LoginRequiredMixin)
 from django.contrib.auth.models import User
 from django.http.response import HttpResponseForbidden
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy
-from django.views.generic import (
-    DetailView,
-    ListView,
-    CreateView,
-    UpdateView
-)
+from django.views.generic import (DetailView, ListView, CreateView, UpdateView)
 
 from wger.utils.generic_views import WgerFormMixin
-from wger.gym.models import Contract, Gym
+from wger.gym.models import Contract  # , Gym
 
 logger = logging.getLogger(__name__)
 
 
-class AddView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class AddView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin,
+              CreateView):
     '''
     View to add a new contract
     '''
@@ -50,21 +47,15 @@ class AddView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, Create
         '''
         Get the initial data for new contracts
 
-        Since the user's data probably didn't change between one contract and the
-        next, try to fill in as much data as possible from previous ones or the
-        user's profile
+        Since the user's data probably didn't change between one contract and
+        the next, try to fill in as much data as possible from previous ones
+         or the user's profile
         '''
         out = {}
         if Contract.objects.filter(member=self.member).exists():
             last_contract = Contract.objects.filter(member=self.member).first()
-            for key in ('amount',
-                        'payment',
-                        'email',
-                        'zip_code',
-                        'city',
-                        'street',
-                        'phone',
-                        'profession'):
+            for key in ('amount', 'payment', 'email', 'zip_code', 'city',
+                        'street', 'phone', 'profession'):
                 out[key] = getattr(last_contract, key)
         elif self.member.email:
             out['email'] = self.member.email
@@ -97,8 +88,10 @@ class AddView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, Create
         Send some additional data to the template
         '''
         context = super(AddView, self).get_context_data(**kwargs)
-        context['form_action'] = reverse('gym:contract:add',
-                                         kwargs={'user_pk': self.kwargs['user_pk']})
+        context['form_action'] = reverse(
+            'gym:contract:add', kwargs={
+                'user_pk': self.kwargs['user_pk']
+            })
         return context
 
 
@@ -124,7 +117,8 @@ class DetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
         return super(DetailView, self).dispatch(request, *args, **kwargs)
 
 
-class UpdateView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class UpdateView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin,
+                 UpdateView):
     '''
     View to update an existing contract
     '''

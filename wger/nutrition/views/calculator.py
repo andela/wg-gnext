@@ -22,15 +22,10 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from wger.nutrition.forms import (
-    BmrForm,
-    PhysicalActivitiesForm,
-    DailyCaloriesForm
-)
-
+from wger.nutrition.forms import (BmrForm, PhysicalActivitiesForm,
+                                  DailyCaloriesForm)
 
 logger = logging.getLogger(__name__)
-
 '''
 Protein calculator views
 '''
@@ -42,15 +37,19 @@ def view(request):
     The basal metabolic rate detail page
     '''
 
-    form_data = {'age': request.user.userprofile.age,
-                 'height': request.user.userprofile.height,
-                 'gender': request.user.userprofile.gender,
-                 'weight': request.user.userprofile.weight}
+    form_data = {
+        'age': request.user.userprofile.age,
+        'height': request.user.userprofile.height,
+        'gender': request.user.userprofile.gender,
+        'weight': request.user.userprofile.weight
+    }
 
     context = {}
     context['form'] = BmrForm(initial=form_data)
-    context['form_activities'] = PhysicalActivitiesForm(instance=request.user.userprofile)
-    context['form_calories'] = DailyCaloriesForm(instance=request.user.userprofile)
+    context['form_activities'] = PhysicalActivitiesForm(
+        instance=request.user.userprofile)
+    context['form_calories'] = DailyCaloriesForm(
+        instance=request.user.userprofile)
 
     return render(request, 'rate/form.html', context)
 
@@ -90,15 +89,19 @@ def calculate_activities(request):
 
     data = []
 
-    form = PhysicalActivitiesForm(data=request.POST, instance=request.user.userprofile)
+    form = PhysicalActivitiesForm(
+        data=request.POST, instance=request.user.userprofile)
     if form.is_valid():
         form.save()
 
         # Calculate the activities factor and the total calories
         factor = request.user.userprofile.calculate_activities()
-        total = request.user.userprofile.calculate_basal_metabolic_rate() * factor
-        result = {'activities': '{0:.0f}'.format(total),
-                  'factor': '{0:.2f}'.format(factor)}
+        total = request.user.userprofile.calculate_basal_metabolic_rate(
+        ) * factor
+        result = {
+            'activities': '{0:.0f}'.format(total),
+            'factor': '{0:.2f}'.format(factor)
+        }
         data = json.dumps(result)
 
     else:
