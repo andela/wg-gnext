@@ -529,3 +529,38 @@ class UserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
                                           _('Gym')],
                                  'users': context['object_list']['members']}
         return context
+
+class InactiveUserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    '''
+    Overview of all users in the instance
+    '''
+    model = User
+    permission_required = ('gym.manage_gyms',)
+    template_name = 'user/inactiveList.html'
+
+    def get_queryset(self):
+        '''
+        Return a list with the users, not really a queryset.
+        '''
+        out = {'admins': [],
+               'members': []}
+
+        for u in User.objects.select_related('usercache', 'userprofile__gym').filter(is_active=0):
+            out['members'].append({'obj': u,
+                                   'last_log': u.usercache.last_activity})
+
+        return out
+
+    def get_context_data(self, **kwargs):
+        '''
+        Pass other info to the template
+        '''
+        context = super(InactiveUserListView, self).get_context_data(**kwargs)
+        context['show_gym'] = True
+        context['user_table'] = {'keys': [_('ID'),
+                                          _('Username'),
+                                          _('Name'),
+                                          _('Last activity'),
+                                          _('Gym')],
+                                 'users': context['object_list']['members']}
+        return context
