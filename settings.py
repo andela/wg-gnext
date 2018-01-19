@@ -13,19 +13,20 @@ ADMINS = (
 )
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': dj_database_url.config()
-}
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': './database.sqlite',
-#         'USER': '',
-#         'PASSWORD': '',
-#         'HOST': '',
-#         'PORT': '',
-#     }
-# }
+DATABASES = {}
+if os.environ.get('DATABASE_URL'):
+    DATABASES['default'] = dj_database_url.config()
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': './database.sqlite',
+            'USER': '',
+            'PASSWORD': '',
+            'HOST': '',
+            'PORT': '',
+        }
+    }
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'l+%vwb^&hm9!1#obik#_4^iu8k45-w*#*bc@k(y*t@qrx_o-sn'
