@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 from wger.settings_global import *
 import dj_database_url
+import os
 
 # Use 'DEBUG = True' to get more details for server errors
 DEBUG = True
@@ -60,7 +60,10 @@ WGER_SETTINGS['EMAIL_FROM'] = 'wger Workout Manager <wger@example.com>'
 
 # Your twitter handle, if you have one for this instance.
 #WGER_SETTINGS['TWITTER'] = ''
-
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "wger/core/static")]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, '/wger/core/static/'),
+)
