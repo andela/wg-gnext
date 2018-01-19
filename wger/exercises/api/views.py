@@ -76,8 +76,6 @@ class ExerciseViewSet(viewsets.ModelViewSet):
         # Todo is it right to call set author after save?
         obj.set_author(self.request)
         obj.save()
-
-        
 class ExerciseDetailViewSet(viewsets.ReadOnlyModelViewSet):
     '''
     API endpoint for exercise objects

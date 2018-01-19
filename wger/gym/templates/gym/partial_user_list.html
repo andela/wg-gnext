@@ -24,31 +24,33 @@ $(document).ready( function () {
 </thead>
 <tbody>
 {% for current_user in user_table.users %}
-<tr>
-    <td>
-        {{current_user.obj.pk}}
-    </td>
-    <td>
-        <a href="{% url 'core:user:overview' current_user.obj.pk %}">{{current_user.obj}}</a>
-    </td>
-    <td>
-        {{current_user.obj.get_full_name}}
-    </td>
-    <td data-order="{{current_user.last_log|date:'U'}}">
-        {{current_user.last_log|default:'-/-'}}
-    </td>
-    {% if show_gym %}
-    <td>
-        {% if current_user.obj.userprofile.gym_id %}
-            <a href="{{ current_user.obj.userprofile.gym.get_absolute_url }}">
-            {{ current_user.obj.userprofile.gym }}
-            </a>
-        {% else %}
-            -/-
+    {% if current_user.obj.is_active %}
+    <tr>
+        <td>
+            {{current_user.obj.pk}}
+        </td>
+        <td>
+            <a href="{% url 'core:user:overview' current_user.obj.pk %}">{{current_user.obj}}</a>
+        </td>
+        <td>
+            {{current_user.obj.get_full_name}}
+        </td>
+        <td data-order="{{current_user.last_log|date:'U'}}">
+            {{current_user.last_log|default:'-/-'}}
+        </td>
+        {% if show_gym %}
+        <td>
+            {% if current_user.obj.userprofile.gym_id %}
+                <a href="{{ current_user.obj.userprofile.gym.get_absolute_url }}">
+                {{ current_user.obj.userprofile.gym }}
+                </a>
+            {% else %}
+                -/-
+            {% endif %}
+        </td>
         {% endif %}
-    </td>
+    </tr>
     {% endif %}
-</tr>
 {% endfor %}
 </tbody>
 </table>
