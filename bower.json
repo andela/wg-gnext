@@ -1,0 +1,26 @@
+{
+  "name": "wger",
+  "description": "Self hosted FLOSS fitness/workout and weight tracker",
+  "main": "",
+  "authors": [
+    "geofrocker <geofrocker2@gmail.com>"
+  ],
+  "license": "AGPL-3.0",
+  "homepage": "https://github.com/andela/wg-gnext",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "wger/core/static/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "components-font-awesome": "^4.7.0",
+    "d3": ">=4",
+    "datatables": "DataTables#^1.10.16",
+    "shariff": "^2.1.1",
+    "Sortable": "sortablejs#1.4.x",
+    "tinymce": "tinymce-dist#^4.7.4"
+  }
+}
