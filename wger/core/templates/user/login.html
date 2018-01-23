@@ -13,6 +13,10 @@
       class="form-horizontal">
     {% trans 'Login' as submit_text %}
     {% render_form_fields form submit_text %}
+    <a href="{% url "social:begin" "facebook-oauth2" %}" style="center"><i class="fa fa-facebook-square" style="font-size:48px;color:rgb(59, 89, 152)"></i></a>
+    <a href="{% url "social:begin" "github-oauth2" %}"><i class="fa fa-github-square" style="font-size:48px;color:black"></i></a>
+    <a href="{% url "social:begin" "twitter-oauth2" %}"><i class="fa fa-twitter-square" style="font-size:48px;color:rgb(0, 132, 180)"></i></a>
+
 </form>
 {% endblock %}
 
