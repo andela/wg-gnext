@@ -47,10 +47,10 @@ def load_language(language_code=None):
         return language
 
     try:
-        language = Language.objects.get(short_name=used_language)
+        language = Language.objects.get_or_create(short_name=used_language)
     except ObjectDoesNotExist:
         # No luck, load english as our fall-back language
-        language = Language.objects.get(short_name="en")
+        language = Language.objects.get_or_create(short_name="en")
 
     cache.set(cache_mapper.get_language_key(language), language)
     return language
