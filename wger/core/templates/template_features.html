@@ -49,12 +49,18 @@
     <link rel="stylesheet" type="text/css" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'bower_components/components-font-awesome/css/font-awesome.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/agency.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/landing.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/animate.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'bower_components/shariff/build/shariff.min.css' %}">
     {% endcompress %}
 
     <link rel="icon" href="{% static 'images/favicon.png' %}" type="image/png">
 
     {% compress js %}
+    <script src="{% static 'js/wow.min.js' %}"></script>
+    <script>
+    new WOW().init();
+    </script>
     <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
     <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
     {% endcompress %}
@@ -74,7 +80,7 @@
 
 
 
-<footer class="bg-darkest-gray">
+<footer class="bg-darkest-gray" id="contact">
     <div class="container">
         <div class="row">
             <div class="col-md-4">
