@@ -42,7 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'social.apps.django_app.default',
+    'social_django',
 
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
@@ -91,17 +91,16 @@ INSTALLED_APPS = (
 
 # added list of external libraries to be installed by bower
 BOWER_INSTALLED_APPS = (
-    'jquery#2.1.x',
-    'bootstrap',
-    'd3',
-    'shariff',
-    'tinymce-dist',
-    'DataTables',
-    'components-font-awesome',
-    'tinymce',
-    'metrics-graphics',
-    'devbridge-autocomplete#1.2.x',
-    'sortablejs#1.4.x',
+      "bootstrap#^3.3.7",
+      "components-font-awesome#^4.7.0",
+      "d3#4",
+      "DataTables#^1.10.16",
+      "shariff#^2.1.1",
+      "sortablejs#1.4.x",
+      "tinymce-dist#^4.7.4",
+      "jquery#2.1.x",
+      "metrics-graphics#^2.12.0",
+      "devbridge-autocomplete#1.2.x"
 )
 
 MIDDLEWARE_CLASSES = (
@@ -124,15 +123,17 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
 
+    'social_django.middleware.SocialAuthExceptionMiddleware', # <--
+
     # Django mobile
     'django_mobile.middleware.MobileDetectionMiddleware',
     'django_mobile.middleware.SetFlavourMiddleware',
 )
 
 AUTHENTICATION_BACKENDS = (
-    'social.backends.twitter.TwitterOAuth',
-    'social.backends.facebook.FacebookOAuth2',
-    'social.backends.github.GithubOAuth2',
+    'social_core.backends.github.GithubOAuth2', # <--
+    'social_core.backends.twitter.TwitterOAuth', # <--
+    'social_core.backends.facebook.FacebookOAuth2', # <--
     'django.contrib.auth.backends.ModelBackend',
     'wger.utils.helpers.EmailAuthBackend'
 )
@@ -157,9 +158,9 @@ TEMPLATES = [
                 # Django mobile
                 'django_mobile.context_processors.flavour',
 
-                    # Setting of Template Context Processors for Social Auth
-                'social.apps.django_app.context_processors.backends',
-                'social.apps.django_app.context_processors.login_redirect',
+                # Setting of Template Context Processors for Social Auth
+                'social_django.context_processors.backends',  # <--
+                'social_django.context_processors.login_redirect', # <--
 
                 # Breadcrumbs
                 'django.template.context_processors.request'
@@ -392,8 +393,8 @@ WGER_SETTINGS = {
     'TWITTER': False
 }
 
-SOCIAL_AUTH_FACEBOOK_KEY = '1999619233697194'
-SOCIAL_AUTH_FACEBOOK_SECRET = 'f6023faf52ec4784ab648ee3468050de'
+SOCIAL_AUTH_FACEBOOK_KEY = '2119153724984294'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'd58bfb58eac2344a5648ceefacda0b92'
 
 SOCIAL_AUTH_GITHUB_KEY = '87f975fcf086b2c41bb2'
 SOCIAL_AUTH_GITHUB_SECRET = 'b713b6306dc97361bcbbdb6bcec79de70b302c86'
