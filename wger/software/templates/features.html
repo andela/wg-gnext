@@ -19,52 +19,68 @@
 {#         #}
 {% block content %}
     <header>
-        <div class="container">
-            <div class="intro-text">
-                <div class="intro-heading">{% trans "Welcome to wger" %}</div>
-                <div class="intro-lead-in">{% trans "Your body." %}</div>
-                <div class="intro-lead-in">{% trans "Your workouts." %}</div>
-                <div class="intro-lead-in">{% trans "Your data." %}</div>
-                <div class="intro-lead-in">{% trans "Your progress." %}</div>
-                {% if allow_guest_users and not user.is_authenticated %}
-                    <a href="{% url 'core:user:demo-entries' %}" class="page-scroll btn btn-xl" rel="nofollow" style="margin-top: 1em;">
-                        {% trans "Try it now" %}
-                    </a>
-                {% endif %}
 
-                {% if not user.is_authenticated or user.userprofile.is_temporary %}
-                    {% if allow_registration %}
-                        <a href="{% url 'core:user:registration' %}" class="page-scroll btn btn-xl" style="margin-top: 1em;">
-                            {% trans "Register" %}
-                        </a>
-                    {% endif %}
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Wger | <span>Workout Manager</span></a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                <li><a href="#features">Features</a></li>
+                <li><a href="{% url 'core:about' %}">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+            </div>
+        </nav>
+        <!--- Header -->
+        
+        <div id="header" class="header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 wow bounceInLeft">
+                        <p>Wger Workout Manager is a free, open source web application that manages your exercises, workouts and nutrition. It started as a pet project of mine to replace my growing collection of different spreadsheets, but it has become something other people could also find useful.</p>
+                        {% if allow_guest_users and not user.is_authenticated %}
+                            <a href="{% url 'core:user:demo-entries' %}" class="btn btn-lg btn-primary" rel="nofollow" style="margin-top: 1em;">
+                                {% trans "Try it now" %}
+                            </a>
+                        {% endif %}
 
-                    <a href="{% url 'core:user:login' %}" class="page-scroll btn btn-xl" style="margin-top: 1em;">
-                        {% trans "Login" %}
-                    </a>
-                {% endif %}
+                        {% if not user.is_authenticated or user.userprofile.is_temporary %}
+                            {% if allow_registration %}
+                                <a href="{% url 'core:user:registration' %}" class="btn btn-lg btn-primary" style="margin-top: 1em;">
+                                    {% trans "Register" %}
+                                </a>
+                            {% endif %}
+
+                            <a href="{% url 'core:user:login' %}" class="btn btn-lg btn-primary" style="margin-top: 1em;">
+                                {% trans "Login" %}
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="col-lg-6 col-md-6 wow bounceInRight">
+                        <img src="{% static 'images/woman.png' %}" alt="ghjkhgjk">
+                    </div>
+                </div>
             </div>
         </div>
+            
+        <!-- End Header -->
     </header>
 
     <!-- Services Section -->
     <section id="services" class="bg-darkest-gray">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading text-light">{% trans "Your advantages" %}</h2>
-                    <h3 class="section-subheading text-muted">
-                        {% blocktrans trimmed %}
-                            wger Workout Manager is a free, open source web application that manages
-                            your exercises, workouts and nutrition. It started as a pet project of
-                            mine to replace my growing collection of different spreadsheets, but it
-                            has become something other people could also find useful.
-                        {% endblocktrans %}
-                    </h3>
-                </div>
-            </div>
             <div class="row text-center">
-                <div class="col-md-4">
+                <div class="col-md-4 col-md-4 wow fadeInLeft" data-wow-delay="1.8s">
                     <span class="fa-stack fa-4x">
                         <i class="fa fa-circle fa-stack-2x text-primary"></i>
                         <i class="fa fa-user fa-stack-1x fa-inverse"></i>
@@ -79,7 +95,7 @@
                         {% endblocktrans %}
                     </p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 col-md-4 wow fadeInLeft" data-wow-delay="1.4s">
                     <span class="fa-stack fa-4x">
                         <i class="fa fa-circle fa-stack-2x text-primary"></i>
                         <i class="fa fa-cutlery fa-stack-1x fa-inverse"></i>
@@ -94,7 +110,7 @@
                         {% endblocktrans %}
                     </p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4  col-md-4 wow fadeInLeft" data-wow-delay="0.8s">
                     <span class="fa-stack fa-4x">
                         <i class="fa fa-circle fa-stack-2x text-primary"></i>
                         <i class="fa fa-line-chart fa-stack-1x fa-inverse"></i>
@@ -113,10 +129,10 @@
         </div>
     </section>
 
-    <section id="about" class="bg-light-gray">
+    <section id="features" class="bg-light-gray">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12 text-center">
+                <div class="col-lg-12 text-center wow pulse">
                     <h2 class="section-heading">{% trans "Features" %}</h2>
                     <h3 class="section-subheading text-muted">{% trans "Among many others" %}</h3>
                 </div>
@@ -129,11 +145,11 @@
                                 <img class="img-circle img-responsive" src="{% static 'images/weight-chart.png' %}" alt="">
                             </div>
                             <div class="timeline-panel">
-                                <div class="timeline-heading">
+                                <div class="timeline-heading wow fadeInLeft">
                                     <h4>{% trans "Weight tracker" %}</h4>
                                 </div>
-                                <div class="timeline-body">
-                                    <p class="text-muted">
+                                <div class="timeline-body fa">
+                                    <p class="text-muted wow fadeIn">
                                         {% blocktrans trimmed %}
                                             Keep track of your progress with the body weight chart. This makes
                                             it easy to see if you are reaching your goals or need to adjust
@@ -148,11 +164,11 @@
                                 <img class="img-circle img-responsive" src="{% static 'images/calendar.png' %}" alt="">
                             </div>
                             <div class="timeline-panel">
-                                <div class="timeline-heading">
+                                <div class="timeline-heading wow fadeInRight" data-wow-delay="0.6s">
                                     <h4>{% trans 'Calendar' %}</h4>
                                 </div>
                                 <div class="timeline-body">
-                                    <p class="text-muted">
+                                    <p class="text-muted wow fadeIn">
                                         {% blocktrans trimmed %}
                                             Get an overview of how and when you trained as well as how you
                                             personally felt you performed. Access all your individual diary
@@ -167,11 +183,11 @@
                                 <img class="img-circle img-responsive" src="{% static 'images/muscle-overview.png' %}" alt="">
                             </div>
                             <div class="timeline-panel">
-                                <div class="timeline-heading">
+                                <div class="timeline-heading wow fadeInLeft" data-wow-delay="1.0s">
                                     <h4>{% trans 'Exercise database' %}</h4>
                                 </div>
                                 <div class="timeline-body">
-                                    <p class="text-muted">
+                                    <p class="text-muted wow fadeIn">
                                         {% blocktrans trimmed %}
                                             The exercise database contains more than hundred exercises from
                                             which you can choose when creating a workout. You can view them by
@@ -186,11 +202,11 @@
                                 <img class="img-circle img-responsive" src="{% static 'images/gym-management.png' %}" alt="">
                             </div>
                             <div class="timeline-panel">
-                                <div class="timeline-heading">
+                                <div class="timeline-heading wow fadeInRight" data-wow-delay="1.4s">
                                     <h4>{% trans 'Gym management' %}</h4>
                                 </div>
                                 <div class="timeline-body">
-                                    <p class="text-muted">
+                                    <p class="text-muted wow fadeIn">
                                         {% blocktrans trimmed %}
                                             Use the application for your gym to manage its members, their
                                             workouts and attendance. You can manage the members' contracts,
@@ -205,11 +221,11 @@
                                 <img class="img-circle img-responsive" src="{% static 'images/rest-api.png' %}" alt="">
                             </div>
                             <div class="timeline-panel">
-                                <div class="timeline-heading">
+                                <div class="timeline-heading wow fadeInLeft" data-wow-delay="1.6s">
                                     <h4>{% trans "REST API" %}</h4>
                                 </div>
                                 <div class="timeline-body">
-                                    <p class="text-muted">
+                                    <p class="text-muted wow fadeIn">
                                         {% blocktrans trimmed %}
                                             wger provides a REST API with full read and write access to all
                                             data so you can integrate your own application and tools.
@@ -219,7 +235,7 @@
                             </div>
                         </li>
                         <li class="timeline">
-                            <div class="timeline-image">
+                            <div class="timeline-image wow fadeInRight" data-wow-delay="2.0s">
                                 <h4>{% blocktrans trimmed %}100% Free
                                     <br>and
                                     <br>Open Source{% endblocktrans %}
