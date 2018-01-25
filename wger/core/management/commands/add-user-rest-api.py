@@ -46,6 +46,9 @@ class Command(BaseCommand):
         parser.add_argument('username', nargs='?', type=str)
 
     def handle(self, *args, **options):
+        '''
+        main method top execute command
+        '''
         username = options['username']
         grant = options['grant']
         revoke = options['revoke']
@@ -90,4 +93,3 @@ class Command(BaseCommand):
             self.stdout.write(
                 self.style.WARNING(
                     'You need to provide an argument, either "--grant" or "--revoke"'))
-

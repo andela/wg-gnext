@@ -49,6 +49,9 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        '''
+        main method to execute command
+        '''
         username = options['username']
         if not username:  # if username is not provided, list all users.
             rest_users = (user for user in RestUser.objects.all())
@@ -74,5 +77,3 @@ class Command(BaseCommand):
         except User.DoesNotExist:
             # raise error if user does not exist
             raise CommandError('user with "%s" username does not exist' % username)
-
-
