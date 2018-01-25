@@ -89,6 +89,7 @@ INSTALLED_APPS = (
     'djangobower',
 )
 
+
 # added list of external libraries to be installed by bower
 BOWER_INSTALLED_APPS = (
       "bootstrap#^3.3.7",
@@ -124,6 +125,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
 
     'social_django.middleware.SocialAuthExceptionMiddleware', # <--
+    
 
     # Django mobile
     'django_mobile.middleware.MobileDetectionMiddleware',
@@ -201,6 +203,7 @@ EMAIL_SUBJECT_PREFIX = '[wger] '
 #
 LOGIN_URL = '/user/login'
 LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
 
 #
 # Internationalization
@@ -393,11 +396,26 @@ WGER_SETTINGS = {
     'TWITTER': False
 }
 
-SOCIAL_AUTH_FACEBOOK_KEY = '2119153724984294'
-SOCIAL_AUTH_FACEBOOK_SECRET = 'd58bfb58eac2344a5648ceefacda0b92'
+SOCIAL_AUTH_FACEBOOK_KEY = '181116312645546'
+SOCIAL_AUTH_FACEBOOK_SECRET = '1d6a243981cdf29cc8e25e25d98dbdcf'
 
 SOCIAL_AUTH_GITHUB_KEY = '87f975fcf086b2c41bb2'
 SOCIAL_AUTH_GITHUB_SECRET = 'b713b6306dc97361bcbbdb6bcec79de70b302c86'
 
 SOCIAL_AUTH_TWITTER_KEY = 'XxxPS6tdvfgvVv0j6o83VfgDB'
 SOCIAL_AUTH_TWITTER_SECRET = 'GeXVHt8pZtXrJWh5CXoKjomEh7qUpAAOVIpEk7cJ1TT4VqDw4o'
+
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details'
+)
+
+SOCIAL_AUTH_TWITTER_AUTH_EXTRA_ARGUMENTS = {'force_login': 1} 
+SOCIAL_AUTH_FACEBOOK_AUTH_EXTRA_ARGUMENTS = {'auth_type': 'reauthenticate'}
