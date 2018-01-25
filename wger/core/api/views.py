@@ -25,8 +25,8 @@ from wger.core.models import (UserProfile, Language, DaysOfWeek, License,
 from wger.core.api.serializers import (
     UsernameSerializer, LanguageSerializer, DaysOfWeekSerializer,
     LicenseSerializer, RepetitionUnitSerializer, WeightUnitSerializer)
-from wger.core.api.serializers import UserprofileSerializer
-from wger.utils.permissions import UpdateOnlyPermission, WgerPermission
+from wger.core.api.serializers import UserProfileSerializer, AuthUserSerializer
+from wger.utils.permissions import CanAddUsersViaApi, UpdateOnlyPermission, WgerPermission
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):
@@ -34,7 +34,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     API endpoint for workout objects
     '''
     is_private = True
-    serializer_class = UserprofileSerializer
+    serializer_class = UserProfileSerializer
     permission_classes = (WgerPermission, UpdateOnlyPermission)
     ordering_fields = '__all__'
 
@@ -108,3 +108,27 @@ class WeightUnitViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = WeightUnitSerializer
     ordering_fields = '__all__'
     filter_fields = ('name', )
+
+
+class AuthUserViewSet(viewsets.ModelViewSet):
+    '''
+    API endpoint for wger application users
+    '''
+    serializer_class = AuthUserSerializer
+    is_private = True
+    permission_classes = (CanAddUsersViaApi, )
+
+    def get_queryset(self):
+        '''
+        list users created by specific user only
+        '''
+        return User.objects.filter(restuser__created_by=self.request.user)
+
+    def get_serializer_context(self):
+        '''
+        pass request object to serializer context
+        :return:
+        '''
+        ctx = super(AuthUserViewSet, self).get_serializer_context()
+        ctx['request'] = self.request
+        return ctx
