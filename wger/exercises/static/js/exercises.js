@@ -23,6 +23,7 @@
 /*
  Highlight a muscle in the overview
  */
+
 function wgerHighlightMuscle(element) {
   var $muscle;
   var muscleId;
@@ -55,40 +56,96 @@ function wgerHighlightMuscle(element) {
  D3js functions
  */
 
-function wgerDrawWeightLogChart(data, divId) {
-  var chartData;
-  var legend;
-  var minValues;
-  var i;
-  if (data.length) {
-    legend = [];
-    minValues = [];
-    chartData = [];
-    for (i = 0; i < data.length; i++) {
-      chartData[i] = MG.convert.date(data[i], 'date');
+function wgerDrawWeightLogChart(data, otherData, divId, otherUser) {
+  let ctx = document.getElementById('svg-' + divId);
 
-      // Read the possible repetitions for the chart legend
-      legend[i] = data[i][0].reps;
+  // process my data into appropriate fields for the graph
+  let listOfChartData = [];
+  let chartData = {
+    dates: [],
+    weight: [],
+    reps: []
+  };
+  data.forEach((element) => {
+    element.forEach((item)  => {
+      chartData.dates.push(item.date);
+      chartData.weight.push(item.weight);
+      chartData.reps.push(item.reps);
+    });
+  });
+  listOfChartData.push(chartData);
 
-      // Read the minimum values for each repetition
-      minValues[i] = d3.min(data[i], function (repetitionData) {
-        return repetitionData.weight;
+  // process other user's data into required fields for the graph
+  if (otherData) {
+    let listOfOtherData =[];
+    let otherChartData = {
+      dates: [],
+      weight: [],
+      reps: []
+    };
+    otherData.forEach((element) => {
+      element.forEach((item)  => {
+        otherChartData.dates.push(item.date);
+        otherChartData.weight.push(item.weight);
+        otherChartData.reps.push(item.reps);
       });
-    }
+    });
+    listOfOtherData.push(otherChartData);
 
-    MG.data_graphic({
-      data: chartData,
-      y_accessor: 'weight',
-      min_y: d3.min(minValues),
-      aggregate_rollover: true,
-      full_width: true,
-      top: 10,
-      left: 30,
-      right: 10,
-      height: 200,
-      legend: legend,
-      target: '#svg-' + divId,
-      colors: ['#204a87', '#4e9a06', '#ce5c00', '#5c3566', '#2e3436', '8f5902', '#a40000']
+    var myChart = new Chart(ctx, {
+      type: 'bar',
+        data: {
+          labels: listOfChartData[0].dates, // dates for x axis
+          datasets: [{
+            label: "My weights",
+            backgroundColor: '#3465a4',
+            borderColor: '#3465a4',
+            data: listOfChartData[0].weight // to be plotted against the y-axis
+          },
+          {
+            label: "My reps",
+              backgroundColor: '#7093bf',
+              borderColor: '#7093bf',
+              data: listOfChartData[0].reps  // to be plotted against the x-axis
+          },
+          {
+            label: otherUser + "'s weights",
+            backgroundColor: '#900C3F',
+            borderColor: '#900C3F',
+            data: listOfOtherData[0].weight // to be plotted against the y-axis
+          },
+          {
+            label: otherUser + "'s reps",
+              backgroundColor: '#F5B9B9',
+              borderColor: '#7873bf',
+              data: listOfOtherData[0].reps  // to be plotted against the x-axis
+          }]
+        },
+        options: {
+        }
+    });
+
+
+  } else {
+    var myChart = new Chart(ctx, {
+      type: 'bar',
+        data: {
+          labels: listOfChartData[0].dates, // dates for x axis
+          datasets: [{
+            label: "My weights",
+            backgroundColor: '#3465a4',
+            borderColor: '#3465a4',
+            data: listOfChartData[0].weight // to be plotted against the y-axis
+          },
+          {
+            label: "My reps",
+              backgroundColor: '#7093bf',
+              borderColor: '#7093bf',
+              data: listOfChartData[0].reps  // to be plotted against the x-axis
+          }]
+        },
+        options: {
+        }
     });
   }
 }
