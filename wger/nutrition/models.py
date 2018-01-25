@@ -45,6 +45,7 @@ from wger.weight.models import WeightEntry
 MEALITEM_WEIGHT_GRAM = '1'
 MEALITEM_WEIGHT_UNIT = '2'
 
+
 ENERGY_FACTOR = {
     'protein': {
         'kg': 4,
@@ -618,16 +619,30 @@ class MealItem(models.Model):
     An item (component) of a meal
     '''
 
+    Planned_Meal = 'PM'
+    Consumed_meal = 'CM'
+
+    MealChoice =(
+        (Planned_Meal, 'Meal Planned'),
+        (Consumed_meal, 'Consumed Meal'),
+    )
+
+    meal_choice = models.CharField(
+        max_length = 2,
+        choices = MealChoice,
+        default = Planned_Meal
+    )
+    # consumed = models.BooleanField()
     meal = models.ForeignKey(
         Meal, verbose_name=_('Nutrition plan'), editable=False)
     ingredient = models.ForeignKey(Ingredient, verbose_name=_('Ingredient'))
+
     weight_unit = models.ForeignKey(
         IngredientWeightUnit,
         verbose_name=_('Weight unit'),
         null=True,
         blank=True,
     )
-
     order = models.IntegerField(
         verbose_name=_('Order'), blank=True, editable=False)
     amount = models.DecimalField(
@@ -726,3 +741,4 @@ class MealItem(models.Model):
                 nutritional_info[i]).quantize(TWOPLACES)
 
         return nutritional_info
+
