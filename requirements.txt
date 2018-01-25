@@ -1,7 +1,7 @@
 #
 # Requirements for wger for production
 #
-
+social-auth-app-django==1.1.0
 Django>=1.9,<1.10
 django-recaptcha
 reportlab
