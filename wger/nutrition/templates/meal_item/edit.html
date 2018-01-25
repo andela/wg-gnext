@@ -17,8 +17,6 @@ $(document).ready(function() {
 {% endblock %}
 
 
-
-
 {% block content %}
 <form action="{{ form_action }}"
       method="post"
@@ -26,6 +24,7 @@ $(document).ready(function() {
     {% csrf_token %}
     {% render_form_errors form %}
     {{form.ingredient}}
+    {% render_form_field form.meal_choice %}
 
     <div class="form-group {% if field.errors %}has-error{% endif %}" id="form-id_ingredient_searchfield">
         <label for="id_ingredient_searchfield" class="col-md-3 control-label">
@@ -41,6 +40,8 @@ $(document).ready(function() {
             <div id="exercise_name"></div>
         </div>
     </div>
+
+
     {% render_form_field form.amount %}
     {% render_form_field form.weight_unit %}
     {% render_form_submit submit_text %}
