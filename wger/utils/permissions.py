@@ -94,4 +94,4 @@ class CanAddUsersViaApi(permissions.BasePermission):
         '''
         define required permission
         '''
-        return request.user.userprofile.can_create_users
+        return request.user.is_authenticated() and request.user.userprofile.can_create_users
