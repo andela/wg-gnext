@@ -47,10 +47,10 @@ def load_language(language_code=None):
         return language
 
     try:
-        language = Language.objects.get_or_create(short_name=used_language)
+        language = Language.objects.get(short_name=used_language)
     except ObjectDoesNotExist:
         # No luck, load english as our fall-back language
-        language = Language.objects.get_or_create(short_name="en")
+        language = Language.objects.get(short_name="en")
 
     cache.set(cache_mapper.get_language_key(language), language)
     return language
@@ -86,11 +86,9 @@ def load_item_languages(item, language_code=None):
 def load_ingredient_languages(request):
     '''
     Filter the ingredients the user will see by its language.
-
-    Additionally, if the user has selected on his preference page that
-    he wishes to also see the ingredients in English (from the US Department
-    of Agriculture), show those too.
-
+    Additionally, if the user has selected on his preference page that he wishes
+    to also see the ingredients in English (from the US Department of Agriculture),
+    show those too.
     This only makes sense if the user's language isn't English, as he will be
     presented those in that case anyway, so also do a check for this.
     '''
