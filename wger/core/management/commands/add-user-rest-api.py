@@ -79,7 +79,7 @@ class Command(BaseCommand):
             if not getattr(user.userprofile, 'can_create_users'):
                 self.stdout.write(
                     self.style.SUCCESS(
-                        '"%s" already has no privilege to add users via REST API!!')
+                        '"%s" has no privilege to add users via REST API!!')
                     % username)
 
             else:
