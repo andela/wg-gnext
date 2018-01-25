@@ -56,6 +56,25 @@
         </a>
     </p>
     {% endif %}
+    <br />
+
+    <h4>{% trans "Compare with other user" %}</h4>
+    <form class="form-inline" action="{% url 'manager:log:log' workout.id %}" method="get">
+        <select name="search_user"
+            type="search"
+            id="user-search"
+            class="ajax-form-element form-control"
+            style="width: 400px;"
+        >
+            <option value="">Select user</option>
+            {% for profile in user_profiles %}
+                {% if profile.user.id != owner_user.id %}
+                    <option value="{{ profile.user.username }}">{{ profile.user.username }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <button class="btn btn-success btn-sm" type="submit" style="width: 100px;">Select</button>
+    </form><br/>
 
     {% for set in day.set_list %}
     {% for exercise in set.exercise_list %}
@@ -76,7 +95,8 @@
                             <script>
                             $(document).ready(function() {
                             wgerDrawWeightLogChart({{exercise_list.chart_data|safe}},
-                                                  "{{exercise_list.div_uuid}}");
+                                                    {{ exercise_list.other_chart_data|safe }},
+                                                  "{{exercise_list.div_uuid}}", "{{ other_user}}");
                             });
                             </script>
                         {% endwith %}
@@ -105,6 +125,8 @@
 {# Side bar #}
 {#          #}
 {% block sidebar %}
+
+
 <h4>{% trans "Notes" %}</h4>
 <p>{% blocktrans %}This page shows the weight logs belonging to this workout
 only. Click on an exercise to see all the historical data for
