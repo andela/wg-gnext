@@ -286,14 +286,13 @@ class WorkoutLogDetailView(DetailView, LoginRequiredMixin):
                         workout=self.object)\
                         .exclude(repetition_unit_id__in=(2, 3, 4, 5, 6, 7, 8))
 
-
                     # get logs for other user and generate chart data from them
                     if other_user:
-                        other_logs = exercise_list['obj'].workoutlog_set.filter(user=other_user,
-                                                                                weight_unit__in=(1, 2),
-                                                                                exercise=exercise_list['obj']
-                                                                                ) \
-                        .exclude(repetition_unit_id__in=(2, 3, 4, 5, 6, 7, 8))
+                        other_logs = exercise_list['obj'].workoutlog_set.filter(
+                            user=other_user,
+                            weight_unit__in=(1, 2),
+                            exercise=exercise_list['obj']) \
+                            .exclude(repetition_unit_id__in=(2, 3, 4, 5, 6, 7, 8))
 
                     if other_logs:
                         entry_log, other_chart_data = process_log_entries(other_logs)
