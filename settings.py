@@ -2,14 +2,7 @@
 # -*- coding: utf-8 -*-
 from wger.settings_global import *
 import dj_database_url
-<<<<<<< HEAD
-<<<<<<< HEAD
 import os
-=======
->>>>>>> [ch #154434695] Set database config to dj_database
-=======
-import os
->>>>>>> [Chore #154239872] Update static files directory value
 
 # Use 'DEBUG = True' to get more details for server errors
 DEBUG = True
