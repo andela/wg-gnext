@@ -1,0 +1,26 @@
+{
+  "name": "wg-gnext",
+  "scripts": {
+  },
+  "env": {
+    "DISABLE_COLLECTSTATIC": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+    "heroku-postgresql"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
