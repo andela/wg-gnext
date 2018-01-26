@@ -17,15 +17,19 @@
 <hr/>
 <a href="{% url "social:begin" 'facebook' %}"
  class="btn btn-block btn-primary" >
-    <span class="fa fa-facebook"></span> Login with Facebook
+    <span class="fa fa-facebook"></span>  Login with Facebook
 </a>
 <a href="{% url "social:begin" 'twitter' %}"
  class="btn btn-block btn-info">
-        <span class="fa fa-twitter"></span> Login with Twitter
+        <span class="fa fa-twitter"></span>  Login with Twitter
     </a>
     <a href="{% url "social:begin" 'github' %}" 
     class="btn btn-block btn-default">
-            <span class="fa fa-github"></span> Login with Github
+            <span class="fa fa-github"></span>  Login with Github
+        </a>
+    <a href="{% url "socialgoogle:begin" 'google-oauth2' %}" 
+    class="btn btn-block btn-danger">
+            <span class="fa fa-google"></span>  Login with Google
         </a>
 
 </form>
