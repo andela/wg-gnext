@@ -24,7 +24,7 @@ For a full list of options, visit:
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+
 SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
 
 #
@@ -103,6 +103,7 @@ BOWER_INSTALLED_APPS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -227,6 +228,7 @@ LANGUAGE_CODE = 'en'
 LOCALE_PATHS = (os.path.join(SITE_ROOT, 'locale'), )
 
 FLAVOURS_STORAGE_BACKEND = 'session'
+
 
 #
 # Logging
@@ -362,12 +364,10 @@ REST_FRAMEWORK = {
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_URLS_REGEX = r'^/api/.*$'
 
-#
 # Ignore these URLs if they cause 404
 #
 IGNORABLE_404_URLS = (re.compile(r'^/favicon\.ico$'), )
 
-#
 # Application specific configuration options
 #
 # Consult docs/settings.rst for more information
