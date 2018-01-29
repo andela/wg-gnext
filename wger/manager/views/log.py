@@ -36,11 +36,8 @@ from wger.manager.forms import (HelperDateForm, HelperWorkoutSessionForm,
 from wger.utils.generic_views import (WgerFormMixin, WgerDeleteMixin)
 from wger.utils.helpers import check_access
 from wger.weight.helpers import process_log_entries, group_log_entries
-<<<<<<< HEAD
-=======
 from wger.core.models import UserProfile
 from wger.manager.models import User
->>>>>>> [Feature #154239881] Allow user to select another user and extract other user's log
 
 logger = logging.getLogger(__name__)
 
