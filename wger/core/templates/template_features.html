@@ -48,6 +48,7 @@
     {% compress css %}
     <link rel="stylesheet" type="text/css" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'bower_components/components-font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome-animation.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/agency.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/scrollbutton.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/landing.css' %}">
@@ -87,9 +88,8 @@
         <div class="row">
             <div class="col-md-4" style=text-align:left; color:#ffff">
                 <ul class="list-inline quicklinks">
-                    <li><a href="{% url 'software:contribute' %}">{% trans "Contribute!" %}</a></li><br/>
-                    <li><a href="{% url 'core:contact' %}">{% trans "Get in touch" %}</a></li><br/>
-                    <li><a href="{% url 'software:tos' %}">{% trans "Terms of service" %}</a></li>
+                    <li><a href="{% url 'software:contribute' %}">{% trans "Contribute!" %}</a></li>
+                    <li><a href="{% url 'core:contact' %}">{% trans "Get in touch" %}</a></li>
                 </ul>
             </div>
             <div class="col-md-4">
@@ -122,16 +122,8 @@
             </div>
             <div class="col-md-4"  style="text-align:right; color:#ffff;">
                 <ul class="list-inline quicklinks">
-                    <li><b>About us<b/></li>
-
-                    
+                    <li><a href="{% url 'software:tos' %}">{% trans "Terms of service" %}</a> 
                 </ul>
-                <p>
-                    Andela Kenya <br/>
-                    Roysambu, Nairobi<br/>
-                    P.O Box 1234, Roysambu<br/>
-                    Nairobi<br/>
-                </p>
             </div>
         </div>
     </div>
