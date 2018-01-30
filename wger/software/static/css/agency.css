@@ -27,13 +27,14 @@
 body {
   overflow-x: hidden;
   /*font-family: "Roboto Slab", "Helvetica Neue", Helvetica, Arial, sans-serif;*/
-  font-family: font-family: "Open Sans Light", Arial, Helvetica, sans-serif;
+  font-family: "Open Sans Light", Arial, Helvetica, sans-serif;
+  background-color: #222
 }
 .text-muted {
   color: #777777;
 }
 .text-light {
-  color: white;
+  color: #c5c4c4;
 }
 .text-primary {
   color: #204a87;
@@ -263,9 +264,10 @@ header {
   -o-background-size: cover;
   text-align: center;
   color: white;
+  margin-top: -24px;
 }
 header .intro-text {
-  padding-top: 100px;
+  padding-top: 56px;
   padding-bottom: 50px;
 }
 header .intro-text .intro-lead-in {
@@ -285,7 +287,7 @@ header .intro-text .intro-heading {
 }
 @media (min-width: 768px) {
   header .intro-text {
-    padding-top: 300px;
+    padding-top: 56px;
     padding-bottom: 200px;
   }
   header .intro-text .intro-lead-in {
@@ -322,7 +324,7 @@ section h3.section-subheading {
 }
 @media (min-width: 768px) {
   section {
-    padding: 150px 0;
+    padding: 23px 0;
   }
 }
 .service-heading {
