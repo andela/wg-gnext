@@ -36,6 +36,8 @@ from wger.manager.forms import (HelperDateForm, HelperWorkoutSessionForm,
 from wger.utils.generic_views import (WgerFormMixin, WgerDeleteMixin)
 from wger.utils.helpers import check_access
 from wger.weight.helpers import process_log_entries, group_log_entries
+from wger.core.models import UserProfile
+from wger.manager.models import User
 
 logger = logging.getLogger(__name__)
 
@@ -239,6 +241,16 @@ class WorkoutLogDetailView(DetailView, LoginRequiredMixin):
     owner_user = None
 
     def get_context_data(self, **kwargs):
+        other_logs = None
+
+        # assigned to null, equivalent of python None in js
+        other_chart_data = 'null'
+
+        try:
+            other_username = self.request.GET.get('search_user')
+            other_user = User.objects.get(username=other_username)
+        except:
+            other_user = None
 
         # Call the base implementation first to get a context
         context = super(WorkoutLogDetailView, self).get_context_data(**kwargs)
@@ -270,23 +282,46 @@ class WorkoutLogDetailView(DetailView, LoginRequiredMixin):
                         user=self.owner_user, weight_unit__in=(1, 2),
                         workout=self.object)\
                         .exclude(repetition_unit_id__in=(2, 3, 4, 5, 6, 7, 8))
+
+                    # get logs for other user and generate chart data from them
+                    if other_user:
+                        other_logs = exercise_list['obj'].workoutlog_set.filter(
+                            user=other_user,
+                            weight_unit__in=(1, 2),
+                            exercise=exercise_list['obj']) \
+                            .exclude(repetition_unit_id__in=(2, 3, 4, 5, 6, 7, 8))
+
+                    if other_logs:
+                        entry_log, other_chart_data = process_log_entries(other_logs)
+                    else:
+                        # javascript equivalent of python None
+                        other_chart_data = 'null'
+
                     entry_log, chart_data = process_log_entries(logs)
                     if entry_log:
                         exercise_log[exercise_list['obj'].id].append(entry_log)
 
                     if exercise_log:
                         workout_log[day_id][exercise_id] = {}
-                        workout_log[day_id][exercise_id][
-                            'log_by_date'] = entry_log
-                        workout_log[day_id][exercise_id]['div_uuid'] = 'div-'\
-                            + str(uuid.uuid4())
-                        workout_log[day_id][exercise_id][
-                            'chart_data'] = chart_data
+                        workout_log[day_id][exercise_id]['log_by_date'] = entry_log
+                        workout_log[day_id][exercise_id]['div_uuid'] = 'div-' + str(uuid.uuid4())
+                        workout_log[day_id][exercise_id]['chart_data'] = chart_data
+                        workout_log[day_id][exercise_id]['other_chart_data'] = other_chart_data
 
         context['workout_log'] = workout_log
         context['owner_user'] = self.owner_user
         context['is_owner'] = is_owner
         context['show_shariff'] = is_owner
+
+        # query for users with public profile
+        users = UserProfile.objects.filter(ro_access=True)
+        context['user_profiles'] = users
+
+        # add currently selected user
+        if not other_username:
+            other_username = 'null'
+
+        context['other_user'] = other_username
 
         return context
 
