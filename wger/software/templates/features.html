@@ -46,8 +46,7 @@
             <div class="container">
                 <div class="row">
                     <div class="wow bounceInLeft">
-                        <p>Wger Workout Manager is a free, open source web application that manages your exercises, workouts and nutrition. It started as a pet project of mine to replace my growing collection of different spreadsheets, but it has become something other people could also find useful.</p>
-                        {% if allow_guest_users and not user.is_authenticated %}
+                        <div class="intro-text"><div class="intro-heading">Welcome to wger</div><div class="intro-lead-in">Your body.</div><div class="intro-lead-in">Your workouts.</div><div class="intro-lead-in">Your data.</div><div class="intro-lead-in">Your progress.</div>{% if allow_guest_users and not user.is_authenticated %}
                             <a href="{% url 'core:user:demo-entries' %}" class="btn btn-lg btn-primary" rel="nofollow" style="margin-top: 1em;">
                                 {% trans "Try it now" %}
                             </a>
@@ -76,7 +75,7 @@
     <section id="services" class="bg-darkest-gray demo">
            
         <div class="container">
-            <h2 class="text-light text-center wow pulse">Your advantages</h2>
+            <h2 class="text-light text-center wow pulse">Your advantages<p class="pull-right"><small>Scroll down</small></p></h2>
             <div class="row text-center">
                 <div class="col-md-4 col-md-4 wow fadeInLeft" data-wow-delay="1.8s">
                     <span class="fa-stack fa-4x">
@@ -125,8 +124,8 @@
                     </p>
                 </div>
                 <div class="col-md-1  col-md-1 wow fadeInLeft" data-wow-delay="0.8s">
-                    <br/><br/> <br/><br/> <br/><br/> <br/><br/>
-                        <h4 class="service-heading text-light">Scroll Down</h4>
+                    <br/>
+                        <h1 class="service-heading text-light pull-right"><i class="fa fa-angle-double-down fa-6 faa-falling animated"></i></h1>
                         <a href="#features"><span></span></a>
                     </div>
 
