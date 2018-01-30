@@ -14,15 +14,10 @@
 
 
 {% block content %}
-<h2 id="active">Active users <small><a class="pull-right" href="#inactive"><span class="fa fa-share-square-o"></span> Inactive users</a></small></h2>
+<h2 id="active">Active users <small><a class="pull-right" href="{% url 'gym:gym:inactive-user-list' gym.pk %}"><span class="fa fa-share-square-o"></span> Inactive users</a></small></h2>
 {% if perms.gym.manage_gym or perms.gym.gym_trainer %}
     {% include 'gym/partial_user_list.html' %}
 {% endif %}
-<h2 id="inactive">Inactive users <small><a class="pull-right" href="#active"><span class="fa fa-share-square-o"></span> Active users</a></small></h2>
-{% if perms.gym.manage_gym or perms.gym.gym_trainer %}
-    {% include 'gym/partial_inactive_user_list.html' %}
-{% endif %}
-
 
 <h4>{% trans "Administrators and trainers" %}</h4>
 <table class="table table-hover">
