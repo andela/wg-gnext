@@ -6,7 +6,7 @@
 <script>
 $(document).ready( function () {
     /* Make table sortable */
-    $('#main_member_list').DataTable({
+    $('#main_member_list2').DataTable({
         paging: false,
         bFilter: true,
         bInfo : false
@@ -14,7 +14,7 @@ $(document).ready( function () {
 });
 </script>
 
-<table class="table table-hover" id="main_member_list">
+<table class="table table-hover" id="main_member_list2">
 <thead>
 <tr>
     {% for key in user_table.keys %}
@@ -24,6 +24,7 @@ $(document).ready( function () {
 </thead>
 <tbody>
 {% for current_user in user_table.users %}
+{% if not current_user.obj.is_active %}
     <tr>
         <td>
             {{current_user.obj.pk}}
@@ -49,6 +50,7 @@ $(document).ready( function () {
         </td>
         {% endif %}
     </tr>
+{% endif %}
 {% endfor %}
 </tbody>
 </table>
