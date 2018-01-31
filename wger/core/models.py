@@ -23,6 +23,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from wger.gym.models import Gym
@@ -339,6 +340,8 @@ search difficult.'''),
                     MaxValueValidator(30)],
         default=0)
     '''Number of Days for email weight reminder'''
+
+    can_create_users = models.BooleanField(default=False)
 
     @property
     def weight(self):
@@ -685,3 +688,17 @@ class WeightUnit(models.Model):
         This is done basically to not litter the code with magic IDs
         '''
         return self.id in (1, 2)
+
+
+class RestUser(models.Model):
+    '''
+    Track users created via REST API and their creators.
+    '''
+
+    user = models.OneToOneField(User, verbose_name=_('User'))
+    created_by = models.ForeignKey(User, related_name=_('rest_user_creator'))
+    timestamp = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.user.username
+

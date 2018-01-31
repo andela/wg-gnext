@@ -152,6 +152,16 @@ The available options for the ``wger`` command (if installed from PyPI) or
   migrate_db              Run all database migrations
   start_wger              Start the application using django's built in webserver
 
+
+The available options for ``wger`` API consumers management commands.
+(usage. ``./manage.py <command> <arguments>``::
+
+  add-user-rest-api       Allow or Revoke a user to create users via API. Takes two arguments --grant <username> or --revoke <username>
+  list-user-rest-api      Lists users created by API consumers. Takes an optional argument --username=<username>
+
+ NB: Replace <username> with real usernames that exists in the wger application.
+
+
 Contact
 =======
 

@@ -81,3 +81,17 @@ class UpdateOnlyPermission(permissions.BasePermission):
     def has_permission(self, request, view):
         return (request.user and request.user.is_authenticated()
                 and request.method in ['GET', 'HEAD', 'OPTIONS', 'PATCH'])
+
+
+class CanAddUsersViaApi(permissions.BasePermission):
+    '''
+    Custom permission that restricts users without permission to add users via API
+    to access specified endpoint.
+    '''
+    message = "You have no permission to add users, please contact your administrator"
+
+    def has_permission(self, request, view):
+        '''
+        define required permission
+        '''
+        return request.user.is_authenticated() and request.user.userprofile.can_create_users
