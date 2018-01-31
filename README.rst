@@ -153,7 +153,7 @@ The available options for the ``wger`` command (if installed from PyPI) or
   start_wger              Start the application using django's built in webserver
 
 
-The available options for the ``wger`` management commands.
+The available options for the ``wger`` API consumers management commands.
 (use e.g. ``./manage.py <command> <arguments>``::
 
   add-user-rest-api       Allow or Revoke a user to create users via API. Takes two arguments --grant <username> or --revoke <username>
