@@ -24,10 +24,29 @@
       {% if enctype %}enctype="{{enctype}}"{% endif %}>
     {% render_form_fields form submit_text %}
 </form>
+
 {% endblock %}
-
-
 <!--
         Side bar
 -->
-{% block sidebar %}{% if sidebar %}{% include sidebar %}{% endif %}{% endblock %}
+{% block sidebar %}
+<h3>Register with your Social Account</h3>
+    <hr/>
+    <a href="{% url "social:begin" 'facebook' %}"
+     class="btn btn-block btn-primary" >
+        <span class="fa fa-facebook"></span>  Register with Facebook
+    </a>
+    <a href="{% url "social:begin" 'twitter' %}"
+     class="btn btn-block btn-info">
+            <span class="fa fa-twitter"></span>  Register with Twitter
+        </a>
+        <a href="{% url "social:begin" 'github' %}" 
+        class="btn btn-block btn-default">
+                <span class="fa fa-github"></span>  Register with Github
+            </a>
+        </a>
+        <a href="{% url "social:begin" 'google-oauth2' %}" 
+        class="btn btn-block btn-danger">
+                <span class="fa fa-google"></span>  Login with Google
+            </a>
+{% endblock %}

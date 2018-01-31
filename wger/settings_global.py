@@ -42,6 +42,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'social_django',
+
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
 
@@ -87,19 +89,19 @@ INSTALLED_APPS = (
     'djangobower',
 )
 
+
 # added list of external libraries to be installed by bower
 BOWER_INSTALLED_APPS = (
-    'jquery#2.1.x',
-    'bootstrap',
-    'd3',
-    'shariff',
-    'tinymce-dist',
-    'DataTables',
-    'components-font-awesome',
-    'tinymce',
-    'metrics-graphics',
-    'devbridge-autocomplete#1.2.x',
-    'sortablejs#1.4.x',
+      "bootstrap#^3.3.7",
+      "components-font-awesome#^4.7.0",
+      "d3#4",
+      "DataTables#^1.10.16",
+      "shariff#^2.1.1",
+      "sortablejs#1.4.x",
+      "tinymce-dist#^4.7.4",
+      "jquery#2.1.x",
+      "metrics-graphics#^2.12.0",
+      "devbridge-autocomplete#1.2.x"
 )
 
 MIDDLEWARE_CLASSES = (
@@ -122,13 +124,22 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
 
+    'social_django.middleware.SocialAuthExceptionMiddleware', # <--
+    
+
     # Django mobile
     'django_mobile.middleware.MobileDetectionMiddleware',
     'django_mobile.middleware.SetFlavourMiddleware',
 )
 
-AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',
-                           'wger.utils.helpers.EmailAuthBackend')
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2', # <--
+    'social_core.backends.twitter.TwitterOAuth', # <--
+    'social_core.backends.google.GoogleOAuth2', # <--
+    'social_core.backends.facebook.FacebookOAuth2', # <--
+    'django.contrib.auth.backends.ModelBackend',
+    'wger.utils.helpers.EmailAuthBackend'
+)
 
 TEMPLATES = [
     {
@@ -149,6 +160,10 @@ TEMPLATES = [
 
                 # Django mobile
                 'django_mobile.context_processors.flavour',
+
+                # Setting of Template Context Processors for Social Auth
+                'social_django.context_processors.backends',  # <--
+                'social_django.context_processors.login_redirect', # <--
 
                 # Breadcrumbs
                 'django.template.context_processors.request'
@@ -189,6 +204,7 @@ EMAIL_SUBJECT_PREFIX = '[wger] '
 #
 LOGIN_URL = '/user/login'
 LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
 
 #
 # Internationalization
@@ -380,3 +396,29 @@ WGER_SETTINGS = {
     'EMAIL_FROM': 'wger Workout Manager <wger@example.com>',
     'TWITTER': False
 }
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details'
+)
+
+SOCIAL_AUTH_TWITTER_AUTH_EXTRA_ARGUMENTS = {'force_login': 1} 
+SOCIAL_AUTH_FACEBOOK_AUTH_EXTRA_ARGUMENTS = {'auth_type': 'reauthenticate'}
+
+SOCIAL_AUTH_FACEBOOK_KEY = os.getenv('SOCIAL_AUTH_FACEBOOK_KEY')
+SOCIAL_AUTH_FACEBOOK_SECRET = os.getenv('SOCIAL_AUTH_FACEBOOK_SECRET')
+
+SOCIAL_AUTH_GITHUB_KEY = os.getenv('SOCIAL_AUTH_GITHUB_KEY')
+SOCIAL_AUTH_GITHUB_SECRET = os.getenv('SOCIAL_AUTH_GITHUB_SECRET')
+
+SOCIAL_AUTH_TWITTER_KEY = os.getenv('SOCIAL_AUTH_TWITTER_KEY')
+SOCIAL_AUTH_TWITTER_SECRET = os.getenv('SOCIAL_AUTH_TWITTER_SECRET')
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
