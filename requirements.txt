@@ -24,6 +24,7 @@ waitress
 dj-database-url
 psycopg2
 npm
+fitbit
 
 # REST API
 djangorestframework>=3.2,<3.3
