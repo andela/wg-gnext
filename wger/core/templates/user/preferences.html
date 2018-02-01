@@ -75,6 +75,21 @@ $(function() {
             </div>
         </div>
 
+        <div class="panel panel-default">
+            <div class="panel-heading">
+            <h3 class="panel-title">
+                <a data-toggle="collapse" data-parent="#preferences-accordion" href="#collapseFitbit">
+                {% trans "Fitbit Integration" %}
+            </a>
+            </h4>
+            </div>
+            <div id="collapseFitbit" class="panel-collapse collapse">
+            <div class="panel-body">
+                 <a href="{% url 'fitbit' %}">Sync with fitbit</a>
+            </div>
+            </div>
+        </div>
+
 
         <div class="panel panel-default">
             <div class="panel-heading">
