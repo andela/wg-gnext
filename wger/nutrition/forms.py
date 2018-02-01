@@ -20,7 +20,8 @@ from django import forms
 from django.utils.translation import ugettext as _
 from wger.core.models import UserProfile
 
-from wger.nutrition.models import (IngredientWeightUnit, Ingredient, MealItem)
+from wger.nutrition.models import (IngredientWeightUnit,
+                                   Ingredient, Meal, MealItem)
 from wger.utils.widgets import Html5NumberInput
 
 logger = logging.getLogger(__name__)
@@ -110,6 +111,10 @@ class DailyCaloriesForm(forms.ModelForm):
 
 
 class MealItemForm(forms.ModelForm):
+    '''
+        Form for the meal item
+    '''
+
     weight_unit = forms.ModelChoiceField(
         queryset=IngredientWeightUnit.objects.none(),
         empty_label="g",
@@ -123,6 +128,46 @@ class MealItemForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(MealItemForm, self).__init__(*args, **kwargs)
+
+        # Get the ingredient_id
+        ingredient_id = None
+
+        if kwargs.get('instance'):
+            ingredient_id = kwargs['instance'].ingredient_id
+
+        if kwargs.get('data'):
+            ingredient_id = kwargs['data']['ingredient']
+
+        # Filter the available ingredients
+        if ingredient_id:
+            self.fields['weight_unit'].queryset = \
+                IngredientWeightUnit.objects.filter(
+                    ingredient_id=ingredient_id)
+
+
+class MealForm(forms.ModelForm):
+    '''
+        Model form for the meal
+    '''
+
+    meal_choice = forms.ChoiceField(choices=MealItem.MealChoice)
+    amount = forms.DecimalField(
+        widget=Html5NumberInput
+    )
+    weight_unit = forms.ModelChoiceField(
+        queryset=IngredientWeightUnit.objects.none(),
+        empty_label="g",
+        required=False)
+    ingredient = forms.ModelChoiceField(
+        queryset=Ingredient.objects.all(),
+        widget=forms.HiddenInput)
+
+    class Meta:
+        model = Meal
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(MealForm, self).__init__(*args, **kwargs)
 
         # Get the ingredient_id
         ingredient_id = None
