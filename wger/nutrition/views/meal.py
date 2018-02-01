@@ -61,13 +61,10 @@ class MealCreateView(WgerFormMixin, CreateView):
             ingredient=ingredient,
             meal_choice=data['meal_choice']
         )
-        if not meal_item.id:
-            print('Meal not Created!')
         if 'weight_unit' in data:
             if data['weight_unit']:
                 meal_item.weight_unit = data['weight_unit']
                 meal_item.save()
-        # meal_item.save()
         return self.object.plan.get_absolute_url()
 
     # Send some additional data to the template
