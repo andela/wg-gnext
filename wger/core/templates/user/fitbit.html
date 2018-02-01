@@ -1,0 +1,13 @@
+{% extends "base_wide.html" %}
+{% load i18n staticfiles wger_extras %}
+{% block title %}{% trans "Sync with fitbit" %}{% endblock %}
+{% block content %}
+  <div class="jumbotron">
+    <p class="text-info">You can retrieve your weight data from Fitbit</p>
+    <br>
+    <a class="btn btn-lg btn-info" href="{{ fitbit_auth_link }}">
+        <i class="fa fa-location-arrow"></i>&nbsp;
+        Allow Wger to access Fitbit Data
+    </a>
+  </div>
+{% endblock %}
