@@ -41,7 +41,6 @@ NOCAPTCHA = True
 # properly served.
 SITE_URL = 'http://localhost:8000'
 
-MEDIA_ROOT='/users/isheebo/wger/media'
 # Path to uploaded files
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 MEDIA_URL = '/media/'
