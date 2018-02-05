@@ -60,6 +60,7 @@ target/
 .vscode
 virtualenv
 venv-django/
+.DS_Store
 
 # External Libraries
 wger/core/static/bower_components
