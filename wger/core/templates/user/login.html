@@ -14,30 +14,30 @@
     {% trans 'Login' as submit_text %}
     {% render_form_fields form submit_text %}
 </form>
-<h3 style="margin-buttom:-4px" class="">Login with your Social Account</h3>
+<h3 style="margin-buttom:-4px" class=""> Login or Register using.</h3>
 <hr/>
 
 <button type="button" class="btn btn-outline-primary">
     <a href="{% url "social:begin" 'facebook' %}"
     class="btn btn-block btn-primary" >
-       <span class="fa fa-facebook"></span>  Login with Facebook
+       <span class="fa fa-facebook"></span>  Facebook
    </a></button>
 <button type="button" class="btn btn-outline-secondary">
     <a href="{% url "social:begin" 'twitter' %}"
     class="btn btn-block btn-info">
-           <span class="fa fa-twitter"></span>  Login with Twitter
+           <span class="fa fa-twitter"></span>  Twitter
        </a></button>
 
 <button type="button" class="btn btn-outline-success">
     <a href="{% url "social:begin" 'github' %}" 
     class="btn btn-block btn-default">
-            <span class="fa fa-github"></span>  Login with Github
+            <span class="fa fa-github"></span>  Github
         </a></button>
 
 <button type="button" class="btn btn-outline-success">
     <a href="{% url "socialgoogle:begin" 'google-oauth2' %}" 
     class="btn btn-block btn-danger">
-            <span class="fa fa-google"></span>  Login with Google
+            <span class="fa fa-google"></span>  Google
         </a></button>
         
 
