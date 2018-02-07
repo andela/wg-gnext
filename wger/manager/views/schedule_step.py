@@ -20,14 +20,21 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy, ugettext as _
 from django.db import models
-from django.forms import ModelForm, ModelChoiceField
+
+from django import forms
 from django.views.generic import (CreateView, DeleteView, UpdateView)
 
 from wger.manager.models import (Schedule, ScheduleStep, Workout)
+from wger.manager.helpers import (MACROCYCLE, MESOCYLCLE, MICROCYCLE, periodization)
 from wger.utils.generic_views import (WgerFormMixin, WgerDeleteMixin)
 
 logger = logging.getLogger(__name__)
 
+PERIODIZATION_CHOICES = (
+    (periodization.get_max(MACROCYCLE), MACROCYCLE),
+    (periodization.get_max(MESOCYLCLE), MESOCYLCLE),
+    (periodization.get_max(MICROCYCLE), MICROCYCLE),
+)
 
 class StepCreateView(WgerFormMixin, CreateView, PermissionRequiredMixin):
     '''
@@ -46,15 +53,37 @@ class StepCreateView(WgerFormMixin, CreateView, PermissionRequiredMixin):
         have we access to the current user
         '''
 
-        class StepForm(ModelForm):
-            workout = ModelChoiceField(
+        class StepForm(forms.ModelForm):
+            workout = forms.ModelChoiceField(
                 queryset=Workout.objects.filter(user=self.request.user))
 
             class Meta:
                 model = ScheduleStep
                 exclude = ('order', 'schedule')
 
+            def __init__(self, *args, **kwargs):
+                if 'schedule_pk' in kwargs:
+                    self.schedule_pk = kwargs.pop('schedule_pk')
+
+                super(StepForm, self).__init__(*args, **kwargs)
+
+                if hasattr(self, 'schedule_pk'):
+                    schedule = Schedule.objects.get(pk=self.schedule_pk)
+
+                    if getattr(schedule, 'use_periodization'):
+                        del self.fields['duration']
+                        new_duratio_field = forms.ChoiceField(choices=PERIODIZATION_CHOICES)
+                        self.fields['duration'] = new_duratio_field
+
         return StepForm
+
+    def get_form_kwargs(self):
+        kwargs = super(StepCreateView, self).get_form_kwargs()
+
+        if 'schedule_pk' not in kwargs:
+            kwargs['schedule_pk'] = self.kwargs.get('schedule_pk')
+
+        return kwargs
 
     def get_context_data(self, **kwargs):
         context = super(StepCreateView, self).get_context_data(**kwargs)
@@ -100,8 +129,8 @@ class StepEditView(WgerFormMixin, UpdateView, PermissionRequiredMixin):
         have we access to the current user
         '''
 
-        class StepForm(ModelForm):
-            workout = ModelChoiceField(
+        class StepForm(forms.ModelForm):
+            workout = forms.ModelChoiceField(
                 queryset=Workout.objects.filter(user=self.request.user))
 
             class Meta:
@@ -109,6 +138,7 @@ class StepEditView(WgerFormMixin, UpdateView, PermissionRequiredMixin):
                 exclude = ('order', 'schedule')
 
         return StepForm
+
 
     def get_success_url(self):
         return reverse(
