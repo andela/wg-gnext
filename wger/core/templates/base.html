@@ -72,20 +72,5 @@ browsing the site as the user "{{current_user}}", all actions are performed on h
         {% block sidebar %}
         {% endblock %}
     </div>
-    <div class="col-sm-6" id="meal-content">
-        {% if messages and not no_messages %}
-            {% for message in messages %}
-                <div class="alert {% if message.tags == 'warning'%}alert-error{% elif message.tags == 'info' %}alert-info{% elif message.tags == 'success' %}alert-success{% endif %}">
-                <a href="#" class="close extra-bold" data-dismiss="alert">&times;</a>
-                {{message}}
-                </div>
-            {% endfor %}
-        {% endif %}
-
-        {% render_breadcrumbs "django_bootstrap_breadcrumbs/bootstrap3.html" %}
-        <div id="contents">
-        {% block contents %}{% endblock %}
-        </div>
-    </div>
 </div>
 {% endblock %}
