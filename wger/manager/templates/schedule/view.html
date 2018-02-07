@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load staticfiles wger_extras %}
+{% load periodization %}
 
 {#           #}
 {# Opengraph #}
@@ -187,13 +188,17 @@
 {% for step in schedule.schedulestep_set.select_related %}
 {% with step_dates=step.get_dates %}
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                    {% blocktrans count weeks=step.duration %}{{ weeks }} Week
-                    {% plural %}{{ weeks }} Weeks
+                {% if step.schedule.use_periodization %}
+                    <small>{{ step.duration|perioditize }}</small>
+                {% else %}
+                    {% blocktrans count weeks=step.duration %}
+                        {{ weeks }} Week {% plural %}{{ weeks }} Weeks
                     {% endblocktrans %}
+                {% endif %}
                 </h4>
 
                 {% if active_workout == step %}
@@ -213,7 +218,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-8">
         {% for day in step.workout.canonical_representation.day_list %}
         <div id="div-day-{{ day.obj.id }}">
             {% render_day day.obj False %}
