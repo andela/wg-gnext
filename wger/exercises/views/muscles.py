@@ -49,6 +49,10 @@ class MuscleListView(ListView):
             LanguageConfig.SHOW_ITEM_EXERCISES)
         context['show_shariff'] = True
         return context
+    def get_queryset(self):
+        if self.template_name == "muscles/overview.html":
+            return Muscle.objects.all().order_by('-is_front', 'name'),
+        return Muscle.objects.all().order_by('-is_front', 'name')
 
 
 class MuscleAdminListView(LoginRequiredMixin, PermissionRequiredMixin,
