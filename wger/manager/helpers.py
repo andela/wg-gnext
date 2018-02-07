@@ -14,7 +14,7 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
-
+import collections
 import datetime
 from calendar import HTMLCalendar
 
@@ -29,6 +29,12 @@ from wger.utils.helpers import normalize_decimal
 
 from wger.utils.pdf import styleSheet
 
+
+MACROCYCLE, MESOCYLCLE, MICROCYCLE = 'macrocycle', 'mesocycle', 'microcycle'
+
+PERIODIZATION = collections.namedtuple('PERIODIZATION', [MACROCYCLE, MESOCYLCLE, MICROCYCLE])
+
+PERIODIZATION_DURATIONS = PERIODIZATION((0, 4), (2, 6), (7, 52))
 
 def render_workout_day(day,
                        nr_of_weeks=7,
@@ -396,3 +402,30 @@ class WorkoutCalendar(HTMLCalendar):
         '''
         return '<td class="{0}" style="vertical-align: middle;">{1}</td>'\
             .format(cssclass, body)
+
+
+class Periodization(object):
+    def __init__(self):
+        self.periodization = PERIODIZATION_DURATIONS
+        self.default = PERIODIZATION_DURATIONS
+
+    def get_min(self, cycle):
+        return getattr(self.periodization, cycle, getattr(PERIODIZATION_DURATIONS, MACROCYCLE))[0]
+
+    def get_max(self, cycle):
+        return getattr(self.periodization, cycle, getattr(PERIODIZATION_DURATIONS, MACROCYCLE))[1]
+
+    def translate(self, duration):
+        if duration > self.get_max(MICROCYCLE) or duration < self.get_max(MACROCYCLE):
+            return '%s Weeks' % duration
+
+        if duration == 4:
+            return MACROCYCLE
+
+        if duration in range(self.get_min(MESOCYLCLE), self.get_max(MESOCYLCLE)):
+            return MESOCYLCLE
+
+        if duration in range(self.get_min(MICROCYCLE), self.get_max(MICROCYCLE)):
+            return MICROCYCLE
+
+periodization = Periodization()
