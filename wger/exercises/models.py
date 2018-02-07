@@ -21,6 +21,7 @@ import logging
 import bleach
 
 from django.db import models
+from django.db.models import Q
 from django.template.loader import render_to_string
 # django.utils.text.slugify in django 1.5!
 from django.template.defaultfilters import slugify
@@ -32,6 +33,7 @@ from django.utils import translation
 from django.core.urlresolvers import reverse
 from django.core import mail
 from django.core.cache import cache
+from django.core.cache.utils import make_template_fragment_key
 from django.core.validators import MinLengthValidator
 from django.conf import settings
 
@@ -43,7 +45,6 @@ from wger.utils.cache import (delete_template_fragment_cache,
                               reset_workout_canonical_form, cache_mapper)
 
 logger = logging.getLogger(__name__)
-
 
 @python_2_unicode_compatible
 class Muscle(models.Model):
@@ -76,6 +77,25 @@ class Muscle(models.Model):
         Muscle has no owner information
         '''
         return False
+        
+    def delete(self, *args, **kwargs):
+        '''
+        Reset all cached info
+        '''
+        for language in Language.objects.all():
+            delete_template_fragment_cache('muscle-overview', language.id)
+            delete_template_fragment_cache('equipment-overview', language.id)
+            delete_template_fragment_cache('exercise-overview', language.id)
+            delete_template_fragment_cache('exercise-overview-mobile', language.id)
+        exercise_container = Exercise.objects.filter(muscles=self).iterator()
+
+        # Handle cached template scraps
+        for exercise in exercise_container:
+            # Handle cached exercise objects
+            cache.delete(cache_mapper.get_exercise_muscle_bg_key(exercise.pk))
+            for set in exercise.set_set.all():
+                reset_workout_canonical_form(set.exerciseday.training.pk)
+        super(Muscle, self).delete(*args, **kwargs)
 
 
 @python_2_unicode_compatible
@@ -105,7 +125,6 @@ class Equipment(models.Model):
         Equipment has no owner information
         '''
         return False
-
 
 @python_2_unicode_compatible
 class ExerciseCategory(models.Model):
@@ -140,7 +159,6 @@ class ExerciseCategory(models.Model):
         '''
         Reset all cached infos
         '''
-
         super(ExerciseCategory, self).save(*args, **kwargs)
 
         # Cached template fragments
@@ -211,7 +229,6 @@ class Exercise(AbstractSubmissionModel, AbstractLicenseModel, models.Model):
     '''
     Globally unique ID, to identify the exercise across installations
     '''
-
     #
     # Django methods
     #
