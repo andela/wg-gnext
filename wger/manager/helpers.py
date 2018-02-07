@@ -410,22 +410,34 @@ class Periodization(object):
         self.default = PERIODIZATION_DURATIONS
 
     def get_min(self, cycle):
-        return getattr(self.periodization, cycle, getattr(PERIODIZATION_DURATIONS, MACROCYCLE))[0]
+        return getattr(
+            self.periodization,
+            cycle,
+            getattr(PERIODIZATION_DURATIONS, MACROCYCLE))[0]
 
     def get_max(self, cycle):
-        return getattr(self.periodization, cycle, getattr(PERIODIZATION_DURATIONS, MACROCYCLE))[1]
+        return getattr(
+            self.periodization,
+            cycle,
+            getattr(PERIODIZATION_DURATIONS, MACROCYCLE))[1]
 
     def translate(self, duration):
         if duration > self.get_max(MICROCYCLE) or duration < self.get_max(MACROCYCLE):
-            return '%s Weeks' % duration
+            return '%s Week(s)' % duration
 
         if duration == 4:
-            return MACROCYCLE
+            return '%s (%s weeks)' % (
+                MACROCYCLE.capitalize(),
+                self.get_max(MACROCYCLE))
 
-        if duration in range(self.get_min(MESOCYLCLE), self.get_max(MESOCYLCLE)):
-            return MESOCYLCLE
+        if duration in range(self.get_min(MESOCYLCLE), (self.get_max(MESOCYLCLE) + 1)):
+            return '%s (%s weeks)' % (
+                MESOCYLCLE.capitalize(),
+                self.get_max(MESOCYLCLE))
 
-        if duration in range(self.get_min(MICROCYCLE), self.get_max(MICROCYCLE)):
-            return MICROCYCLE
+        if duration in range(self.get_min(MICROCYCLE), (self.get_max(MICROCYCLE ) + 1)):
+            return '%s (%s weeks)' % (
+                MICROCYCLE.capitalize(),
+                self.get_max(MACROCYCLE))
 
 periodization = Periodization()
