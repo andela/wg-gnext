@@ -59,7 +59,7 @@ class StepCreateView(WgerFormMixin, CreateView, PermissionRequiredMixin):
 
             class Meta:
                 model = ScheduleStep
-                exclude = ('order', 'schedule')
+                exclude = ('order', 'schedule', 'is_periodized')
 
             def __init__(self, *args, **kwargs):
                 if 'schedule_pk' in kwargs:
@@ -72,8 +72,8 @@ class StepCreateView(WgerFormMixin, CreateView, PermissionRequiredMixin):
 
                     if getattr(schedule, 'use_periodization'):
                         del self.fields['duration']
-                        new_duratio_field = forms.ChoiceField(choices=PERIODIZATION_CHOICES)
-                        self.fields['duration'] = new_duratio_field
+                        new_duration_field = forms.ChoiceField(choices=PERIODIZATION_CHOICES)
+                        self.fields['duration'] = new_duration_field
 
         return StepForm
 
@@ -102,8 +102,18 @@ class StepCreateView(WgerFormMixin, CreateView, PermissionRequiredMixin):
 
     def form_valid(self, form):
         '''Set the schedule and the order'''
-
+        uses_periodization = False
         schedule = Schedule.objects.get(pk=self.kwargs['schedule_pk'])
+
+        if schedule.use_periodization:
+            # mark schedule step as periodized plan.
+            form.instance.is_periodized = True
+            uses_periodization = True
+
+        if not uses_periodization and form.cleaned_data['duration'] > 25:
+            # normal scheduled steps should not exceed 25 weeks
+            form.add_error('duration', 'Ensure that duration value is equal or less than 25')
+            return super(StepCreateView, self).form_invalid(form)
 
         max_order = schedule.schedulestep_set.all().aggregate(
             models.Max('order'))
