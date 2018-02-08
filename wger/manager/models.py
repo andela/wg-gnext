@@ -345,9 +345,13 @@ class ScheduleStep(models.Model):
         verbose_name=_('Duration'),
         help_text=_('The duration in weeks'),
         default=4,
-        validators=[MinValueValidator(periodization.get_max(MACROCYCLE)),
-                    MaxValueValidator(periodization.get_max(MICROCYCLE))])
+        validators=[MinValueValidator(4), MaxValueValidator(periodization.get_max(MICROCYCLE))])
     '''The duration in weeks'''
+
+    is_periodized = models.BooleanField(default=False,
+                                        help_text=_('indicates whether the schedule '
+                                                  'step was created as a cycle in periodization'))
+    '''A flag to indicate if schedule step is set using periodization'''
 
 
     order = models.IntegerField(verbose_name=_('Order'), default=1)
