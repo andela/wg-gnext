@@ -60,6 +60,7 @@ target/
 .vscode
 virtualenv
 venv-django/
+venv-pootle/
 .DS_Store
 
 # External Libraries
