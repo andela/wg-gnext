@@ -34,7 +34,7 @@ MACROCYCLE, MESOCYLCLE, MICROCYCLE = 'macrocycle', 'mesocycle', 'microcycle'
 
 PERIODIZATION = collections.namedtuple('PERIODIZATION', [MACROCYCLE, MESOCYLCLE, MICROCYCLE])
 
-PERIODIZATION_DURATIONS = PERIODIZATION((0, 4), (2, 6), (7, 52))
+PERIODIZATION_DURATIONS = PERIODIZATION((0, 4), (2, 16), (17, 52))
 
 def render_workout_day(day,
                        nr_of_weeks=7,
@@ -405,23 +405,38 @@ class WorkoutCalendar(HTMLCalendar):
 
 
 class Periodization(object):
+    '''
+    Contains helper methods that return maximum and minimum months in
+    periodization cycles.
+    '''
     def __init__(self):
         self.periodization = PERIODIZATION_DURATIONS
         self.default = PERIODIZATION_DURATIONS
 
     def get_min(self, cycle):
+        '''
+        Return minimum number months for specified periodization cycle.
+        '''
+
         return getattr(
             self.periodization,
             cycle,
             getattr(PERIODIZATION_DURATIONS, MACROCYCLE))[0]
 
     def get_max(self, cycle):
+        '''
+        Return maximum number of months for specified periodization cycle.
+        '''
+
         return getattr(
             self.periodization,
             cycle,
             getattr(PERIODIZATION_DURATIONS, MACROCYCLE))[1]
 
     def translate(self, duration):
+        '''
+        Checks if provided duration falls in periodization cycles.
+        '''
         if duration > self.get_max(MICROCYCLE) or duration < self.get_max(MACROCYCLE):
             return '%s Week(s)' % duration
 
@@ -435,9 +450,10 @@ class Periodization(object):
                 MESOCYLCLE.capitalize(),
                 self.get_max(MESOCYLCLE))
 
-        if duration in range(self.get_min(MICROCYCLE), (self.get_max(MICROCYCLE ) + 1)):
+        if duration in range(self.get_min(MICROCYCLE), (self.get_max(MICROCYCLE) + 1)):
             return '%s (%s weeks)' % (
                 MICROCYCLE.capitalize(),
                 self.get_max(MACROCYCLE))
 
+# instantiate periodization class to ease usage whenever need be.
 periodization = Periodization()
