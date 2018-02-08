@@ -433,6 +433,7 @@ class Periodization(object):
             cycle,
             getattr(PERIODIZATION_DURATIONS, MACROCYCLE))[1]
 
+
     def translate(self, duration):
         '''
         Checks if provided duration falls in periodization cycles.
@@ -441,19 +442,13 @@ class Periodization(object):
             return '%s Week(s)' % duration
 
         if duration == 4:
-            return '%s (%s weeks)' % (
-                MACROCYCLE.capitalize(),
-                self.get_max(MACROCYCLE))
+            return '1 Month'
 
         if duration in range(self.get_min(MESOCYLCLE), (self.get_max(MESOCYLCLE) + 1)):
-            return '%s (%s weeks)' % (
-                MESOCYLCLE.capitalize(),
-                self.get_max(MESOCYLCLE))
+            return '2-6 Months'
 
         if duration in range(self.get_min(MICROCYCLE), (self.get_max(MICROCYCLE) + 1)):
-            return '%s (%s weeks)' % (
-                MICROCYCLE.capitalize(),
-                self.get_max(MACROCYCLE))
+            return '1 year'
 
 # instantiate periodization class to ease usage whenever need be.
 periodization = Periodization()
