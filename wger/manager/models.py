@@ -345,7 +345,7 @@ class ScheduleStep(models.Model):
         verbose_name=_('Duration'),
         help_text=_('The duration in weeks'),
         default=4,
-        validators=[MinValueValidator(4), MaxValueValidator(periodization.get_max(MICROCYCLE))])
+        validators=[MinValueValidator(periodization.get_max(MICROCYCLE)), MaxValueValidator(periodization.get_max(MACROCYCLE))])
     '''The duration in weeks'''
 
     is_periodized = models.BooleanField(default=False,
