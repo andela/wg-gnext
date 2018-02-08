@@ -192,12 +192,14 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                {% if step.schedule.use_periodization %}
-                    <small>{{ step.duration|perioditize }}</small>
+                {% if step.is_periodized %}
+                    <label class="label label-success">{{ step.duration|perioditize }}</label>
                 {% else %}
+                    <label class="label label-default">
                     {% blocktrans count weeks=step.duration %}
                         {{ weeks }} Week {% plural %}{{ weeks }} Weeks
                     {% endblocktrans %}
+                    </label>
                 {% endif %}
                 </h4>
 
