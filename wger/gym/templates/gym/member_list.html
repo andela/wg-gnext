@@ -14,7 +14,6 @@
 
 
 {% block content %}
-<h2 id="active">Active users <small><a class="pull-right" href="{% url 'gym:gym:inactive-user-list' gym.pk %}"><span class="fa fa-share-square-o"></span> Inactive users</a></small></h2>
 {% if perms.gym.manage_gym or perms.gym.gym_trainer %}
     {% include 'gym/partial_user_list.html' %}
 {% endif %}
@@ -26,7 +25,9 @@
     <th style="width: 10%;">{% trans "ID" %}</th>
     <th style="width: 40%;">{% trans "Username" %}</th>
     <th>{% trans "Name" %}</th>
+    <th>{% trans "isActive" %}</th>
     {% if perms.gym.manage_gym or perms.gym.manage_gyms %}
+        <th>{% trans "Action" %}</th>
         <th style="text-align: right;">{% trans "Roles" %}</th>
     {% endif %}
 </tr>
@@ -56,6 +57,19 @@
         {{current_user.obj.get_full_name}}
     </td>
 
+    <td>{{current_user.obj.is_active}}</td>
+
+    {% if perms.gym.manage_gym or perms.gym.manage_gyms %}
+        <td>
+            {% if not current_user.perms.manage_gym and not current_user.perms.manage_gyms %}
+                {% if current_user.obj.is_active %}
+                    <a href="{% url 'core:user:deactivate' current_user.obj.pk %}">Deactivate</a>
+                {% else %}
+                    <a href="{% url 'core:user:activate' current_user.obj.pk %}">Activate</a>
+                {% endif %}
+            {% endif %}
+        </td>
+    {% endif %}
     {% if perms.gym.manage_gym or perms.gym.manage_gyms %}
     <td style="text-align: right;">
         <a href="{% url 'gym:gym:edit-user-permission' current_user.obj.pk %}" class="btn btn-default btn-xs wger-modal-dialog">
