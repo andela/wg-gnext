@@ -442,13 +442,13 @@ class Periodization(object):
             return '%s Week(s)' % duration
 
         if duration == 4:
-            return '1 Month'
+            return 'Macrocycle (1 Month)'
 
         if duration in range(self.get_min(MESOCYLCLE), (self.get_max(MESOCYLCLE) + 1)):
-            return '2-6 Months'
+            return 'Mesocycle (2-6 Months)'
 
         if duration in range(self.get_min(MICROCYCLE), (self.get_max(MICROCYCLE) + 1)):
-            return '1 year'
+            return 'Macrocycle (1 year)'
 
 # instantiate periodization class to ease usage whenever need be.
 periodization = Periodization()
