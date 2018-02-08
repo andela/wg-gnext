@@ -30,11 +30,11 @@ from wger.utils.helpers import normalize_decimal
 from wger.utils.pdf import styleSheet
 
 
-MACROCYCLE, MESOCYLCLE, MICROCYCLE = 'macrocycle', 'mesocycle', 'microcycle'
+MICROCYCLE, MESOCYLCLE, MACROCYCLE = 'microcycle', 'mesocycle', 'macrocycle'
 
-PERIODIZATION = collections.namedtuple('PERIODIZATION', [MACROCYCLE, MESOCYLCLE, MICROCYCLE])
+PERIODIZATION = collections.namedtuple('PERIODIZATION', [MICROCYCLE, MESOCYLCLE, MACROCYCLE])
 
-PERIODIZATION_DURATIONS = PERIODIZATION((0, 4), (2, 16), (17, 52))
+PERIODIZATION_DURATIONS = PERIODIZATION((0, 1), (2, 6), (7, 52))
 
 def render_workout_day(day,
                        nr_of_weeks=7,
@@ -421,7 +421,7 @@ class Periodization(object):
         return getattr(
             self.periodization,
             cycle,
-            getattr(PERIODIZATION_DURATIONS, MACROCYCLE))[0]
+            getattr(PERIODIZATION_DURATIONS, MICROCYCLE))[1]
 
     def get_max(self, cycle):
         '''
@@ -438,16 +438,16 @@ class Periodization(object):
         '''
         Checks if provided duration falls in periodization cycles.
         '''
-        if duration > self.get_max(MICROCYCLE) or duration < self.get_max(MACROCYCLE):
+        if duration > self.get_max(MACROCYCLE) or duration < self.get_max(MICROCYCLE):
             return '%s Week(s)' % duration
 
-        if duration == 4:
-            return 'Macrocycle (1 Month)'
+        if duration == 1:
+            return 'Microcycle (1 Week)'
 
         if duration in range(self.get_min(MESOCYLCLE), (self.get_max(MESOCYLCLE) + 1)):
-            return 'Mesocycle (2-6 Months)'
+            return 'Mesocycle (2-6 Weeks)'
 
-        if duration in range(self.get_min(MICROCYCLE), (self.get_max(MICROCYCLE) + 1)):
+        if duration in range(self.get_min(MACROCYCLE), (self.get_max(MACROCYCLE) + 1)):
             return 'Macrocycle (1 year)'
 
 # instantiate periodization class to ease usage whenever need be.
