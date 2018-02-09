@@ -31,9 +31,12 @@ from wger.utils.generic_views import (WgerFormMixin, WgerDeleteMixin)
 logger = logging.getLogger(__name__)
 
 PERIODIZATION_CHOICES = (
-    (periodization.get_max(MICROCYCLE), MICROCYCLE),
-    (periodization.get_max(MESOCYLCLE), MESOCYLCLE),
-    (periodization.get_max(MACROCYCLE), MACROCYCLE),
+    (periodization.get_max(MICROCYCLE),
+     '%s(1 week)' % MICROCYCLE.capitalize()),
+    (periodization.get_max(MESOCYLCLE),
+     '%s(2-6 weeks)' % MESOCYLCLE.capitalize()),
+    (periodization.get_max(MACROCYCLE),
+     '%s(1 year)' % MACROCYCLE.capitalize()),
 )
 
 class StepCreateView(WgerFormMixin, CreateView, PermissionRequiredMixin):
